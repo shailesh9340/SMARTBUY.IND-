@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SMARTBUY.IND</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{margin:0;font-family:Arial;background:#0d0dde}
+
+/* HEADER */
+header{
+position:fixed;top:0;width:100%;z-index:10;
+background:#2209c2;padding:10px;
+display:flex;align-items:center;justify-content:space-between;
+box-shadow:0 2px 5px rgba(0,0,0,.2)
+}
+header img{height:35px;cursor:pointer}
+.brand-name{
+font-size:20px;font-weight:bold;color:#fff;letter-spacing:1px
+}
+#userTop{color:#fff;font-size:14px}
+
+/* MAIN */
+.main{padding-top:70px;padding-bottom:150px}
+
+/* SEARCH */
+.search-box {
+    padding: 10px;
+    background: #fff;
+    position: sticky;
+    top: 60px; 
+    z-index: 9;
+}
+.search-box input {
+    width: 95%;
+    padding: 10px;
+    border: 2px solid #eee;
+    background: #f5f5f5;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    display: block;
+    margin: 0 auto;
+}
+.search-box input:focus {
+    border-color: #2209c2;
+    background: #fff;
+}
+
+/* CATEGORIES */
+.categories{display:flex;overflow-x:auto;background:#fff;padding:10px;border-top:1px solid #eee}
+.cat{min-width:90px;text-align:center;margin-right:10px;cursor:pointer}
+.cat img{width:60px;height:60px;border-radius:50%;object-fit:cover}
+.cat p{font-size:12px;margin:5px 0 0}
+
+.subcats{display:flex;overflow-x:auto;padding:5px;background:#fff}
+.subcats div{
+padding:6px 12px;background:#eee;border-radius:20px;
+margin-right:8px;font-size:12px;cursor:pointer
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;padding:10px
+}
+.card{
+background:#fff;border-radius:10px;overflow:hidden;
+box-shadow:0 2px 4px rgba(0,0,0,.1)
+}
+.slider img{
+width:100%;height:200px;object-fit:cover;cursor:pointer
+}
+.card h4{font-size:14px;margin:5px}
+.price{color:green;font-weight:bold;margin-left:5px}
+.cut{text-decoration:line-through;color:#888;font-size:12px}
+.off{color:red;font-size:12px;margin-left:5px}
+
+.actions{display:flex;padding:5px}
+.actions button{
+flex:1;margin:2px;border:none;padding:8px;
+border-radius:5px;font-size:13px;cursor:pointer
+}
+.buy{background:#ff5722;color:#fff}
+.wish{background:#eee}
+
+/* DONATE + INSTA */
+.extra-box{
+background:#fff;margin:10px;border-radius:12px;
+padding:15px;text-align:center;
+box-shadow:0 2px 5px rgba(0,0,0,.1)
+}
+.extra-box h3{margin:5px 0;color:#2209c2}
+.extra-box p{font-size:13px;color:#333}
+
+.donate-btn{
+background:linear-gradient(45deg,#ff5722,#ff9800);
+color:#fff;border:none;padding:10px 20px;
+border-radius:25px;font-size:14px;cursor:pointer
+}
+
+.insta-btn{
+display:flex;align-items:center;justify-content:center;
+gap:8px;background:#e1306c;color:#fff;
+padding:10px;border-radius:25px;
+text-decoration:none;font-weight:bold
+}
+.insta-btn img{height:20px}
+
+/* NAV */
+.nav{
+position:fixed;bottom:0;width:100%;
+background:#fff;display:flex;
+justify-content:space-around;
+padding:15px 0;
+box-shadow:0 -2px 5px rgba(0,0,0,.2)
+}
+.nav div{text-align:center;font-size:14px;font-weight:bold}
+.nav span{display:block;font-size:24px}
+
+/* FULLSCREEN */
+.fullscreen{
+position:fixed;inset:0;background:#000;
+display:none;align-items:center;justify-content:center;z-index:99
+}
+.fullscreen img{width:100%;height:auto}
+</style>
+</head>
+
+<body>
+
+<header>
+<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="openAdmin()">
+<div class="brand-name">SMARTBUY.IND</div>
+<div id="userTop">Guest</div>
+</header>
+
+<div class="main">
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="handleSearch()">
+</div>
+
+<div class="categories" id="categories"></div>
+<div class="subcats" id="subcats"></div>
+<div class="products" id="products"></div>
+
+<div class="extra-box">
+<h3>💖 Support SmartBuy</h3>
+<p>Aapka chhota sa support hamare kaam ko aage badhata hai 🙏</p>
+<button class="donate-btn" onclick="donate()">Donate Now</button>
+</div>
+
+<div class="extra-box">
+<h3>📸 Follow on Instagram</h3>
+<a class="insta-btn" href="https://instagram.com/smartbuy.ind" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
+@smartbuy.ind
+</a>
+</div>
+
+</div>
+
+<div class="nav">
+<div onclick="goHome()"><span>🏠</span>Home</div>
+<div onclick="showWishlist()"><span>❤️</span>Wishlist</div>
+<div onclick="showAccount()"><span>👤</span>Account</div>
+</div>
+
+<div class="fullscreen" id="fullscreen" onclick="this.style.display='none'">
+<img id="fullImg">
+</div>
+
+<script>
+/* USER */
+let user=JSON.parse(localStorage.getItem("user"))||null;
+if(user){document.getElementById("userTop").innerText=user.name}
+
+/* CATEGORIES */
+const cats=[
+{name:"For You",img:"https://i.ibb.co/NndQSBVw/3d-shopping-bag-with-percent-sign-isolated-render-realistic-gift-bag-sale-discount-or-clearance-conc.jpg"},
+{name:"Fashion",img:"https://i.ibb.co/VYGS3DQb/51d9ea827ad3d9f0ca52103c47351dd8.jpg",sub:["Men","Women"]},
+{name:"Bags",img:"https://i.ibb.co/3mPPftR8/5dbba7855aeefe5508334ec802ba21bfa71b6cf1.jpg"},
+{name:"Electronics",img:"https://i.ibb.co/4ZJ9SSW7/screens-isometric-electronic-devices-23-2147647441.jpg"}
+];
+
+/* PRODUCTS */
+const productData=[
+{
+name:"Premium Backpack Encrypted",cat:"Bags",sub:"",
+price:322,cut:999,
+link:"https://bitli.in/JZizUxb",
+imgs:[
+"https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/d0LnRpXs/Screenshot-2026-01-28-09-17-19-979-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
+]
+},
+{
+name:"MEN Full sleeve striped sweatshirt",cat:"Fashion",sub:"Men",
+price:299,cut:1499,
+link:"https://fktr.in/trid8uL",
+imgs:[
+"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
+"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg",
+"https://i.ibb.co/LdSbDw4C/Screenshot-2026-01-28-23-28-28-456-com-flipkart-android-edit.jpg"
+]
+},
+{
+name:"Women Floral Kurti",cat:"Fashion",sub:"Women",
+price:253,cut:1999,
+link:"https://bitli.in/mYd26le",
+imgs:[
+"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/svt2y75W/Screenshot-2026-01-28-20-43-22-071-com-flipkart-shopsy-edit.jpg"
+]
+},
+{
+name:"Men Regular Fit Trousers",cat:"Fashion",sub:"Men",
+price:262,cut:999,
+link:"https://bitli.in/w8hSXkv",
+imgs:[
+"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/zWcpyJSk/Screenshot-2026-01-28-20-51-44-808-com-flipkart-shopsy-edit.jpg"
+]
+}
+];
+
+let curCat="For You", curSub="", searchQuery="";
+const productsEl = document.getElementById('products');
+
+function renderCats(){
+categories.innerHTML="";
+cats.forEach(x=>{
+categories.innerHTML += `<div class="cat" onclick="setCat('${x.name}')">
+<img src="${x.img}"><p>${x.name}</p></div>`;
+});
+}
+
+function renderSub(){
+subcats.innerHTML="";
+let f=cats.find(x=>x.name==curCat);
+if(f && f.sub){
+f.sub.forEach(x=>{
+subcats.innerHTML += `<div onclick="setSub('${x}')">${x}</div>`;
+});
+}
+}
+
+function renderProd(){
+productsEl.innerHTML="";
+productData.filter(x=>{
+let matchCat = (curCat=="For You"||x.cat==curCat) && (curSub==""||x.sub==curSub);
+let matchSearch = x.name.toLowerCase().includes(searchQuery);
+return matchCat && matchSearch;
+}).forEach((x,i)=>{
+let off=Math.round((1-x.price/x.cut)*100);
+productsEl.innerHTML += `
+<div class="card">
+<div class="slider">
+<img src="${x.imgs[0]}" onclick="openFull('${x.imgs[0]}')">
+</div>
+<h4>${x.name}</h4>
+<div>
+<span class="price">₹${x.price}</span>
+<span class="cut">₹${x.cut}</span>
+<span class="off">${off}% OFF</span>
+</div>
+<div class="actions">
+<button class="wish" onclick="addWish(${i})">❤️</button>
+<button class="buy" onclick="window.open('${x.link}','_blank')">Buy</button>
+</div>
+</div>`;
+});
+}
+
+function setCat(x){curCat=x;curSub="";renderSub();renderProd();}
+function setSub(x){curSub=x;renderProd();}
+function goHome(){curCat="For You"; curSub=""; searchQuery=""; document.getElementById('searchInput').value=""; renderSub(); renderProd();}
+function handleSearch(){searchQuery=document.getElementById('searchInput').value.toLowerCase(); renderProd();}
+function openFull(i){fullImg.src=i;fullscreen.style.display='flex';}
+
+/* WISHLIST */
+function addWish(i){
+let w=JSON.parse(localStorage.getItem("wish"))||[];
+w.push(productData[i]);
+localStorage.setItem("wish",JSON.stringify(w));
+alert("Added to Wishlist ❤️");
+}
+function showWishlist(){
+let w=JSON.parse(localStorage.getItem("wish"))||[];
+if(w.length==0){alert("Wishlist is empty"); return;}
+alert("Wishlist Items:\n"+w.map(x=>x.name).join("\n"));
+}
+
+/* ACCOUNT */
+function showAccount(){
+let n=prompt("Enter Name");
+let p=prompt("Enter Phone");
+if(n&&p){
+localStorage.setItem("user",JSON.stringify({name:n,phone:p}));
+document.getElementById("userTop").innerText=n;
+alert("Account saved!");
+}
+}
+
+/* ADMIN */
+function openAdmin(){
+let u=prompt("Username");
+let p=prompt("Password");
+if(u=="9343988416" && p=="1234"){
+alert("Admin Analytics\nProducts:"+productData.length+"\nCategories:"+cats.length);
+}else alert("Invalid credentials");
+}
+
+/* DONATE */
+function donate(){
+location.href="upi://pay?pa=9343988416-2@ybl&pn=SmartBuy%20Foundation";
+}
+
+/* INIT */
+renderCats();renderSub();renderProd();
+</script>
+
+</body>
+</html>
