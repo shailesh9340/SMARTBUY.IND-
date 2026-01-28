@@ -9,6 +9,34 @@
 /* --- CSS RESET & COLORS --- */
 body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde; color:#333;}
 
+#welcomeScreen{
+  position:fixed; inset:0;
+  background:#2209c2;
+  z-index:5000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:2.5s;
+}
+#welcomeScreen img{
+  width:120px;height:120px;
+  border-radius:50%;
+  border:3px solid #fff;
+  animation:zoomIn 1.2s ease;
+}
+#welcomeScreen h1{
+  color:#fff;
+  margin-top:15px;
+  font-size:22px;
+  letter-spacing:1px;
+  animation:slideUp 1s ease;
+}
+@keyframes zoomIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+
 /* HEADER */
 header{
     position:fixed; top:0; left:0; width:100%; height:65px; z-index:1000;
@@ -421,4 +449,10 @@ drawCategories(); drawSubcats(); drawProducts();
 </script>
 
 </body>
+
+<!-- WELCOME SCREEN -->
+<div id="welcomeScreen">
+  <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png">
+  <h1>Welcome to SMARTBUY.IND</h1>
+</div>
 </html>
