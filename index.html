@@ -7,68 +7,65 @@
 
 <style>
 /* --- CSS RESET & COLORS --- */
-body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde;}
+body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde; color:#333;}
 
-/* HEADER STYLING */
+/* HEADER */
 header{
-    position:fixed; top:0; left:0; width:100%; height:65px; z-index:100;
+    position:fixed; top:0; left:0; width:100%; height:65px; z-index:1000;
     background:#2209c2; padding:0 15px;
     display:flex; align-items:center; justify-content:space-between;
     box-shadow:0 2px 5px rgba(0,0,0,.2);
     box-sizing: border-box;
 }
 
-/* LOGO CIRCLE STYLE */
+/* LOGO - ADMIN TRIGGER */
 header img{
     height:45px; width:45px; 
-    border-radius: 50%; /* Circle Logo */
+    border-radius: 50%; 
     object-fit: cover;
     border: 2px solid #fff;
     cursor:pointer;
 }
 
-/* BRAND NAME BIG LETTERS */
+/* BRAND NAME */
 .brand-name{
-    font-size:22px; /* Bada Font */
-    font-weight:900; 
-    color:#fff; 
-    letter-spacing:1px;
+    font-size:22px; font-weight:900; 
+    color:#fff; letter-spacing:1px;
     text-transform: uppercase;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 #userTop{color:#fff; font-size:14px; font-weight: bold;}
 
-/* MAIN CONTAINER */
+/* MAIN CONTAINER & SPACING FIX */
 .main{
-    padding-top:75px; /* Thoda space badhaya header ke liye */
-    padding-bottom:100px; 
+    padding-top: 75px; /* Header Height + Space */
+    padding-bottom: 100px; 
     width: 100%;
     overflow-x: hidden;
 }
 
-/* SEARCH BAR FIX - GAP ADDED */
+/* SEARCH BAR - FIXED POSITION & SPACING */
 .search-wrapper {
-    position: sticky; top: 65px; z-index: 90;
-    background: #fff; padding: 15px 10px; /* Padding badhaya */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-bottom: 15px; /* Categories se doori (gap) */
+    position: sticky; top: 65px; z-index: 900;
+    background: #0d0dde; /* Match body bg to hide scroll behind */
+    padding: 10px 10px 15px 10px;
 }
 
 .search-input {
     width: 100%; padding: 12px 15px;
-    border: 1px solid #ddd; background: #f5f5f5;
+    border: none; background: #fff;
     border-radius: 30px; outline: none;
     font-size: 15px; box-sizing: border-box;
     color: #333;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* CATEGORIES */
 .cat-scroll {
-    display:flex; overflow-x:auto; background:#fff; padding:10px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
+    display:flex; overflow-x:auto; background:#fff; padding:15px 10px;
+    border-radius: 10px 10px 0 0;
+    margin: 0 10px;
 }
 .cat-item {
     min-width:85px; text-align:center; margin-right:10px; 
@@ -82,7 +79,8 @@ header img{
 /* SUBCATEGORIES */
 .sub-scroll {
     display:flex; overflow-x:auto; padding:10px; background:#fff;
-    white-space: nowrap; margin-bottom: 10px;
+    white-space: nowrap; margin: 0 10px 10px 10px;
+    border-radius: 0 0 10px 10px;
 }
 .sub-btn {
     padding:8px 15px; background:#eee; border-radius:20px;
@@ -105,6 +103,7 @@ header img{
 
 .prod-img-box {
     width: 100%; height: 180px; background: #ddd;
+    position: relative;
 }
 .prod-img-box img {
     width: 100%; height: 100%; object-fit: cover;
@@ -123,34 +122,34 @@ header img{
     display: flex; margin-top: auto; padding: 8px; gap: 5px;
 }
 .btn-row button {
-    flex: 1; border: none; padding: 8px; border-radius: 4px; font-weight: bold;
+    flex: 1; border: none; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer;
 }
-.btn-wish { background: #eee; color: #333; }
+.btn-wish { background: #eee; color: #e1306c; font-size: 16px; }
 .btn-buy { background: #ff5722; color: #fff; }
-
-/* FOOTER BOXES */
-.support-box {
-    background: #fff; margin: 15px; padding: 20px;
-    border-radius: 10px; text-align: center;
-}
-.donate-btn {
-    background: orange; color: white; border: none;
-    padding: 10px 20px; border-radius: 20px; font-weight: bold; margin-top: 10px;
-}
-.insta-link {
-    display: block; background: #e1306c; color: white;
-    padding: 10px; border-radius: 20px; text-decoration: none; margin-top: 10px;
-}
 
 /* BOTTOM NAV */
 .bottom-nav {
     position: fixed; bottom: 0; left: 0; width: 100%;
     background: #fff; border-top: 1px solid #ddd;
     display: flex; justify-content: space-around; padding: 10px 0;
-    z-index: 100;
+    z-index: 1000;
 }
-.nav-item { text-align: center; font-size: 12px; }
+.nav-item { text-align: center; font-size: 12px; cursor: pointer; }
 .nav-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+
+/* ADMIN MODAL */
+.modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+}
+.modal-box {
+    background: #fff; padding: 20px; width: 85%; border-radius: 10px;
+    text-align: center;
+}
+.stat-box {
+    background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px;
+    display: flex; justify-content: space-between;
+}
 
 </style>
 </head>
@@ -158,9 +157,9 @@ header img{
 <body>
 
 <header>
-    <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="alert('Admin Panel')">
+    <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="handleAdminLogin()">
     <div class="brand-name">SMARTBUY.IND</div>
-    <div id="userTop">Guest</div>
+    <div id="userTop" onclick="handleAccount()">Login</div>
 </header>
 
 <div class="main">
@@ -174,27 +173,33 @@ header img{
     
     <div id="grid_panel"></div>
 
-    <div class="support-box">
+    <div style="background:#fff; margin:15px 10px; padding:20px; border-radius:10px; text-align:center;">
         <h3 style="margin:0;color:#2209c2">💖 Support SmartBuy</h3>
         <p>Help us grow with your support 🙏</p>
-        <button class="donate-btn" onclick="donate()">Donate Now</button>
-    </div>
-
-    <div class="support-box">
-        <h3 style="margin:0">📸 Instagram</h3>
-        <a class="insta-link" href="#">@smartbuy.ind</a>
+        <button style="background:orange; color:white; border:none; padding:10px 20px; border-radius:20px; font-weight:bold; margin-top:10px;" onclick="location.href='upi://pay?pa=9343988416-2@ybl&pn=SmartBuy'">Donate Now</button>
     </div>
 
 </div>
 
 <div class="bottom-nav">
     <div class="nav-item" onclick="resetHome()"><span class="nav-icon">🏠</span>Home</div>
-    <div class="nav-item" onclick="alert('Wishlist')"><span class="nav-icon">❤️</span>Wishlist</div>
-    <div class="nav-item" onclick="alert('Account')"><span class="nav-icon">👤</span>Account</div>
+    <div class="nav-item" onclick="showWishlistPage()"><span class="nav-icon">❤️</span>Wishlist</div>
+    <div class="nav-item" onclick="handleAccount()"><span class="nav-icon">👤</span>Account</div>
+</div>
+
+<div class="modal" id="adminModal">
+    <div class="modal-box">
+        <h2 style="color:#2209c2">Admin Panel 📊</h2>
+        <div class="stat-box"><span>Total Products:</span> <b id="adm_prod">0</b></div>
+        <div class="stat-box"><span>Total Categories:</span> <b id="adm_cat">0</b></div>
+        <div class="stat-box"><span>Buy Button Clicks:</span> <b id="adm_click">0</b></div>
+        <div class="stat-box"><span>Registered Users:</span> <b id="adm_user">0</b></div>
+        <button onclick="document.getElementById('adminModal').style.display='none'" style="margin-top:10px;padding:10px;width:100%">Close</button>
+    </div>
 </div>
 
 <script>
-// --- DATA ---
+// --- DATABASE ---
 const DB_CATS = [
     {name:"For You", img:"https://cdn-icons-png.flaticon.com/512/833/833314.png"},
     {name:"Fashion", img:"https://cdn-icons-png.flaticon.com/512/3050/3050253.png", sub:["Men","Women"]},
@@ -203,34 +208,25 @@ const DB_CATS = [
 ];
 
 const DB_ITEMS = [
-    {
-        name:"Premium Backpack Encrypted", cat:"Bags", sub:"",
-        price:322, cut:999, link:"https://bitli.in/JZizUxb",
-        img:"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
-    },
-    {
-        name:"MEN Full sleeve sweatshirt", cat:"Fashion", sub:"Men",
-        price:299, cut:1499, link:"https://fktr.in/trid8uL",
-        img:"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg"
-    },
-    {
-        name:"Women Floral Kurti", cat:"Fashion", sub:"Women",
-        price:253, cut:1999, link:"https://bitli.in/mYd26le",
-        img:"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg"
-    },
-    {
-        name:"Men Regular Fit Trousers", cat:"Fashion", sub:"Men",
-        price:262, cut:999, link:"https://bitli.in/w8hSXkv",
-        img:"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg"
-    }
+    { id:1, name:"Premium Backpack Encrypted", cat:"Bags", sub:"", price:322, cut:999, link:"https://bitli.in/JZizUxb", img:"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg" },
+    { id:2, name:"MEN Full sleeve sweatshirt", cat:"Fashion", sub:"Men", price:299, cut:1499, link:"https://fktr.in/trid8uL", img:"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg" },
+    { id:3, name:"Women Floral Kurti", cat:"Fashion", sub:"Women", price:253, cut:1999, link:"https://bitli.in/mYd26le", img:"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg" },
+    { id:4, name:"Men Regular Fit Trousers", cat:"Fashion", sub:"Men", price:262, cut:999, link:"https://bitli.in/w8hSXkv", img:"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg" }
 ];
 
-// --- STATE ---
+// --- LOCAL STORAGE INIT ---
+if(!localStorage.getItem("site_stats")) localStorage.setItem("site_stats", JSON.stringify({clicks:0}));
+if(!localStorage.getItem("wishlist")) localStorage.setItem("wishlist", JSON.stringify([]));
+
+// --- STATE VARIABLES ---
 let activeCat = "For You";
 let activeSub = "";
 let searchTerm = "";
+let isWishlistMode = false;
 
-// --- FUNCTIONS ---
+// --- CORE FUNCTIONS ---
+
+// 1. Render Categories
 function drawCategories(){
     let html = "";
     DB_CATS.forEach(c => {
@@ -243,6 +239,7 @@ function drawCategories(){
     document.getElementById("cat_panel").innerHTML = html;
 }
 
+// 2. Render Subcategories
 function drawSubcats(){
     let html = "";
     let found = DB_CATS.find(c => c.name === activeCat);
@@ -256,24 +253,34 @@ function drawSubcats(){
     document.getElementById("sub_panel").innerHTML = html;
 }
 
+// 3. Render Products (Main Logic)
 function drawProducts(){
     let container = document.getElementById("grid_panel");
     container.innerHTML = "";
     
-    let filtered = DB_ITEMS.filter(item => {
-        let catMatch = (activeCat === "For You" || item.cat === activeCat);
-        let subMatch = (activeSub === "" || item.sub === activeSub);
-        let searchMatch = item.name.toLowerCase().includes(searchTerm);
-        return catMatch && subMatch && searchMatch;
-    });
+    // Get Wishlist IDs
+    let wishIds = JSON.parse(localStorage.getItem("wishlist"));
 
-    if(filtered.length === 0){
-        container.innerHTML = "<p style='width:200%;text-align:center;padding:20px;color:#666'>No products found.</p>";
-        return;
+    let displayList = [];
+
+    if(isWishlistMode){
+        // Only show items in wishlist
+        displayList = DB_ITEMS.filter(item => wishIds.includes(item.id));
+        if(displayList.length === 0) container.innerHTML = "<div style='width:200%;text-align:center;padding:20px'>Your wishlist is empty 💔</div>";
+    } else {
+        // Normal Filter Logic
+        displayList = DB_ITEMS.filter(item => {
+            let catMatch = (activeCat === "For You" || item.cat === activeCat);
+            let subMatch = (activeSub === "" || item.sub === activeSub);
+            let searchMatch = item.name.toLowerCase().includes(searchTerm);
+            return catMatch && subMatch && searchMatch;
+        });
+        if(displayList.length === 0) container.innerHTML = "<div style='width:200%;text-align:center;padding:20px'>No products found.</div>";
     }
 
-    filtered.forEach(item => {
+    displayList.forEach(item => {
         let discount = Math.round((1 - item.price/item.cut)*100);
+        let isWished = wishIds.includes(item.id);
         
         container.innerHTML += `
         <div class="prod-card">
@@ -288,15 +295,99 @@ function drawProducts(){
                     <span class="off">(${discount}% OFF)</span>
                 </div>
                 <div class="btn-row">
-                    <button class="btn-wish">❤️</button>
-                    <button class="btn-buy" onclick="window.open('${item.link}')">BUY</button>
+                    <button class="btn-wish" onclick="toggleWish(${item.id})">
+                        ${isWished ? '❤️' : '🤍'}
+                    </button>
+                    <button class="btn-buy" onclick="trackBuy('${item.link}')">BUY</button>
                 </div>
             </div>
         </div>`;
     });
 }
 
+// --- REAL FEATURES LOGIC ---
+
+// ACCOUNT SYSTEM
+function handleAccount(){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(user){
+        if(confirm(`Logged in as: ${user.name}\nDo you want to logout?`)){
+            localStorage.removeItem("user");
+            document.getElementById("userTop").innerText = "Login";
+            alert("Logged out successfully.");
+        }
+    } else {
+        let name = prompt("Enter your Name for Login/Signup:");
+        if(!name) return;
+        let pass = prompt("Create/Enter Password:");
+        if(name && pass){
+            localStorage.setItem("user", JSON.stringify({name: name, pass: pass}));
+            document.getElementById("userTop").innerText = name;
+            alert("Welcome, " + name + "!");
+        }
+    }
+}
+
+// CHECK LOGIN ON LOAD
+let savedUser = JSON.parse(localStorage.getItem("user"));
+if(savedUser) document.getElementById("userTop").innerText = savedUser.name;
+
+// WISHLIST SYSTEM
+function toggleWish(id){
+    let w = JSON.parse(localStorage.getItem("wishlist"));
+    if(w.includes(id)){
+        w = w.filter(x => x !== id); // Remove
+    } else {
+        w.push(id); // Add
+    }
+    localStorage.setItem("wishlist", JSON.stringify(w));
+    drawProducts(); // Re-render to update hearts
+}
+
+function showWishlistPage(){
+    isWishlistMode = true;
+    document.getElementById("cat_panel").style.display = "none";
+    document.getElementById("sub_panel").style.display = "none";
+    drawProducts();
+}
+
+// ADMIN SYSTEM
+function handleAdminLogin(){
+    let u = prompt("Admin Mobile Number:");
+    let p = prompt("Admin Password:");
+    
+    if(u === "9343988416" && p === "1234"){
+        openAdminPanel();
+    } else {
+        alert("Wrong Credentials!");
+    }
+}
+
+function openAdminPanel(){
+    let stats = JSON.parse(localStorage.getItem("site_stats"));
+    let userCount = localStorage.getItem("user") ? 1 : 0; // Simple count for demo
+    
+    document.getElementById("adm_prod").innerText = DB_ITEMS.length;
+    document.getElementById("adm_cat").innerText = DB_CATS.length;
+    document.getElementById("adm_click").innerText = stats.clicks;
+    document.getElementById("adm_user").innerText = userCount + " (Active)";
+    
+    document.getElementById("adminModal").style.display = "flex";
+}
+
+// ANALYTICS TRACKER
+function trackBuy(link){
+    let s = JSON.parse(localStorage.getItem("site_stats"));
+    s.clicks++;
+    localStorage.setItem("site_stats", JSON.stringify(s));
+    window.open(link, '_blank');
+}
+
+// NAVIGATION
 function changeCat(name){
+    isWishlistMode = false;
+    document.getElementById("cat_panel").style.display = "flex";
+    document.getElementById("sub_panel").style.display = "flex";
     activeCat = name; activeSub = "";
     drawCategories(); drawSubcats(); drawProducts();
 }
@@ -305,22 +396,21 @@ function changeSub(name){
     drawSubcats(); drawProducts();
 }
 function runSearch(){
+    isWishlistMode = false;
     searchTerm = document.getElementById("searchInp").value.toLowerCase();
     drawProducts();
 }
 function resetHome(){
+    isWishlistMode = false;
+    document.getElementById("cat_panel").style.display = "flex";
+    document.getElementById("sub_panel").style.display = "flex";
     activeCat = "For You"; activeSub = ""; searchTerm = "";
     document.getElementById("searchInp").value = "";
     drawCategories(); drawSubcats(); drawProducts();
 }
-function donate(){
-    location.href = "upi://pay?pa=9343988416-2@ybl&pn=SmartBuy";
-}
 
-// --- INIT ---
-try {
-    drawCategories(); drawSubcats(); drawProducts();
-} catch(e) { console.log(e); }
+// INIT
+drawCategories(); drawSubcats(); drawProducts();
 </script>
 
 </body>
