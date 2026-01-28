@@ -9,43 +9,64 @@
 /* --- CSS RESET & COLORS --- */
 body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde;}
 
-/* HEADER */
+/* HEADER STYLING */
 header{
-    position:fixed; top:0; left:0; width:100%; height:60px; z-index:100;
+    position:fixed; top:0; left:0; width:100%; height:65px; z-index:100;
     background:#2209c2; padding:0 15px;
     display:flex; align-items:center; justify-content:space-between;
     box-shadow:0 2px 5px rgba(0,0,0,.2);
-    box-sizing: border-box; /* Fix for width issues */
+    box-sizing: border-box;
 }
-header img{height:35px; cursor:pointer}
-.brand-name{font-size:18px; font-weight:bold; color:#fff; letter-spacing:1px}
-#userTop{color:#fff; font-size:13px}
+
+/* LOGO CIRCLE STYLE */
+header img{
+    height:45px; width:45px; 
+    border-radius: 50%; /* Circle Logo */
+    object-fit: cover;
+    border: 2px solid #fff;
+    cursor:pointer;
+}
+
+/* BRAND NAME BIG LETTERS */
+.brand-name{
+    font-size:22px; /* Bada Font */
+    font-weight:900; 
+    color:#fff; 
+    letter-spacing:1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+#userTop{color:#fff; font-size:14px; font-weight: bold;}
 
 /* MAIN CONTAINER */
 .main{
-    padding-top:70px; 
+    padding-top:75px; /* Thoda space badhaya header ke liye */
     padding-bottom:100px; 
     width: 100%;
     overflow-x: hidden;
 }
 
-/* SEARCH BAR */
+/* SEARCH BAR FIX - GAP ADDED */
 .search-wrapper {
-    position: sticky; top: 60px; z-index: 90;
-    background: #fff; padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky; top: 65px; z-index: 90;
+    background: #fff; padding: 15px 10px; /* Padding badhaya */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 15px; /* Categories se doori (gap) */
 }
+
 .search-input {
-    width: 100%; padding: 12px;
-    border: 1px solid #ddd; background: #f0f0f0;
+    width: 100%; padding: 12px 15px;
+    border: 1px solid #ddd; background: #f5f5f5;
     border-radius: 30px; outline: none;
     font-size: 15px; box-sizing: border-box;
     color: #333;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* CATEGORIES */
 .cat-scroll {
-    display:flex; overflow-x:auto; background:#fff; padding:15px 10px;
+    display:flex; overflow-x:auto; background:#fff; padding:10px;
     border-bottom: 1px solid #eee;
     margin-bottom: 5px;
 }
@@ -68,10 +89,10 @@ header img{height:35px; cursor:pointer}
     margin-right:10px; font-size:13px; color: #333;
 }
 
-/* PRODUCT GRID - FIXED FOR MOBILE */
+/* PRODUCT GRID */
 #grid_panel {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 Columns strict */
+    grid-template-columns: 1fr 1fr; 
     gap: 10px;
     padding: 10px;
 }
@@ -137,10 +158,8 @@ header img{height:35px; cursor:pointer}
 <body>
 
 <header>
-    <div style="display:flex;align-items:center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
-        <div class="brand-name" style="margin-left:10px">SMARTBUY</div>
-    </div>
+    <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="alert('Admin Panel')">
+    <div class="brand-name">SMARTBUY.IND</div>
     <div id="userTop">Guest</div>
 </header>
 
@@ -175,7 +194,7 @@ header img{height:35px; cursor:pointer}
 </div>
 
 <script>
-// --- DATA VARIABLES (Renamed to avoid conflicts) ---
+// --- DATA ---
 const DB_CATS = [
     {name:"For You", img:"https://cdn-icons-png.flaticon.com/512/833/833314.png"},
     {name:"Fashion", img:"https://cdn-icons-png.flaticon.com/512/3050/3050253.png", sub:["Men","Women"]},
@@ -206,13 +225,12 @@ const DB_ITEMS = [
     }
 ];
 
-// --- STATE VARIABLES ---
+// --- STATE ---
 let activeCat = "For You";
 let activeSub = "";
 let searchTerm = "";
 
-// --- RENDER FUNCTIONS ---
-
+// --- FUNCTIONS ---
 function drawCategories(){
     let html = "";
     DB_CATS.forEach(c => {
@@ -278,51 +296,31 @@ function drawProducts(){
     });
 }
 
-// --- ACTIONS ---
-
 function changeCat(name){
-    activeCat = name;
-    activeSub = "";
-    drawCategories();
-    drawSubcats();
-    drawProducts();
+    activeCat = name; activeSub = "";
+    drawCategories(); drawSubcats(); drawProducts();
 }
-
 function changeSub(name){
     activeSub = name;
-    drawSubcats();
-    drawProducts();
+    drawSubcats(); drawProducts();
 }
-
 function runSearch(){
     searchTerm = document.getElementById("searchInp").value.toLowerCase();
     drawProducts();
 }
-
 function resetHome(){
-    activeCat = "For You";
-    activeSub = "";
-    searchTerm = "";
+    activeCat = "For You"; activeSub = ""; searchTerm = "";
     document.getElementById("searchInp").value = "";
-    drawCategories();
-    drawSubcats();
-    drawProducts();
+    drawCategories(); drawSubcats(); drawProducts();
 }
-
 function donate(){
     location.href = "upi://pay?pa=9343988416-2@ybl&pn=SmartBuy";
 }
 
-// --- INITIALIZE ---
-// Using Try-Catch to ensure it runs on mobile
+// --- INIT ---
 try {
-    drawCategories();
-    drawSubcats();
-    drawProducts();
-} catch(e) {
-    alert("Error: " + e); // This will tell us if there is a real error on the phone
-}
-
+    drawCategories(); drawSubcats(); drawProducts();
+} catch(e) { console.log(e); }
 </script>
 
 </body>
