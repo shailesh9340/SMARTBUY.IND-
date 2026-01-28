@@ -6,341 +6,323 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#0d0dde}
+/* --- CSS RESET & COLORS --- */
+body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde;}
 
 /* HEADER */
 header{
-position:fixed;top:0;width:100%;z-index:10;
-background:#2209c2;padding:10px;
-display:flex;align-items:center;justify-content:space-between;
-box-shadow:0 2px 5px rgba(0,0,0,.2)
+    position:fixed; top:0; left:0; width:100%; height:60px; z-index:100;
+    background:#2209c2; padding:0 15px;
+    display:flex; align-items:center; justify-content:space-between;
+    box-shadow:0 2px 5px rgba(0,0,0,.2);
+    box-sizing: border-box; /* Fix for width issues */
 }
-header img{height:35px;cursor:pointer}
-.brand-name{
-font-size:18px;font-weight:bold;color:#fff;letter-spacing:1px
-}
-#userTop{color:#fff;font-size:13px}
+header img{height:35px; cursor:pointer}
+.brand-name{font-size:18px; font-weight:bold; color:#fff; letter-spacing:1px}
+#userTop{color:#fff; font-size:13px}
 
-/* MAIN */
-.main{padding-top:70px;padding-bottom:150px}
+/* MAIN CONTAINER */
+.main{
+    padding-top:70px; 
+    padding-bottom:100px; 
+    width: 100%;
+    overflow-x: hidden;
+}
 
-/* SEARCH */
-.search-box {
-    padding: 10px;
-    background: #fff;
-    position: sticky;
-    top: 55px; 
-    z-index: 9;
+/* SEARCH BAR */
+.search-wrapper {
+    position: sticky; top: 60px; z-index: 90;
+    background: #fff; padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.search-box input {
-    width: 95%;
-    padding: 10px;
-    border: 2px solid #eee;
-    background: #f5f5f5;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-    display: block;
-    margin: 0 auto;
-}
-.search-box input:focus {
-    border-color: #2209c2;
-    background: #fff;
+.search-input {
+    width: 100%; padding: 12px;
+    border: 1px solid #ddd; background: #f0f0f0;
+    border-radius: 30px; outline: none;
+    font-size: 15px; box-sizing: border-box;
+    color: #333;
 }
 
 /* CATEGORIES */
-.categories{display:flex;overflow-x:auto;background:#fff;padding:10px;border-top:1px solid #eee}
-.cat{min-width:80px;text-align:center;margin-right:10px;cursor:pointer}
-.cat img{width:55px;height:55px;border-radius:50%;object-fit:cover}
-.cat p{font-size:11px;margin:5px 0 0}
+.cat-scroll {
+    display:flex; overflow-x:auto; background:#fff; padding:15px 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+.cat-item {
+    min-width:85px; text-align:center; margin-right:10px; 
+    cursor:pointer; display: flex; flex-direction: column; align-items: center;
+}
+.cat-item img {
+    width:60px; height:60px; border-radius:50%; object-fit:cover; border: 2px solid #eee;
+}
+.cat-item p {font-size:12px; margin:5px 0 0; color: #333;}
 
-.subcats{display:flex;overflow-x:auto;padding:5px;background:#fff}
-.subcats div{
-padding:6px 12px;background:#eee;border-radius:20px;
-margin-right:8px;font-size:12px;cursor:pointer;white-space:nowrap;
+/* SUBCATEGORIES */
+.sub-scroll {
+    display:flex; overflow-x:auto; padding:10px; background:#fff;
+    white-space: nowrap; margin-bottom: 10px;
 }
-
-/* PRODUCTS */
-.products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;padding:8px;
-}
-.card{
-background:#fff;border-radius:10px;overflow:hidden;
-box-shadow:0 2px 4px rgba(0,0,0,.1);
-display:flex;flex-direction:column;
-}
-.slider img{
-width:100%;height:180px;object-fit:cover;cursor:pointer
-}
-.card h4{font-size:13px;margin:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.price{color:green;font-weight:bold;margin-left:5px;font-size:14px}
-.cut{text-decoration:line-through;color:#888;font-size:11px}
-.off{color:red;font-size:11px;margin-left:5px}
-
-.actions{display:flex;padding:5px;margin-top:auto}
-.actions button{
-flex:1;margin:2px;border:none;padding:6px;
-border-radius:5px;font-size:12px;cursor:pointer
-}
-.buy{background:#ff5722;color:#fff}
-.wish{background:#eee}
-
-/* DONATE + INSTA */
-.extra-box{
-background:#fff;margin:10px;border-radius:12px;
-padding:15px;text-align:center;
-box-shadow:0 2px 5px rgba(0,0,0,.1)
-}
-.extra-box h3{margin:5px 0;color:#2209c2}
-.extra-box p{font-size:13px;color:#333}
-
-.donate-btn{
-background:linear-gradient(45deg,#ff5722,#ff9800);
-color:#fff;border:none;padding:10px 20px;
-border-radius:25px;font-size:14px;cursor:pointer
+.sub-btn {
+    padding:8px 15px; background:#eee; border-radius:20px;
+    margin-right:10px; font-size:13px; color: #333;
 }
 
-.insta-btn{
-display:flex;align-items:center;justify-content:center;
-gap:8px;background:#e1306c;color:#fff;
-padding:10px;border-radius:25px;
-text-decoration:none;font-weight:bold
+/* PRODUCT GRID - FIXED FOR MOBILE */
+#grid_panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 Columns strict */
+    gap: 10px;
+    padding: 10px;
 }
-.insta-btn img{height:20px}
 
-/* NAV */
-.nav{
-position:fixed;bottom:0;width:100%;
-background:#fff;display:flex;
-justify-content:space-around;
-padding:12px 0;
-box-shadow:0 -2px 5px rgba(0,0,0,.2)
+.prod-card {
+    background: #fff; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column;
 }
-.nav div{text-align:center;font-size:12px;font-weight:bold}
-.nav span{display:block;font-size:20px}
 
-/* FULLSCREEN */
-.fullscreen{
-position:fixed;inset:0;background:#000;
-display:none;align-items:center;justify-content:center;z-index:99
+.prod-img-box {
+    width: 100%; height: 180px; background: #ddd;
 }
-.fullscreen img{width:100%;max-height:100%;object-fit:contain}
+.prod-img-box img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+.info-box { padding: 8px; }
+.info-box h4 {
+    font-size: 13px; margin: 0 0 5px; color: #000;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.price-row { font-size: 14px; font-weight: bold; color: green; }
+.cut-price { text-decoration: line-through; color: #888; font-size: 11px; margin-left: 5px; }
+.off-tag { color: red; font-size: 11px; margin-left: 5px; }
+
+.btn-row {
+    display: flex; margin-top: auto; padding: 8px; gap: 5px;
+}
+.btn-row button {
+    flex: 1; border: none; padding: 8px; border-radius: 4px; font-weight: bold;
+}
+.btn-wish { background: #eee; color: #333; }
+.btn-buy { background: #ff5722; color: #fff; }
+
+/* FOOTER BOXES */
+.support-box {
+    background: #fff; margin: 15px; padding: 20px;
+    border-radius: 10px; text-align: center;
+}
+.donate-btn {
+    background: orange; color: white; border: none;
+    padding: 10px 20px; border-radius: 20px; font-weight: bold; margin-top: 10px;
+}
+.insta-link {
+    display: block; background: #e1306c; color: white;
+    padding: 10px; border-radius: 20px; text-decoration: none; margin-top: 10px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: #fff; border-top: 1px solid #ddd;
+    display: flex; justify-content: space-around; padding: 10px 0;
+    z-index: 100;
+}
+.nav-item { text-align: center; font-size: 12px; }
+.nav-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+
 </style>
 </head>
 
 <body>
 
 <header>
-<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="openAdmin()">
-<div class="brand-name">SMARTBUY.IND</div>
-<div id="userTop">Guest</div>
+    <div style="display:flex;align-items:center">
+        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+        <div class="brand-name" style="margin-left:10px">SMARTBUY</div>
+    </div>
+    <div id="userTop">Guest</div>
 </header>
 
 <div class="main">
 
-<div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="handleSearch()">
-</div>
+    <div class="search-wrapper">
+        <input type="text" class="search-input" id="searchInp" placeholder="Search products..." onkeyup="runSearch()">
+    </div>
 
-<div class="categories" id="categories"></div>
-<div class="subcats" id="subcats"></div>
-<div class="products" id="products"></div>
+    <div class="cat-scroll" id="cat_panel"></div>
+    <div class="sub-scroll" id="sub_panel"></div>
+    
+    <div id="grid_panel"></div>
 
-<div class="extra-box">
-<h3>💖 Support SmartBuy</h3>
-<p>Aapka chhota sa support hamare kaam ko aage badhata hai 🙏</p>
-<button class="donate-btn" onclick="donate()">Donate Now</button>
-</div>
+    <div class="support-box">
+        <h3 style="margin:0;color:#2209c2">💖 Support SmartBuy</h3>
+        <p>Help us grow with your support 🙏</p>
+        <button class="donate-btn" onclick="donate()">Donate Now</button>
+    </div>
 
-<div class="extra-box">
-<h3>📸 Follow on Instagram</h3>
-<a class="insta-btn" href="https://instagram.com/smartbuy.ind" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
-@smartbuy.ind
-</a>
-</div>
+    <div class="support-box">
+        <h3 style="margin:0">📸 Instagram</h3>
+        <a class="insta-link" href="#">@smartbuy.ind</a>
+    </div>
 
 </div>
 
-<div class="nav">
-<div onclick="goHome()"><span>🏠</span>Home</div>
-<div onclick="showWishlist()"><span>❤️</span>Wishlist</div>
-<div onclick="showAccount()"><span>👤</span>Account</div>
-</div>
-
-<div class="fullscreen" id="fullscreen" onclick="this.style.display='none'">
-<img id="fullImg">
+<div class="bottom-nav">
+    <div class="nav-item" onclick="resetHome()"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" onclick="alert('Wishlist')"><span class="nav-icon">❤️</span>Wishlist</div>
+    <div class="nav-item" onclick="alert('Account')"><span class="nav-icon">👤</span>Account</div>
 </div>
 
 <script>
-/* FIX: ELEMENTS DEFINED EXPLICITLY FOR MOBILE SUPPORT */
-const categoriesEl = document.getElementById("categories");
-const subcatsEl = document.getElementById("subcats");
-const productsEl = document.getElementById("products");
-const searchInput = document.getElementById("searchInput");
-const fullImg = document.getElementById("fullImg");
-const fullscreen = document.getElementById("fullscreen");
-
-/* USER */
-let user=JSON.parse(localStorage.getItem("user"))||null;
-if(user){document.getElementById("userTop").innerText=user.name}
-
-/* CATEGORIES */
-const cats=[
-{name:"For You",img:"https://i.ibb.co/NndQSBVw/3d-shopping-bag-with-percent-sign-isolated-render-realistic-gift-bag-sale-discount-or-clearance-conc.jpg"},
-{name:"Fashion",img:"https://i.ibb.co/VYGS3DQb/51d9ea827ad3d9f0ca52103c47351dd8.jpg",sub:["Men","Women"]},
-{name:"Bags",img:"https://i.ibb.co/3mPPftR8/5dbba7855aeefe5508334ec802ba21bfa71b6cf1.jpg"},
-{name:"Electronics",img:"https://i.ibb.co/4ZJ9SSW7/screens-isometric-electronic-devices-23-2147647441.jpg"}
+// --- DATA VARIABLES (Renamed to avoid conflicts) ---
+const DB_CATS = [
+    {name:"For You", img:"https://cdn-icons-png.flaticon.com/512/833/833314.png"},
+    {name:"Fashion", img:"https://cdn-icons-png.flaticon.com/512/3050/3050253.png", sub:["Men","Women"]},
+    {name:"Bags", img:"https://cdn-icons-png.flaticon.com/512/2838/2838838.png"},
+    {name:"Electronics", img:"https://cdn-icons-png.flaticon.com/512/3659/3659898.png"}
 ];
 
-/* PRODUCTS */
-const productData=[
-{
-name:"Premium Backpack Encrypted",cat:"Bags",sub:"",
-price:322,cut:999,
-link:"https://bitli.in/JZizUxb",
-imgs:[
-"https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/d0LnRpXs/Screenshot-2026-01-28-09-17-19-979-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
-]
-},
-{
-name:"MEN Full sleeve striped sweatshirt",cat:"Fashion",sub:"Men",
-price:299,cut:1499,
-link:"https://fktr.in/trid8uL",
-imgs:[
-"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/LdSbDw4C/Screenshot-2026-01-28-23-28-28-456-com-flipkart-android-edit.jpg"
-]
-},
-{
-name:"Women Floral Kurti",cat:"Fashion",sub:"Women",
-price:253,cut:1999,
-link:"https://bitli.in/mYd26le",
-imgs:[
-"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/svt2y75W/Screenshot-2026-01-28-20-43-22-071-com-flipkart-shopsy-edit.jpg"
-]
-},
-{
-name:"Men Regular Fit Trousers",cat:"Fashion",sub:"Men",
-price:262,cut:999,
-link:"https://bitli.in/w8hSXkv",
-imgs:[
-"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/zWcpyJSk/Screenshot-2026-01-28-20-51-44-808-com-flipkart-shopsy-edit.jpg"
-]
-}
+const DB_ITEMS = [
+    {
+        name:"Premium Backpack Encrypted", cat:"Bags", sub:"",
+        price:322, cut:999, link:"https://bitli.in/JZizUxb",
+        img:"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
+    },
+    {
+        name:"MEN Full sleeve sweatshirt", cat:"Fashion", sub:"Men",
+        price:299, cut:1499, link:"https://fktr.in/trid8uL",
+        img:"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg"
+    },
+    {
+        name:"Women Floral Kurti", cat:"Fashion", sub:"Women",
+        price:253, cut:1999, link:"https://bitli.in/mYd26le",
+        img:"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg"
+    },
+    {
+        name:"Men Regular Fit Trousers", cat:"Fashion", sub:"Men",
+        price:262, cut:999, link:"https://bitli.in/w8hSXkv",
+        img:"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg"
+    }
 ];
 
-let curCat="For You", curSub="", searchQuery="";
+// --- STATE VARIABLES ---
+let activeCat = "For You";
+let activeSub = "";
+let searchTerm = "";
 
-function renderCats(){
-    categoriesEl.innerHTML="";
-    cats.forEach(x=>{
-        categoriesEl.innerHTML += `<div class="cat" onclick="setCat('${x.name}')">
-        <img src="${x.img}"><p>${x.name}</p></div>`;
+// --- RENDER FUNCTIONS ---
+
+function drawCategories(){
+    let html = "";
+    DB_CATS.forEach(c => {
+        html += `
+        <div class="cat-item" onclick="changeCat('${c.name}')">
+            <img src="${c.img}" style="border-color:${activeCat===c.name?'blue':'#eee'}">
+            <p style="font-weight:${activeCat===c.name?'bold':'normal'}">${c.name}</p>
+        </div>`;
     });
+    document.getElementById("cat_panel").innerHTML = html;
 }
 
-function renderSub(){
-    subcatsEl.innerHTML="";
-    let f=cats.find(x=>x.name==curCat);
-    if(f && f.sub){
-        f.sub.forEach(x=>{
-            subcatsEl.innerHTML += `<div onclick="setSub('${x}')">${x}</div>`;
+function drawSubcats(){
+    let html = "";
+    let found = DB_CATS.find(c => c.name === activeCat);
+    if(found && found.sub){
+        found.sub.forEach(s => {
+            let color = (activeSub === s) ? "#2209c2" : "#eee";
+            let text = (activeSub === s) ? "#fff" : "#333";
+            html += `<div class="sub-btn" style="background:${color};color:${text}" onclick="changeSub('${s}')">${s}</div>`;
         });
     }
+    document.getElementById("sub_panel").innerHTML = html;
 }
 
-function renderProd(){
-    productsEl.innerHTML="";
-    productData.filter(x=>{
-        let matchCat = (curCat=="For You"||x.cat==curCat) && (curSub==""||x.sub==curSub);
-        let matchSearch = x.name.toLowerCase().includes(searchQuery);
-        return matchCat && matchSearch;
-    }).forEach((x,i)=>{
-        let off=Math.round((1-x.price/x.cut)*100);
-        productsEl.innerHTML += `
-        <div class="card">
-        <div class="slider">
-        <img src="${x.imgs[0]}" onclick="openFull('${x.imgs[0]}')">
-        </div>
-        <h4>${x.name}</h4>
-        <div>
-        <span class="price">₹${x.price}</span>
-        <span class="cut">₹${x.cut}</span>
-        <span class="off">${off}% OFF</span>
-        </div>
-        <div class="actions">
-        <button class="wish" onclick="addWish(${i})">❤️</button>
-        <button class="buy" onclick="window.open('${x.link}','_blank')">Buy</button>
-        </div>
+function drawProducts(){
+    let container = document.getElementById("grid_panel");
+    container.innerHTML = "";
+    
+    let filtered = DB_ITEMS.filter(item => {
+        let catMatch = (activeCat === "For You" || item.cat === activeCat);
+        let subMatch = (activeSub === "" || item.sub === activeSub);
+        let searchMatch = item.name.toLowerCase().includes(searchTerm);
+        return catMatch && subMatch && searchMatch;
+    });
+
+    if(filtered.length === 0){
+        container.innerHTML = "<p style='width:200%;text-align:center;padding:20px;color:#666'>No products found.</p>";
+        return;
+    }
+
+    filtered.forEach(item => {
+        let discount = Math.round((1 - item.price/item.cut)*100);
+        
+        container.innerHTML += `
+        <div class="prod-card">
+            <div class="prod-img-box">
+                <img src="${item.img}" onclick="window.open('${item.link}')">
+            </div>
+            <div class="info-box">
+                <h4>${item.name}</h4>
+                <div>
+                    <span class="price">₹${item.price}</span>
+                    <span class="cut">₹${item.cut}</span>
+                    <span class="off">(${discount}% OFF)</span>
+                </div>
+                <div class="btn-row">
+                    <button class="btn-wish">❤️</button>
+                    <button class="btn-buy" onclick="window.open('${item.link}')">BUY</button>
+                </div>
+            </div>
         </div>`;
     });
 }
 
-function setCat(x){curCat=x;curSub="";renderSub();renderProd();}
-function setSub(x){curSub=x;renderProd();}
-function goHome(){
-    curCat="For You"; curSub=""; searchQuery=""; 
-    searchInput.value=""; 
-    renderSub(); renderProd();
-}
-function handleSearch(){
-    searchQuery=searchInput.value.toLowerCase(); 
-    renderProd();
-}
-function openFull(i){
-    fullImg.src=i;
-    fullscreen.style.display='flex';
+// --- ACTIONS ---
+
+function changeCat(name){
+    activeCat = name;
+    activeSub = "";
+    drawCategories();
+    drawSubcats();
+    drawProducts();
 }
 
-/* WISHLIST */
-function addWish(i){
-    let w=JSON.parse(localStorage.getItem("wish"))||[];
-    w.push(productData[i]);
-    localStorage.setItem("wish",JSON.stringify(w));
-    alert("Added to Wishlist ❤️");
-}
-function showWishlist(){
-    let w=JSON.parse(localStorage.getItem("wish"))||[];
-    if(w.length==0){alert("Wishlist is empty"); return;}
-    alert("Wishlist Items:\n"+w.map(x=>x.name).join("\n"));
+function changeSub(name){
+    activeSub = name;
+    drawSubcats();
+    drawProducts();
 }
 
-/* ACCOUNT */
-function showAccount(){
-    let n=prompt("Enter Name");
-    let p=prompt("Enter Phone");
-    if(n&&p){
-        localStorage.setItem("user",JSON.stringify({name:n,phone:p}));
-        document.getElementById("userTop").innerText=n;
-        alert("Account saved!");
-    }
+function runSearch(){
+    searchTerm = document.getElementById("searchInp").value.toLowerCase();
+    drawProducts();
 }
 
-/* ADMIN */
-function openAdmin(){
-    let u=prompt("Username");
-    let p=prompt("Password");
-    if(u=="9343988416" && p=="1234"){
-        alert("Admin Analytics\nProducts:"+productData.length+"\nCategories:"+cats.length);
-    }else if(u) alert("Invalid credentials");
+function resetHome(){
+    activeCat = "For You";
+    activeSub = "";
+    searchTerm = "";
+    document.getElementById("searchInp").value = "";
+    drawCategories();
+    drawSubcats();
+    drawProducts();
 }
 
-/* DONATE */
 function donate(){
-    location.href="upi://pay?pa=9343988416-2@ybl&pn=SmartBuy%20Foundation";
+    location.href = "upi://pay?pa=9343988416-2@ybl&pn=SmartBuy";
 }
 
-/* INIT */
-renderCats();renderSub();renderProd();
+// --- INITIALIZE ---
+// Using Try-Catch to ensure it runs on mobile
+try {
+    drawCategories();
+    drawSubcats();
+    drawProducts();
+} catch(e) {
+    alert("Error: " + e); // This will tell us if there is a real error on the phone
+}
+
 </script>
 
 </body>
