@@ -5,35 +5,43 @@
 <title>SMARTBUY.IND</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{margin:0;font-family:Arial;background:#0d0dde}
+<style>s
+body{margin:0;font-family:Arial;background:#cac7a5}
 
 /* HEADER */
 header{
 position:fixed;top:0;width:100%;height:65px;z-index:10;
 background:#2209c2;padding:0 15px;
 display:flex;align-items:center;justify-content:space-between;
-box-shadow:0 2px 5px rgba(0,0,0,.2)
 }
-header img{height:45px;border-radius:50%;border:2px solid #fff;cursor:pointer}
+header img{height:45px;border-radius:50%;border:2px solid #fff}
 .brand-name{color:#fff;font-size:20px;font-weight:900}
-#userTop{color:#fff;font-weight:bold}
+#userTop{color:#fff;font-weight:bold;cursor:pointer;margin-right:25px}
 
 /* MAIN */
 .main{padding-top:70px;padding-bottom:120px}
 
 /* SEARCH */
 .search-wrapper{padding:10px}
-.search-input{
-width:100%;padding:12px;border:none;border-radius:30px;
-font-size:15px
+
+.search-input {
+    width: 90%;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow effect */
+    outline: none;
+    transition: box-shadow 0.3s ease;
 }
 
+.search-input:focus {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Focus pe shadow thoda strong */
+}
+
+
 /* CATEGORY */
-.cat-scroll{display:flex;overflow-x:auto;background:#fff;padding:10px;margin:0 10px;border-radius:10px}
+.cat-scroll{display:flex;overflow-x:auto;background:#f2ff00;padding:10px;margin:0 10px;border-radius:10px}
 .cat-item{min-width:85px;text-align:center;margin-right:10px}
-.cat-item img{width:60px;height:60px;border-radius:50%}
-.cat-item p{font-size:12px}
 
 /* SUB */
 .sub-scroll{display:flex;overflow-x:auto;padding:10px;margin:0 10px}
@@ -41,200 +49,327 @@ font-size:15px
 
 /* PRODUCTS */
 #grid_panel{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;padding:10px
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    padding:10px;
 }
-.prod-card{background:#fff;border-radius:10px;overflow:hidden}
-.prod-img-box{height:180px}
-.prod-img-box img{width:100%;height:100%;object-fit:cover}
-.info-box{padding:8px}
+
+.prod-card{
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    position:relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Product card shadow */
+    transition: box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.prod-card:hover{
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* Hover pe shadow strong */
+}
+
+.prod-img-box{
+    height:180px;
+    position:relative;
+}
+
+
+/* SLIDER */
+.slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
+.slider img{min-width:100%;height:180px;object-fit:cover;scroll-snap-align:start;cursor:pointer}
+
+/* SLIDER ARROWS */
+.arrow{
+position:absolute;top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,0.5);
+color:#fff;width:30px;height:30px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:18px;cursor:pointer;z-index:5;user-select:none;
+}
+.arrow.left{left:5px}
+.arrow.right{right:5px}
+
+/* INFO */
+.info-box{padding:15px}
 .price{color:green;font-weight:bold}
-.cut{text-decoration:line-through;color:#888;font-size:12px}
+.cut{text-decoration:line-through;color:#f40e0e;font-size:12px}
 .btn-row{display:flex;gap:5px}
-.btn-row button{flex:1;border:none;padding:8px}
+.btn-row button{
+flex:1;border:none;padding:8px;
+background:#2209c2;color:#fff;border-radius:5px
+}
 
 /* NAV */
 .bottom-nav{
-position:fixed;bottom:0;width:100%;
-background:#fff;display:flex;justify-content:space-around;
-padding:12px 0
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    background: #fff;
 }
+
+/* Bottom nav buttons common style */
+.bottom-nav div {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    margin: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Home button */
+.bottom-nav div:nth-child(1) {
+    border: 2px solid #2209c2;
+    box-shadow: 0 4px 8px rgba(34,9,194,0.3);
+}
+
+/* Wishlist button */
+.bottom-nav div:nth-child(2) {
+    border: 2px solid #e91e63;
+    box-shadow: 0 4px 8px rgba(233,30,99,0.3);
+}
+
+/* Account button */
+.bottom-nav div:nth-child(3) {
+    border: 2px solid #009688;
+    box-shadow: 0 4px 8px rgba(0,150,136,0.3);
+}
+
+/* Tap / active effect */
+.bottom-nav div:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+
+/* ACCOUNT / LOGIN */
+#loginPage, #accountPage{display:none;padding:80px 20px;text-align:center;background:#0d0dde;color:#000}
+#loginPage input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc}
+#loginPage button{width:100%;padding:12px;background:#2209c2;color:#fff;border:none;border-radius:8px}
+
+/* FULLSCREEN IMAGE VIEWER */
+#imgViewer{
+position:fixed;inset:0;background:#0c0303;display:none;z-index:100;
+}
+#imgViewer .slider img{height:100vh;object-fit:contain}
+#closeViewer{
+position:absolute;top:10px;right:15px;color:#fff;font-size:22px;z-index:101;cursor:pointer;
+}
+#imgViewer .arrow{top:50%;}
 </style>
 </head>
-
 <body>
 
 <header>
-<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="handleAdminLogin()">
-<div class="brand-name">SMARTBUY.IND</div>
-<div id="userTop" onclick="handleAccount()">Login</div>
+<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png">
+<div class="brand-name">🌏SMARTBUY.IND</div>
+<div id="userTop" onclick="openAccount()">Login</div>
 </header>
 
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+<h2>Customer Login</h2>
+<input id="custName" placeholder="Enter your name">
+<button onclick="doLogin()">Login / Register</button>
+</div>
+
+<!-- MAIN CONTENT -->
 <div class="main">
 <div class="search-wrapper">
 <input class="search-input" id="searchInp" placeholder="Search products..." onkeyup="runSearch()">
 </div>
-
 <div class="cat-scroll" id="cat_panel"></div>
 <div class="sub-scroll" id="sub_panel"></div>
 <div id="grid_panel"></div>
 </div>
 
+<!-- ACCOUNT PAGE -->
+<div id="accountPage">
+<h3 id="accName"></h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px">
+<button onclick="donate()">🎁 Donation</button>
+<button onclick="showWishlist()">🛒 Wishlist</button>
+<button onclick="openInsta()">📷 Instagram</button>
+<button onclick="openTelegram()">➣ Telegram</button>
+<button onclick="openHelp()">🎧 Help Center</button>
+</div>
+<br>
+<button onclick="logout()" style="width:100%;padding:12px;background:#f00;color:#fff;border:none;border-radius:10px">Logout</button>
+</div>
+
+<!-- FULLSCREEN IMAGE VIEWER -->
+<div id="imgViewer" style="display:none;position:fixed;inset:0;background:#000;z-index:100;">
+  <div id="closeViewer" onclick="closeViewer()" 
+       style="position:absolute;top:10px;right:15px;color:#fff;font-size:22px;z-index:101;cursor:pointer;">✖</div>
+  <div class="slider" id="viewerSlider" style="height:100vh;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;"></div>
+  <div class="arrow left" onclick="slideViewer(-1)">‹</div>
+  <div class="arrow right" onclick="slideViewer(1)">›</div>
+</div>
+<!--BOTTOM NAVIGATION-->
+
 <div class="bottom-nav">
 <div onclick="resetHome()">🏠 Home</div>
-<div onclick="showWishlistPage()">❤️ Wishlist</div>
-<div onclick="handleAccount()">👤 Account</div>
+<div onclick="showWishlist()">🛒 Wishlist</div>
+<div onclick="openAccount()">👤 Account</div>
 </div>
 
 <script>
 /* DATABASE */
 const DB_CATS=[
 {name:"For You"},
-{name:"Fashion",sub:["Men","Women"]},
+{name:"Fashion",sub:["Men","Women","kids","Footwear","Mens Accessories","Womens Accessories","Sportswear"]},
+{name:"Sunglasses"},
 {name:"Bags"},
-{name:"Electronics"}
+{name:"Electronics",sub:["Accessories","Watches","Desktops"]}
 ];
 
 const DB_ITEMS=[
-{
-id:1,
-name:"Premium Backpack Encrypted",
-cat:"Bags",
-price:322,cut:999,
-link:"https://bitli.in/JZizUxb",
-imgs:[
-"https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
+{ id:1,name:"Premium Backpack Encrypted",cat:"Bags",price:322,cut:999,link:"https://bitli.in/JZizUxb",
+imgs:["https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
 "https://i.ibb.co/d0LnRpXs/Screenshot-2026-01-28-09-17-19-979-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
-]
-},
-{
-id:2,
-name:"MEN Full sleeve sweatshirt",
-cat:"Fashion",sub:"Men",
-price:299,cut:1499,
-link:"https://fktr.in/trid8uL",
-imgs:[
-"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg"
-]
-},
-{
-id:3,
-name:"Women Floral Kurti",
-cat:"Fashion",sub:"Women",
-price:253,cut:1999,
-link:"https://bitli.in/mYd26le",
-imgs:[
-"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg"
-]
-},
-{
-id:4,
-name:"Men Regular Fit Trousers",
-cat:"Fashion",sub:"Men",
-price:262,cut:999,
-link:"https://bitli.in/w8hSXkv",
-imgs:[
-"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg"
-]
-},
-{
-id:5,
-name:"DZAB Core i7 Desktop",
-cat:"Electronics",
-price:17406,cut:39999,
-link:"https://fktr.in/IJIKC1X",
-imgs:[
-"https://i.ibb.co/Z61v0mqf/Screenshot-2026-01-29-05-29-44-201-com-flipkart-android-edit.jpg"
-]
-}
+"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"]},
+{ id:2,name:"MEN Full sleeve sweatshirt",cat:"Fashion",sub:"Men",price:299,cut:1499,link:"https://fktr.in/trid8uL",
+imgs:["https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
+"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg"]},
+{ id:3,name:"Women Floral Kurti",cat:"Fashion",sub:"Women",price:253,cut:1999,link:"https://bitli.in/mYd26le",
+imgs:["https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
+"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg"]},
+{ id:4,name:"Men Regular Fit Trousers",cat:"Fashion",sub:"Men",price:262,cut:999,link:"https://bitli.in/w8hSXkv",
+imgs:["https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-android-edit.jpg"]},
+{ id:5,name:"DZAB Core i7 Desktop",cat:"Electronics",price:17406,cut:39999,link:"https://fktr.in/IJIKC1X",
+imgs:["https://i.ibb.co/Z61v0mqf/Screenshot-2026-01-29-05-29-44-201-com-flipkart-android-edit.jpg"]}
 ];
 
-let activeCat="For You",activeSub="",searchTerm="",isWishlistMode=false;
+let activeCat="For You",activeSub="",searchTerm="";
+let wishlist=JSON.parse(localStorage.getItem("wishlist")||"[]");
 
 /* RENDER */
 function drawCategories(){
 cat_panel.innerHTML="";
-DB_CATS.forEach(c=>{
-cat_panel.innerHTML+=`<div class="cat-item" onclick="changeCat('${c.name}')">
-<p>${c.name}</p></div>`;
-});
+DB_CATS.forEach(c=>{cat_panel.innerHTML+=`<div class="cat-item" onclick="changeCat('${c.name}')">${c.name}</div>`;});
 }
-
 function drawSubcats(){
 sub_panel.innerHTML="";
 let f=DB_CATS.find(x=>x.name===activeCat);
-if(f&&f.sub){
-f.sub.forEach(s=>{
-sub_panel.innerHTML+=`<div class="sub-btn" onclick="changeSub('${s}')">${s}</div>`;
-});
-}
+if(f&&f.sub){f.sub.forEach(s=>{sub_panel.innerHTML+=`<div class="sub-btn" onclick="changeSub('${s}')">${s}</div>`;});}
+
+}function openViewer(imgs){
+    viewerSlider.innerHTML = imgs.map(i=>`<img src="${i}" style="min-width:100%;height:100vh;object-fit:cover;scroll-snap-align:start;">`).join("");
+    imgViewer.style.display = "block";
 }
 
-function drawProducts(){
+function closeViewer(){
+    imgViewer.style.display = "none";
+}
+
+let currentIndex = 0;
+function slideViewer(dir){
+    const imgs = viewerSlider.children;
+    if(imgs.length===0) return;
+    currentIndex += dir;
+    if(currentIndex < 0) currentIndex = imgs.length - 1;
+    if(currentIndex >= imgs.length) currentIndex = 0;
+    imgs[currentIndex].scrollIntoView({behavior:"smooth"});
+}
+
+function drawProducts(list=DB_ITEMS){
 grid_panel.innerHTML="";
-DB_ITEMS.filter(p=>{
+list.filter(p=>{
 return (activeCat==="For You"||p.cat===activeCat)
 &&(activeSub===""||p.sub===activeSub)
 &&p.name.toLowerCase().includes(searchTerm);
-}).forEach((p,i)=>{
+}).forEach(p=>{
 grid_panel.innerHTML+=`
 <div class="prod-card">
 <div class="prod-img-box">
-<img id="img${i}" src="${p.imgs[0]}" onclick="window.open('${p.link}')">
+<div class="slider" id="slider_${p.id}">
+${p.imgs.map(img=>`<img src="${img}" onclick='openViewer(${JSON.stringify(p.imgs)})'>`).join("")}
+</div>
+<div class="arrow left" onclick="slideImg(${p.id},-1)">‹</div>
+<div class="arrow right" onclick="slideImg(${p.id},1)">›</div>
 </div>
 <div class="info-box">
 <b>${p.name}</b><br>
 <span class="price">₹${p.price}</span>
 <span class="cut">₹${p.cut}</span>
 <div class="btn-row">
+<button onclick="addWishlist(${p.id})">🛒</button>
 <button onclick="window.open('${p.link}')">BUY</button>
 </div>
 </div>
 </div>`;
-autoSlide(p.imgs,i);
 });
 }
 
-/* AUTO SLIDER */
-function autoSlide(imgs,i){
-let idx=0;
-setInterval(()=>{
-idx=(idx+1)%imgs.length;
-let im=document.getElementById("img"+i);
-if(im) im.src=imgs[idx];
-},3000);
+/* IMAGE FULLSCREEN */
+let currentViewerIndex=0, currentViewerImgs=[];
+function openViewer(imgs){
+currentViewerImgs=imgs;
+currentViewerIndex=0;
+viewerSlider.innerHTML=`<img src="${imgs[currentViewerIndex]}">`;
+imgViewer.style.display="block";
+}
+function closeViewer(){imgViewer.style.display="none";}
+function slideViewer(dir){
+currentViewerIndex+=dir;
+if(currentViewerIndex<0) currentViewerIndex=currentViewerImgs.length-1;
+if(currentViewerIndex>=currentViewerImgs.length) currentViewerIndex=0;
+viewerSlider.innerHTML=`<img src="${currentViewerImgs[currentViewerIndex]}">`;
 }
 
-/* NAV */
-function changeCat(c){activeCat=c;activeSub="";drawSubcats();drawProducts()}
-function changeSub(s){activeSub=s;drawProducts()}
-function runSearch(){searchTerm=searchInp.value.toLowerCase();drawProducts()}
-function resetHome(){activeCat="For You";activeSub="";searchInp.value="";drawSubcats();drawProducts()}
-function showWishlistPage(){alert("Wishlist already working")}
+/* NAVIGATION */
+function changeCat(c){activeCat=c;activeSub="";drawSubcats();drawProducts();}
+function changeSub(s){activeSub=s;drawProducts();}
+function runSearch(){searchTerm=searchInp.value.toLowerCase();drawProducts();}
+function resetHome(){accountPageEl.style.display="none";loginPageEl.style.display="none";mainPage.style.display="block";drawProducts();}
+function addWishlist(id){if(!wishlist.includes(id)){wishlist.push(id);localStorage.setItem("wishlist",JSON.stringify(wishlist));alert("Saved to wishlist");}}
+function showWishlist(){drawProducts(DB_ITEMS.filter(p=>wishlist.includes(p.id)));}
 
-/* ACCOUNT */
-function handleAccount(){
-let u=localStorage.getItem("user");
-if(u){alert("Logged in")}
-else{
-let n=prompt("Enter name");if(n){localStorage.setItem("user",n);userTop.innerText=n}
+/* ACCOUNT / LOGIN */
+const accountPageEl = document.getElementById("accountPage");
+const loginPageEl = document.getElementById("loginPage");
+const accName = document.getElementById("accName");
+const userTop = document.getElementById("userTop");
+const mainPage = document.querySelector(".main");
+const custName = document.getElementById("custName");
+
+function openAccount(){
+let user = localStorage.getItem("customer_name");
+mainPage.style.display="none";
+accountPageEl.style.display="none";
+loginPageEl.style.display="none";
+if(user){accountPageEl.style.display="block";accName.innerText="Hello, "+user;userTop.innerText=user;}
+else{loginPageEl.style.display="block";}
 }
+function doLogin(){
+let name = custName.value.trim(); if(name===""){alert("Enter name");return;}
+localStorage.setItem("customer_name",name);custName.value="";openAccount();
+}
+function logout(){
+localStorage.removeItem("customer_name");
+userTop.innerText="Login";accountPageEl.style.display="none";loginPageEl.style.display="none";mainPage.style.display="block";
+}
+window.onload=()=>{let u=localStorage.getItem("customer_name");if(u) userTop.innerText=u;}
+
+/* ACCOUNT BUTTON ACTIONS */
+function donate(){window.location.href="upi://pay?pa=9343988416@jio&pn=Smartbuy Foundation";}
+function openInsta(){window.open("https://instagram.com/smart_buy.ind");}
+function openTelegram(){window.open("https://t.me/smartbuyind");}
+function openHelp(){window.location.href="mailto:shaileshkumarchauhan9340@gmail.com";}
+
+/* SLIDER SCROLL */
+function slideImg(id,dir){
+let s=document.getElementById("slider_"+id);
+let w=s.clientWidth;
+s.scrollBy({left:dir*w,behavior:"smooth"});
 }
 
-/* ADMIN */
-function handleAdminLogin(){
-let u=prompt("Admin ID");let p=prompt("Password");
-if(u==="9343988416"&&p==="1234") alert("Admin Login OK");
-}
-
-/* STABILITY FIX */
-document.addEventListener("visibilitychange",()=>{if(!document.hidden){drawProducts()}});
-window.addEventListener("pageshow",()=>drawProducts());
-
+/* INITIAL DRAW */
 drawCategories();drawSubcats();drawProducts();
 </script>
 
