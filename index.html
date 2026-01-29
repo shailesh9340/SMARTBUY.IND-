@@ -547,6 +547,22 @@ function resetHome(){
 
 // INIT
 drawCategories(); drawSubcats(); drawProducts();
+
+     /* 🔁 FIX: Page resume hone par products wapas lao */
+document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+        renderCats();
+        renderSub();
+        renderProd();
+    }
+});
+
+/* 🔁 FIX: Page reload / cache restore */
+window.addEventListener("pageshow", function () {
+    renderCats();
+    renderSub();
+    renderProd();
+});
 </script>
 
 </body>
@@ -557,4 +573,5 @@ drawCategories(); drawSubcats(); drawProducts();
   <h1>Welcome to SMARTBUY.IND</h1>
 </div>
 </html>
+
 
