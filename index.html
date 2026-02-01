@@ -5,10 +5,7 @@
 <title>SMARTBUY.IND</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2209c2">
-    
-<style>
+<style>s
 body{margin:0;font-family:Arial;background:#cac7a5}
 
 /* HEADER */
@@ -225,7 +222,7 @@ position:absolute;top:10px;right:15px;color:#fff;font-size:22px;z-index:101;curs
 /* DATABASE */
 const DB_CATS=[
 {name:"For You"},
-{name:"Fashion",sub:["Men","Women","kids","Footwear","Mens Accessories","Womens Accessories","Sportswear"]},
+{name:"Fashion",sub:["Men","Women","kids","Mens Footwear","Womens Footwear","Mens Accessories","Womens Accessories","Sportswear"]},
 {name:"Sunglasses"},
 {name:"Bags"},
 {name:"Electronics",sub:["Accessories","Watches","Desktops"]}
@@ -248,8 +245,21 @@ imgs:["https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart
 imgs:["https://i.ibb.co/DD7xqdDg/Screenshot-2026-01-30-01-40-41-023-com-flipkart-android-edit.jpg",
       "https://i.ibb.co/gb0HtCVp/Screenshot-2026-01-30-01-41-11-619-com-flipkart-android-edit.jpg",
       "https://i.ibb.co/r2yWQBVY/Screenshot-2026-01-30-01-41-45-351-com-flipkart-android-edit.jpg"]},
+{ id:6,name:"REDTAPE Black & white Lifestyle Colourblock sneakers For men",cat:"Fashion",sub:"Mens Footwear",price:1133,cut:6299,link:"https://fktr.in/RAzpohc",
+imgs:["https://i.ibb.co/r2ng1690/Screenshot-2026-01-31-19-50-24-989-com-flipkart-android-edit.jpg",
+      "https://i.ibb.co/twHD626D/Screenshot-2026-01-31-19-51-16-448-com-flipkart-android-edit.jpg",
+      "https://i.ibb.co/cKwSM1n4/Screenshot-2026-01-31-19-51-42-457-com-flipkart-android-edit.jpg"]},
+{ id:7,name:"Women latest design juti sandal for women flats sandal",cat:"Fashion",sub:"Womens Footwear",price:211,cut:999,link:"https://fktr.in/jKEw8ci",
+imgs:["https://i.ibb.co/ymkyjHg4/Screenshot-2026-01-31-20-45-22-254-com-flipkart-android-edit.jpg",
+      "https://i.ibb.co/8DQd56JJ/Screenshot-2026-01-31-20-45-35-190-com-flipkart-android-edit.jpg",
+      "https://i.ibb.co/C3d9F9yf/Screenshot-2026-01-31-20-49-59-603-com-flipkart-android-edit.jpg"]},
+{ id:8,name:"UV protection rectangular sunglasses for men and women",cat:"Sunglasses",price:169,cut:1640,link:"https://fktr.in/WuDnz8I",
+imgs:["https://i.ibb.co/HL7Bk6Hn/Screenshot-2026-01-31-21-13-30-324-com-flipkart-android-edit.jpg", 
+      "https://i.ibb.co/ztMRjcD/Screenshot-2026-01-31-21-13-45-803-com-flipkart-android-edit.jpg", 
+      "https://i.ibb.co/Cpw6RwTZ/Screenshot-2026-01-31-21-14-31-061-com-flipkart-android-edit.jpg"]}
 ];
 
+/* ELEMENTS */
 let activeCat="For You",activeSub="",searchTerm="";
 let wishlist=JSON.parse(localStorage.getItem("wishlist")||"[]");
 
@@ -380,4 +390,3 @@ drawCategories();drawSubcats();drawProducts();
 
 </body>
 </html>
-
