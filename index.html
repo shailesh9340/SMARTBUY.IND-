@@ -1,392 +1,666 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SMARTBUY.IND</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>s
-body{margin:0;font-family:Arial;background:#cac7a5}
-
-/* HEADER */
-header{
-position:fixed;top:0;width:100%;height:65px;z-index:10;
-background:#2209c2;padding:0 15px;
-display:flex;align-items:center;justify-content:space-between;
-}
-header img{height:45px;border-radius:50%;border:2px solid #fff}
-.brand-name{color:#fff;font-size:20px;font-weight:900}
-#userTop{color:#fff;font-weight:bold;cursor:pointer;margin-right:25px}
-
-/* MAIN */
-.main{padding-top:70px;padding-bottom:120px}
-
-/* SEARCH */
-.search-wrapper{padding:10px}
-
-.search-input {
-    width: 90%;
-    padding: 12px;
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow effect */
-    outline: none;
-    transition: box-shadow 0.3s ease;
-}
-
-.search-input:focus {
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Focus pe shadow thoda strong */
-}
-
-
-/* CATEGORY */
-.cat-scroll{display:flex;overflow-x:auto;background:#f2ff00;padding:10px;margin:0 10px;border-radius:10px}
-.cat-item{min-width:85px;text-align:center;margin-right:10px}
-
-/* SUB */
-.sub-scroll{display:flex;overflow-x:auto;padding:10px;margin:0 10px}
-.sub-btn{padding:6px 15px;background:#eee;border-radius:20px;margin-right:8px}
-
-/* PRODUCTS */
-#grid_panel{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    padding:10px;
-}
-
-.prod-card{
-    background:#fff;
-    border-radius:10px;
-    overflow:hidden;
-    position:relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Product card shadow */
-    transition: box-shadow 0.3s ease; /* Smooth hover effect */
-}
-
-.prod-card:hover{
-    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* Hover pe shadow strong */
-}
-
-.prod-img-box{
-    height:180px;
-    position:relative;
-}
-
-
-/* SLIDER */
-.slider{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
-.slider img{min-width:100%;height:180px;object-fit:cover;scroll-snap-align:start;cursor:pointer}
-
-/* SLIDER ARROWS */
-.arrow{
-position:absolute;top:50%;
-transform:translateY(-50%);
-background:rgba(0,0,0,0.5);
-color:#fff;width:30px;height:30px;border-radius:50%;
-display:flex;align-items:center;justify-content:center;
-font-size:18px;cursor:pointer;z-index:5;user-select:none;
-}
-.arrow.left{left:5px}
-.arrow.right{right:5px}
-
-/* INFO */
-.info-box{padding:15px}
-.price{color:green;font-weight:bold}
-.cut{text-decoration:line-through;color:#f40e0e;font-size:12px}
-.btn-row{display:flex;gap:5px}
-.btn-row button{
-flex:1;border:none;padding:8px;
-background:#2209c2;color:#fff;border-radius:5px
-}
-
-/* NAV */
-.bottom-nav{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    padding: 12px 0;
-    background: #fff;
-}
-
-/* Bottom nav buttons common style */
-.bottom-nav div {
-    flex: 1;
-    text-align: center;
-    padding: 10px 0;
-    margin: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Home button */
-.bottom-nav div:nth-child(1) {
-    border: 2px solid #2209c2;
-    box-shadow: 0 4px 8px rgba(34,9,194,0.3);
-}
-
-/* Wishlist button */
-.bottom-nav div:nth-child(2) {
-    border: 2px solid #e91e63;
-    box-shadow: 0 4px 8px rgba(233,30,99,0.3);
-}
-
-/* Account button */
-.bottom-nav div:nth-child(3) {
-    border: 2px solid #009688;
-    box-shadow: 0 4px 8px rgba(0,150,136,0.3);
-}
-
-/* Tap / active effect */
-.bottom-nav div:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-
-/* ACCOUNT / LOGIN */
-#loginPage, #accountPage{display:none;padding:80px 20px;text-align:center;background:#0d0dde;color:#000}
-#loginPage input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc}
-#loginPage button{width:100%;padding:12px;background:#2209c2;color:#fff;border:none;border-radius:8px}
-
-/* FULLSCREEN IMAGE VIEWER */
-#imgViewer{
-position:fixed;inset:0;background:#0c0303;display:none;z-index:100;
-}
-#imgViewer .slider img{height:100vh;object-fit:contain}
-#closeViewer{
-position:absolute;top:10px;right:15px;color:#fff;font-size:22px;z-index:101;cursor:pointer;
-}
-#imgViewer .arrow{top:50%;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlipStore - Mobile-First Reselling App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+        }
+        
+        /* Login Overlay Styles */
+        #loginOverlay {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .processing-btn {
+            animation: pulse 1s infinite;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        /* Product Card Hover */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        /* Bottom Sheet Overlay */
+        .sheet-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Search Bar Animation */
+        .search-bar:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Bottom Nav Active */
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        /* Gradient Button */
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+        
+        /* Success Animation */
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .checkmark {
+            animation: checkmark 0.5s ease-out;
+        }
+    </style>
 </head>
-<body>
+<body class="pb-20">
+    <!-- Login Overlay -->
+    <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center">
+        <div class="w-full max-w-md px-6">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 transform">
+                <!-- Logo -->
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-extrabold">
+                        Flip<span style="color: #667eea;">Store</span>
+                    </h1>
+                    <p class="text-gray-500 mt-2 text-sm">Your Trusted Reselling Partner</p>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-5">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Your Name</label>
+                        <input type="text" id="userName" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none transition"
+                            placeholder="Enter your name">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Mobile Number</label>
+                        <input type="tel" id="userMobile" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none transition"
+                            placeholder="Enter mobile number" pattern="[0-9]{10}">
+                    </div>
+                    
+                    <button type="submit" 
+                        class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-200">
+                        <i class="fas fa-shopping-bag mr-2"></i>Enter Shop
+                    </button>
+                </form>
+                
+                <p class="text-center text-white text-xs mt-6 opacity-80">
+                    By continuing, you agree to our Terms & Privacy Policy
+                </p>
+            </div>
+        </div>
+    </div>
 
-<header>
-<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png">
-<div class="brand-name">🌏SMARTBUY.IND</div>
-<div id="userTop" onclick="openAccount()">Login</div>
-</header>
+    <!-- Main App -->
+    <div id="mainApp" class="hidden">
+        <!-- Header -->
+        <header class="sticky top-0 z-40 bg-white shadow-md">
+            <div class="px-4 py-3">
+                <div class="flex items-center justify-between gap-3">
+                    <!-- Logo -->
+                    <h1 class="text-xl font-extrabold whitespace-nowrap">
+                        Flip<span style="color: #667eea;">Store</span>
+                    </h1>
+                    
+                    <!-- Search Bar -->
+                    <div class="flex-1 relative">
+                        <input type="text" id="searchInput" 
+                            class="search-bar w-full px-4 py-2 pl-10 rounded-full border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-sm"
+                            placeholder="Search products...">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    
+                    <!-- Cart Icon -->
+                    <button class="relative p-2">
+                        <i class="fas fa-shopping-cart text-gray-700 text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-<h2>Customer Login</h2>
-<input id="custName" placeholder="Enter your name">
-<button onclick="doLogin()">Login / Register</button>
-</div>
+        <!-- User Info Banner -->
+        <div id="userBanner" class="hidden bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-2">
+            <p class="text-white text-sm">
+                <i class="fas fa-user-circle mr-1"></i> 
+                Welcome, <span id="loggedInUser" class="font-semibold"></span>
+            </p>
+        </div>
 
-<!-- MAIN CONTENT -->
-<div class="main">
-<div class="search-wrapper">
-<input class="search-input" id="searchInp" placeholder="Search products..." onkeyup="runSearch()">
-</div>
-<div class="cat-scroll" id="cat_panel"></div>
-<div class="sub-scroll" id="sub_panel"></div>
-<div id="grid_panel"></div>
-</div>
+        <!-- Products Section -->
+        <main class="px-4 py-4">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Hot Deals</h2>
+                <span id="productCount" class="text-sm text-gray-500">8 products</span>
+            </div>
+            
+            <!-- Products Grid -->
+            <div id="productsGrid" class="grid grid-cols-2 gap-4">
+                <!-- Products will be rendered here -->
+            </div>
+        </main>
 
-<!-- ACCOUNT PAGE -->
-<div id="accountPage">
-<h3 id="accName"></h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px">
-<button onclick="donate()">🎁 Donation</button>
-<button onclick="showWishlist()">🛒 Wishlist</button>
-<button onclick="openInsta()">📷 Instagram</button>
-<button onclick="openTelegram()">➣ Telegram</button>
-<button onclick="openHelp()">🎧 Help Center</button>
-</div>
-<br>
-<button onclick="logout()" style="width:100%;padding:12px;background:#f00;color:#fff;border:none;border-radius:10px">Logout</button>
-</div>
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+            <div class="flex justify-around items-center py-2">
+                <button class="nav-item active flex flex-col items-center py-2 px-4" data-nav="home">
+                    <i class="fas fa-home text-xl mb-1"></i>
+                    <span class="text-xs">Home</span>
+                </button>
+                <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="search">
+                    <i class="fas fa-search text-xl mb-1"></i>
+                    <span class="text-xs">Search</span>
+                </button>
+                <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="profile">
+                    <i class="fas fa-user text-xl mb-1"></i>
+                    <span class="text-xs">Profile</span>
+                </button>
+            </div>
+        </nav>
+    </div>
 
-<!-- FULLSCREEN IMAGE VIEWER -->
-<div id="imgViewer" style="display:none;position:fixed;inset:0;background:#000;z-index:100;">
-  <div id="closeViewer" onclick="closeViewer()" 
-       style="position:absolute;top:10px;right:15px;color:#fff;font-size:22px;z-index:101;cursor:pointer;">✖</div>
-  <div class="slider" id="viewerSlider" style="height:100vh;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;"></div>
-  <div class="arrow left" onclick="slideViewer(-1)">‹</div>
-  <div class="arrow right" onclick="slideViewer(1)">›</div>
-</div>
-<!--BOTTOM NAVIGATION-->
+    <!-- Order Bottom Sheet -->
+    <div id="orderSheet" class="fixed inset-0 z-50 hidden">
+        <!-- Overlay -->
+        <div class="sheet-overlay absolute inset-0" onclick="closeOrderSheet()"></div>
+        
+        <!-- Sheet -->
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl slide-up max-h-[90vh] overflow-y-auto">
+            <!-- Handle -->
+            <div class="flex justify-center py-3">
+                <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+            </div>
+            
+            <!-- Header -->
+            <div class="px-6 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-shopping-bag mr-2 text-purple-600"></i>Confirm Order
+                    </h3>
+                    <button onclick="closeOrderSheet()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div id="orderProductInfo" class="px-6 py-4 bg-gray-50">
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <!-- Order Form -->
+            <form id="orderForm" class="px-6 py-4 space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">Customer Name</label>
+                    <input type="text" id="orderCustomerName" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none bg-gray-100"
+                        placeholder="Your name">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">WhatsApp Number</label>
+                    <input type="tel" id="orderWhatsApp" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none"
+                        placeholder="Enter WhatsApp number" pattern="[0-9]{10}">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">Full Address</label>
+                    <textarea id="orderAddress" required rows="3"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none resize-none"
+                        placeholder="Enter complete delivery address"></textarea>
+                </div>
+                
+                <button type="submit" id="confirmOrderBtn"
+                    class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg">
+                    <span id="btnText"><i class="fas fa-check-circle mr-2"></i>Confirm Order</span>
+                    <span id="btnProcessing" class="hidden">
+                        <i class="fas fa-circle-notch fa-spin mr-2"></i>Processing...
+                    </span>
+                </button>
+            </form>
+            
+            <!-- Success Message -->
+            <div id="orderSuccess" class="hidden px-6 py-8 text-center">
+                <div class="checkmark w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-500 text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Order Placed!</h3>
+                <p class="text-gray-600 mb-6">Your order has been successfully placed. We'll contact you soon!</p>
+                <button onclick="closeOrderSheet()" 
+                    class="bg-green-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:bg-green-600 transition">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
 
-<div class="bottom-nav">
-<div onclick="resetHome()">🏠 Home</div>
-<div onclick="showWishlist()">🛒 Wishlist</div>
-<div onclick="openAccount()">👤 Account</div>
-</div>
+    <script>
+        // ============================================
+        // HARDCODED PRODUCTS DATA
+        // ============================================
+        const products = [
+            {
+                id: 1,
+                name: "Wireless Bluetooth Earbuds Pro",
+                price: 299,
+                oldPrice: 999,
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400&fit=crop",
+                category: "Electronics"
+            },
+            {
+                id: 2,
+                name: "Smart Watch Series 5",
+                price: 1499,
+                oldPrice: 2999,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+                category: "Electronics"
+            },
+            {
+                id: 3,
+                name: "Men's Classic Cotton Shirt",
+                price: 449,
+                oldPrice: 899,
+                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop",
+                category: "Fashion"
+            },
+            {
+                id: 4,
+                name: "Women's Summer Dress",
+                price: 599,
+                oldPrice: 1199,
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=400&fit=crop",
+                category: "Fashion"
+            },
+            {
+                id: 5,
+                name: "Portable Mobile Charger 20000mAh",
+                price: 699,
+                oldPrice: 1499,
+                image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop",
+                category: "Electronics"
+            },
+            {
+                id: 6,
+                name: "Men's Running Shoes",
+                price: 899,
+                oldPrice: 1999,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+                category: "Fashion"
+            },
+            {
+                id: 7,
+                name: "Wireless Gaming Mouse",
+                price: 549,
+                oldPrice: 1099,
+                image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop",
+                category: "Electronics"
+            },
+            {
+                id: 8,
+                name: "Ladies Handbag Premium",
+                price: 799,
+                oldPrice: 1599,
+                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop",
+                category: "Fashion"
+            },
+            {
+                id: 9,
+                name: "Bluetooth Speaker Mini",
+                price: 349,
+                oldPrice: 799,
+                image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop",
+                category: "Electronics"
+            },
+            {
+                id: 10,
+                name: "Kids Teddy Bear Soft Toy",
+                price: 249,
+                oldPrice: 599,
+                image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+                category: "Toys"
+            }
+        ];
 
-<script>
-/* DATABASE */
-const DB_CATS=[
-{name:"For You"},
-{name:"Fashion",sub:["Men","Women","kids","Mens Footwear","Womens Footwear","Mens Accessories","Womens Accessories","Sportswear"]},
-{name:"Sunglasses"},
-{name:"Bags"},
-{name:"Electronics",sub:["Accessories","Watches","Desktops"]}
-];
+        // ============================================
+        // GOOGLE APPS SCRIPT URL (REPLACE WITH YOUR URL)
+        // ============================================
+        const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz_Oi5ZwntL83YMxSWc8cY6uXmctLU_rqHLruESyM4lWTKgwC-FHuq8XCi_CrUkab5Z_Q/exec";
 
-const DB_ITEMS=[
-{ id:1,name:"Premium Backpack Encrypted",cat:"Bags",price:322,cut:999,link:"https://bitli.in/JZizUxb",
-imgs:["https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/d0LnRpXs/Screenshot-2026-01-28-09-17-19-979-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"]},
-{ id:2,name:"MEN Full sleeve sweatshirt",cat:"Fashion",sub:"Men",price:299,cut:1499,link:"https://fktr.in/trid8uL",
-imgs:["https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg"]},
-{ id:3,name:"Women Floral Kurti",cat:"Fashion",sub:"Women",price:253,cut:1999,link:"https://bitli.in/mYd26le",
-imgs:["https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg"]},
-{ id:4,name:"Men Regular Fit Trousers",cat:"Fashion",sub:"Men",price:262,cut:999,link:"https://bitli.in/w8hSXkv",
-imgs:["https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-android-edit.jpg"]},
-{ id:5,name:"men cotton blend shirt & pant",cat:"Fashion",sub:"Men",price:651,cut:1499,link:"https://fktr.in/87AGO3b",
-imgs:["https://i.ibb.co/DD7xqdDg/Screenshot-2026-01-30-01-40-41-023-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/gb0HtCVp/Screenshot-2026-01-30-01-41-11-619-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/r2yWQBVY/Screenshot-2026-01-30-01-41-45-351-com-flipkart-android-edit.jpg"]},
-{ id:6,name:"REDTAPE Black & white Lifestyle Colourblock sneakers For men",cat:"Fashion",sub:"Mens Footwear",price:1133,cut:6299,link:"https://fktr.in/RAzpohc",
-imgs:["https://i.ibb.co/r2ng1690/Screenshot-2026-01-31-19-50-24-989-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/twHD626D/Screenshot-2026-01-31-19-51-16-448-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/cKwSM1n4/Screenshot-2026-01-31-19-51-42-457-com-flipkart-android-edit.jpg"]},
-{ id:7,name:"Women latest design juti sandal for women flats sandal",cat:"Fashion",sub:"Womens Footwear",price:211,cut:999,link:"https://fktr.in/jKEw8ci",
-imgs:["https://i.ibb.co/ymkyjHg4/Screenshot-2026-01-31-20-45-22-254-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/8DQd56JJ/Screenshot-2026-01-31-20-45-35-190-com-flipkart-android-edit.jpg",
-      "https://i.ibb.co/C3d9F9yf/Screenshot-2026-01-31-20-49-59-603-com-flipkart-android-edit.jpg"]},
-{ id:8,name:"UV protection rectangular sunglasses for men and women",cat:"Sunglasses",price:169,cut:1640,link:"https://fktr.in/WuDnz8I",
-imgs:["https://i.ibb.co/HL7Bk6Hn/Screenshot-2026-01-31-21-13-30-324-com-flipkart-android-edit.jpg", 
-      "https://i.ibb.co/ztMRjcD/Screenshot-2026-01-31-21-13-45-803-com-flipkart-android-edit.jpg", 
-      "https://i.ibb.co/Cpw6RwTZ/Screenshot-2026-01-31-21-14-31-061-com-flipkart-android-edit.jpg"]}
-];
+        // ============================================
+        // APP STATE
+        // ============================================
+        let currentProduct = null;
 
-/* ELEMENTS */
-let activeCat="For You",activeSub="",searchTerm="";
-let wishlist=JSON.parse(localStorage.getItem("wishlist")||"[]");
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            setupEventListeners();
+        });
 
-/* RENDER */
-function drawCategories(){
-cat_panel.innerHTML="";
-DB_CATS.forEach(c=>{cat_panel.innerHTML+=`<div class="cat-item" onclick="changeCat('${c.name}')">${c.name}</div>`;});
-}
-function drawSubcats(){
-sub_panel.innerHTML="";
-let f=DB_CATS.find(x=>x.name===activeCat);
-if(f&&f.sub){f.sub.forEach(s=>{sub_panel.innerHTML+=`<div class="sub-btn" onclick="changeSub('${s}')">${s}</div>`;});}
+        function checkLoginStatus() {
+            const userData = localStorage.getItem('flipstore_user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userBanner').classList.remove('hidden');
+                document.getElementById('loggedInUser').textContent = user.name;
+                renderProducts(products);
+            } else {
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+        }
 
-}function openViewer(imgs){
-    viewerSlider.innerHTML = imgs.map(i=>`<img src="${i}" style="min-width:100%;height:100vh;object-fit:cover;scroll-snap-align:start;">`).join("");
-    imgViewer.style.display = "block";
-}
+        function setupEventListeners() {
+            // Login Form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Search Input
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            
+            // Order Form
+            document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
+            
+            // Bottom Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', handleNavigation);
+            });
+        }
 
-function closeViewer(){
-    imgViewer.style.display = "none";
-}
+        // ============================================
+        // LOGIN HANDLER
+        // ============================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value.trim();
+            const mobile = document.getElementById('userMobile').value.trim();
+            
+            if (!name || !mobile) {
+                alert('Please fill in all fields');
+                return;
+            }
 
-let currentIndex = 0;
-function slideViewer(dir){
-    const imgs = viewerSlider.children;
-    if(imgs.length===0) return;
-    currentIndex += dir;
-    if(currentIndex < 0) currentIndex = imgs.length - 1;
-    if(currentIndex >= imgs.length) currentIndex = 0;
-    imgs[currentIndex].scrollIntoView({behavior:"smooth"});
-}
+            const userData = {
+                name: name,
+                mobile: mobile,
+                loginTime: new Date().toISOString()
+            };
 
-function drawProducts(list=DB_ITEMS){
-grid_panel.innerHTML="";
-list.filter(p=>{
-return (activeCat==="For You"||p.cat===activeCat)
-&&(activeSub===""||p.sub===activeSub)
-&&p.name.toLowerCase().includes(searchTerm);
-}).forEach(p=>{
-grid_panel.innerHTML+=`
-<div class="prod-card">
-<div class="prod-img-box">
-<div class="slider" id="slider_${p.id}">
-${p.imgs.map(img=>`<img src="${img}" onclick='openViewer(${JSON.stringify(p.imgs)})'>`).join("")}
-</div>
-<div class="arrow left" onclick="slideImg(${p.id},-1)">‹</div>
-<div class="arrow right" onclick="slideImg(${p.id},1)">›</div>
-</div>
-<div class="info-box">
-<b>${p.name}</b><br>
-<span class="price">₹${p.price}</span>
-<span class="cut">₹${p.cut}</span>
-<div class="btn-row">
-<button onclick="addWishlist(${p.id})">🛒</button>
-<button onclick="window.open('${p.link}')">BUY</button>
-</div>
-</div>
-</div>`;
-});
-}
+            // Save to localStorage
+            localStorage.setItem('flipstore_user', JSON.stringify(userData));
 
-/* IMAGE FULLSCREEN */
-let currentViewerIndex=0, currentViewerImgs=[];
-function openViewer(imgs){
-currentViewerImgs=imgs;
-currentViewerIndex=0;
-viewerSlider.innerHTML=`<img src="${imgs[currentViewerIndex]}">`;
-imgViewer.style.display="block";
-}
-function closeViewer(){imgViewer.style.display="none";}
-function slideViewer(dir){
-currentViewerIndex+=dir;
-if(currentViewerIndex<0) currentViewerIndex=currentViewerImgs.length-1;
-if(currentViewerIndex>=currentViewerImgs.length) currentViewerIndex=0;
-viewerSlider.innerHTML=`<img src="${currentViewerImgs[currentViewerIndex]}">`;
-}
+            // Send to Google Sheets
+            try {
+                await sendToGoogleSheets('login', {
+                    name: name,
+                    mobile: mobile,
+                    timestamp: new Date().toLocaleString()
+                });
+            } catch (error) {
+                console.log('Login data saved locally (Google Sheets not configured)');
+            }
 
-/* NAVIGATION */
-function changeCat(c){activeCat=c;activeSub="";drawSubcats();drawProducts();}
-function changeSub(s){activeSub=s;drawProducts();}
-function runSearch(){searchTerm=searchInp.value.toLowerCase();drawProducts();}
-function resetHome(){accountPageEl.style.display="none";loginPageEl.style.display="none";mainPage.style.display="block";drawProducts();}
-function addWishlist(id){if(!wishlist.includes(id)){wishlist.push(id);localStorage.setItem("wishlist",JSON.stringify(wishlist));alert("Saved to wishlist");}}
-function showWishlist(){drawProducts(DB_ITEMS.filter(p=>wishlist.includes(p.id)));}
+            // Update UI
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userBanner').classList.remove('hidden');
+            document.getElementById('loggedInUser').textContent = name;
+            renderProducts(products);
+        }
 
-/* ACCOUNT / LOGIN */
-const accountPageEl = document.getElementById("accountPage");
-const loginPageEl = document.getElementById("loginPage");
-const accName = document.getElementById("accName");
-const userTop = document.getElementById("userTop");
-const mainPage = document.querySelector(".main");
-const custName = document.getElementById("custName");
+        // ============================================
+        // PRODUCT RENDERING
+        // ============================================
+        function renderProducts(productsToRender) {
+            const grid = document.getElementById('productsGrid');
+            document.getElementById('productCount').textContent = `${productsToRender.length} products`;
+            
+            grid.innerHTML = productsToRender.map(product => `
+                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden">
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" 
+                            class="w-full h-36 object-cover">
+                        <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                            ${Math.round((1 - product.price / product.oldPrice) * 100)}% OFF
+                        </span>
+                    </div>
+                    <div class="p-3">
+                        <p class="text-xs text-gray-500 mb-1">${product.category}</p>
+                        <h3 class="text-sm font-semibold text-gray-800 line-clamp-2 mb-2" style="min-height: 40px;">
+                            ${product.name}
+                        </h3>
+                        <div class="flex items-baseline gap-2 mb-3">
+                            <span class="text-lg font-bold text-green-600">₹${product.price}</span>
+                            <span class="text-sm text-gray-400 line-through">₹${product.oldPrice}</span>
+                        </div>
+                        <button onclick="openOrderSheet(${product.id})"
+                            class="w-full btn-gradient text-white font-semibold py-2 rounded-xl text-sm">
+                            <i class="fas fa-shopping-cart mr-1"></i>Buy Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-function openAccount(){
-let user = localStorage.getItem("customer_name");
-mainPage.style.display="none";
-accountPageEl.style.display="none";
-loginPageEl.style.display="none";
-if(user){accountPageEl.style.display="block";accName.innerText="Hello, "+user;userTop.innerText=user;}
-else{loginPageEl.style.display="block";}
-}
-function doLogin(){
-let name = custName.value.trim(); if(name===""){alert("Enter name");return;}
-localStorage.setItem("customer_name",name);custName.value="";openAccount();
-}
-function logout(){
-localStorage.removeItem("customer_name");
-userTop.innerText="Login";accountPageEl.style.display="none";loginPageEl.style.display="none";mainPage.style.display="block";
-}
-window.onload=()=>{let u=localStorage.getItem("customer_name");if(u) userTop.innerText=u;}
+        // ============================================
+        // SEARCH HANDLER
+        // ============================================
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderProducts(products);
+                return;
+            }
 
-/* ACCOUNT BUTTON ACTIONS */
-function donate(){window.location.href="upi://pay?pa=9343988416@jio&pn=Smartbuy Foundation";}
-function openInsta(){window.open("https://instagram.com/smart_buy.ind");}
-function openTelegram(){window.open("https://t.me/smartbuyind");}
-function openHelp(){window.location.href="mailto:shaileshkumarchauhan9340@gmail.com";}
+            const filtered = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            renderProducts(filtered);
+        }
 
-/* SLIDER SCROLL */
-function slideImg(id,dir){
-let s=document.getElementById("slider_"+id);
-let w=s.clientWidth;
-s.scrollBy({left:dir*w,behavior:"smooth"});
-}
+        // ============================================
+        // ORDER SHEET
+        // ============================================
+        function openOrderSheet(productId) {
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
 
-/* INITIAL DRAW */
-drawCategories();drawSubcats();drawProducts();
-</script>
+            const userData = JSON.parse(localStorage.getItem('flipstore_user'));
 
+            // Populate product info
+            document.getElementById('orderProductInfo').innerHTML = `
+                <div class="flex items-center gap-4">
+                    <img src="${currentProduct.image}" alt="${currentProduct.name}" 
+                        class="w-20 h-20 rounded-xl object-cover">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">${currentProduct.name}</h4>
+                        <p class="text-green-600 font-bold text-lg">₹${currentProduct.price}</p>
+                        <p class="text-gray-400 text-sm line-through">₹${currentProduct.oldPrice}</p>
+                    </div>
+                </div>
+            `;
+
+            // Auto-fill customer name
+            document.getElementById('orderCustomerName').value = userData ? userData.name : '';
+
+            // Reset form
+            document.getElementById('orderForm').classList.remove('hidden');
+            document.getElementById('orderSuccess').classList.add('hidden');
+            document.getElementById('orderWhatsApp').value = '';
+            document.getElementById('orderAddress').value = '';
+
+            // Show sheet
+            document.getElementById('orderSheet').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOrderSheet() {
+            document.getElementById('orderSheet').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentProduct = null;
+        }
+
+        // ============================================
+        // ORDER SUBMISSION
+        // ============================================
+        async function handleOrderSubmit(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('confirmOrderBtn');
+            const btnText = document.getElementById('btnText');
+            const btnProcessing = document.getElementById('btnProcessing');
+
+            // Show processing state
+            btn.classList.add('processing-btn');
+            btnText.classList.add('hidden');
+            btnProcessing.classList.remove('hidden');
+            btn.disabled = true;
+
+            const userData = JSON.parse(localStorage.getItem('flipstore_user'));
+           const orderData = {
+    orderDate: new Date().toLocaleString(),
+    customerName: document.getElementById('orderCustomerName').value,
+    productName: currentProduct.name,
+    productPrice: currentProduct.price,
+    whatsApp: document.getElementById('orderWhatsApp').value, // 'whatsApp' small 'w' ke saath
+    address: document.getElementById('orderAddress').value,
+    loggedInUser: userData ? userData.name : 'Guest'
+};
+
+            // Simulate processing delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Send to Google Sheets
+            try {
+                await sendToGoogleSheets('order', orderData);
+            } catch (error) {
+                console.log('Order saved locally (Google Sheets not configured)');
+            }
+
+            // Show success
+            btn.classList.remove('processing-btn');
+            btnText.classList.remove('hidden');
+            btnProcessing.classList.add('hidden');
+            btn.disabled = false;
+
+            document.getElementById('orderForm').classList.add('hidden');
+            document.getElementById('orderSuccess').classList.remove('hidden');
+        }
+
+        // ============================================
+        // GOOGLE SHEETS INTEGRATION
+        // ============================================
+        async function sendToGoogleSheets(action, data) {
+            if (GOOGLE_SHEETS_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+                console.log('Google Sheets not configured. Data:', { action, data });
+                return;
+            }
+
+            const payload = {
+                action: action,
+                ...data
+            };
+
+            const response = await fetch(GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send data to Google Sheets');
+            }
+
+            return await response.json();
+        }
+
+        // ============================================
+        // NAVIGATION HANDLER
+        // ============================================
+        function handleNavigation(e) {
+            const nav = e.currentTarget;
+            const navType = nav.dataset.nav;
+
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            nav.classList.add('active');
+
+            // Handle navigation
+            if (navType === 'search') {
+                document.getElementById('searchInput').focus();
+            } else if (navType === 'profile') {
+                const userData = localStorage.getItem('flipstore_user');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    alert(`Profile\n\nName: ${user.name}\nMobile: ${user.mobile}\nLogin Time: ${new Date(user.loginTime).toLocaleString()}`);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
