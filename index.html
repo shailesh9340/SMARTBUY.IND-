@@ -1,165 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipStore - Mobile-First Reselling App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-        * { font-family: 'Poppins', sans-serif; }
-        body { background: linear-gradient(135deg,#f5f7fa 0%,#e4e8ec 100%); min-height:100vh; }
-        #loginOverlay { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); animation: fadeIn .5s ease-out; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
-        @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
-        @keyframes pulse {0%,100%{opacity:1;}50%{opacity:.5;}}
-        .slide-up{animation:slideUp .4s ease-out;}
-        .processing-btn{animation:pulse 1s infinite;}
-        ::-webkit-scrollbar{width:4px;}
-        ::-webkit-scrollbar-thumb{background:#667eea;border-radius:2px;}
-        .product-card{transition:.3s;}
-        .product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.15);}
-        .sheet-overlay{background:rgba(0,0,0,.5);backdrop-filter:blur(4px);}
-        .nav-item.active{color:#667eea;}
-        .btn-gradient{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
-        .btn-gradient:hover{background:linear-gradient(135deg,#5a6fd6 0%,#6a4190 100%);}
-        @keyframes checkmark{0%{transform:scale(0);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
-        .checkmark{animation:checkmark .5s ease-out;}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlipStore - Mobile-First Reselling App</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+*{font-family:'Poppins',sans-serif;}
+body{background:linear-gradient(135deg,#f5f7fa 0%,#e4e8ec 100%);min-height:100vh;}
+#loginOverlay{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
+.product-card{transition:.3s;}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.15);}
+.sheet-overlay{background:rgba(0,0,0,.5);}
+.nav-item.active{color:#667eea;}
+.btn-gradient{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
+.processing-btn{opacity:.7;pointer-events:none;}
+</style>
 </head>
+
 <body class="pb-20">
 
-<!-- LOGIN OVERLAY -->
+<!-- LOGIN -->
 <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center">
 <div class="w-full max-w-md px-6">
 <div class="bg-white rounded-3xl shadow-2xl p-8">
-<div class="text-center mb-8">
-<h1 class="text-4xl font-extrabold">
+<h1 class="text-4xl font-extrabold text-center mb-6">
 Flip<span style="color:#667eea;">Store</span>
 </h1>
-<p class="text-gray-500 mt-2 text-sm">Your Trusted Reselling Partner</p>
-</div>
 
-<form id="loginForm" class="space-y-5">
+<form id="loginForm" class="space-y-4">
 <input type="text" id="userName" required placeholder="Enter your name"
-class="w-full px-4 py-3 rounded-xl border border-gray-300">
+class="w-full px-4 py-3 rounded-xl border">
+
 <input type="tel" id="userMobile" required pattern="[0-9]{10}"
-placeholder="Enter mobile number"
-class="w-full px-4 py-3 rounded-xl border border-gray-300">
+placeholder="Enter 10 digit mobile"
+class="w-full px-4 py-3 rounded-xl border">
+
 <button type="submit"
-class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg">
-<i class="fas fa-shopping-bag mr-2"></i>Enter Shop
+class="w-full btn-gradient text-white py-3 rounded-xl">
+Enter Shop
 </button>
 </form>
+
 </div>
 </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="mainApp" class="hidden">
-<header class="sticky top-0 z-40 bg-white shadow-md">
-<div class="px-4 py-3 flex items-center justify-between gap-3">
-<h1 class="text-xl font-extrabold">
-Flip<span style="color:#667eea;">Store</span>
-</h1>
+<header class="bg-white shadow px-4 py-3 flex justify-between items-center">
+<h2 class="font-bold text-xl">FlipStore</h2>
 <input type="text" id="searchInput"
-class="flex-1 px-4 py-2 rounded-full border border-gray-200 text-sm"
-placeholder="Search products...">
-<button class="p-2">
-<i class="fas fa-shopping-cart text-gray-700 text-lg"></i>
-</button>
-</div>
+class="px-3 py-2 border rounded-full text-sm w-1/2"
+placeholder="Search...">
 </header>
 
-<div id="userBanner" class="hidden bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-2">
-<p class="text-white text-sm">
-Welcome, <span id="loggedInUser" class="font-semibold"></span>
-</p>
+<div id="userBanner" class="hidden bg-purple-600 text-white px-4 py-2 text-sm">
+Welcome, <span id="loggedInUser"></span>
 </div>
 
-<main class="px-4 py-4">
-<div class="flex justify-between mb-4">
-<h2 class="text-lg font-bold">Hot Deals</h2>
-<span id="productCount" class="text-sm text-gray-500"></span>
-</div>
+<main class="p-4">
+<h3 class="font-bold mb-3">Hot Deals</h3>
 <div id="productsGrid" class="grid grid-cols-2 gap-4"></div>
 </main>
 </div>
 
 <!-- ORDER SHEET -->
-<div id="orderSheet" class="fixed inset-0 z-50 hidden">
-<div class="sheet-overlay absolute inset-0" onclick="closeOrderSheet()"></div>
-<div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl slide-up max-h-[90vh] overflow-y-auto">
+<div id="orderSheet" class="fixed inset-0 hidden z-50">
+<div class="sheet-overlay absolute inset-0" onclick="closeOrder()"></div>
 
-<div class="flex justify-center py-3">
-<div class="w-12 h-1 bg-gray-300 rounded-full"></div>
-</div>
+<div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6">
+<div id="orderProductInfo"></div>
 
-<div class="px-6 pb-4 border-b">
-<h3 class="text-xl font-bold">Confirm Order</h3>
-</div>
-
-<div id="orderProductInfo" class="px-6 py-4 bg-gray-50"></div>
-
-<form id="orderForm" class="px-6 py-4 space-y-4">
+<form id="orderForm" class="space-y-3 mt-4">
 <input type="text" id="orderCustomerName" required placeholder="Customer Name"
-class="w-full px-4 py-3 rounded-xl border border-gray-300">
+class="w-full px-4 py-3 border rounded-xl">
+
 <input type="tel" id="orderWhatsApp" required pattern="[0-9]{10}"
 placeholder="WhatsApp Number"
-class="w-full px-4 py-3 rounded-xl border border-gray-300">
+class="w-full px-4 py-3 border rounded-xl">
+
 <textarea id="orderAddress" required rows="3"
 placeholder="Full Address"
-class="w-full px-4 py-3 rounded-xl border border-gray-300"></textarea>
+class="w-full px-4 py-3 border rounded-xl"></textarea>
 
 <button type="submit" id="confirmOrderBtn"
-class="w-full btn-gradient text-white font-semibold py-4 rounded-xl">
-<span id="btnText">Confirm Order</span>
-<span id="btnProcessing" class="hidden">Processing...</span>
+class="w-full btn-gradient text-white py-3 rounded-xl">
+Confirm Order
 </button>
 </form>
 
-<div id="orderSuccess" class="hidden px-6 py-8 text-center">
-<div class="checkmark w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-<i class="fas fa-check text-green-500 text-4xl"></i>
+<div id="orderSuccess" class="hidden text-center mt-4 text-green-600 font-bold">
+Order Placed Successfully!
 </div>
-<h3 class="text-2xl font-bold">Order Placed!</h3>
-<button onclick="closeOrderSheet()"
-class="bg-green-500 text-white px-8 py-3 rounded-xl mt-4">
-Continue Shopping
-</button>
-</div>
-
 </div>
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded",function(){
 
-// TELEGRAM CONFIG
-const TELEGRAM_BOT_TOKEN = "7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
-const TELEGRAM_CHAT_ID = "8450221415";
+// ================= TELEGRAM CONFIG =================
+const TELEGRAM_BOT_TOKEN="7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
+const TELEGRAM_CHAT_ID="8450221415";
 
+// Safe Telegram Sender
 async function sendToTelegram(message){
-const url=`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-await fetch(url,{
+try{
+await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
 method:"POST",
-headers:{'Content-Type':'application/json'},
+headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
 chat_id:TELEGRAM_CHAT_ID,
 text:message,
 parse_mode:"HTML"
 })
 });
+}catch(error){
+console.log("Telegram Error:",error);
+}
 }
 
-// PRODUCTS
-const products=[ ... ]; // (Same products array from your original — unchanged)
+// ================= PRODUCTS =================
+const products=[
+{id:1,name:"Wireless Earbuds",price:299,image:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"},
+{id:2,name:"Smart Watch",price:1499,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
+{id:3,name:"Men Shirt",price:449,image:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400"},
+{id:4,name:"Ladies Handbag",price:799,image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400"}
+];
 
-// LOGIN
+let currentProduct=null;
+
+// ================= LOGIN =================
 document.getElementById("loginForm").addEventListener("submit",async function(e){
 e.preventDefault();
-const name=userName.value;
-const mobile=userMobile.value;
+
+const name=document.getElementById("userName").value.trim();
+const mobile=document.getElementById("userMobile").value.trim();
+
+if(name===""||mobile.length!==10){
+alert("Enter valid details");
+return;
+}
 
 localStorage.setItem("flipstore_user",JSON.stringify({name,mobile}));
 
@@ -167,40 +152,77 @@ await sendToTelegram(`
 🔐 <b>NEW LOGIN</b>
 👤 ${name}
 📱 ${mobile}
-🕒 ${new Date().toLocaleString()}
 `);
 
-loginOverlay.classList.add("hidden");
-mainApp.classList.remove("hidden");
-userBanner.classList.remove("hidden");
-loggedInUser.textContent=name;
+document.getElementById("loginOverlay").classList.add("hidden");
+document.getElementById("mainApp").classList.remove("hidden");
+document.getElementById("userBanner").classList.remove("hidden");
+document.getElementById("loggedInUser").textContent=name;
+
 renderProducts(products);
 });
 
-// ORDER
+// ================= RENDER PRODUCTS =================
+function renderProducts(data){
+const grid=document.getElementById("productsGrid");
+grid.innerHTML=data.map(p=>`
+<div class="product-card bg-white p-3 rounded-xl shadow">
+<img src="${p.image}" class="w-full h-28 object-cover rounded">
+<h4 class="font-semibold mt-2">${p.name}</h4>
+<p class="text-green-600 font-bold">₹${p.price}</p>
+<button onclick="openOrder(${p.id})"
+class="w-full btn-gradient text-white py-2 rounded-xl mt-2">
+Buy Now
+</button>
+</div>
+`).join("");
+}
+
+// ================= SEARCH =================
+document.getElementById("searchInput").addEventListener("input",function(e){
+const term=e.target.value.toLowerCase();
+const filtered=products.filter(p=>p.name.toLowerCase().includes(term));
+renderProducts(filtered);
+});
+
+// ================= ORDER =================
+window.openOrder=function(id){
+currentProduct=products.find(p=>p.id===id);
+
+document.getElementById("orderProductInfo").innerHTML=`
+<h3 class="font-bold">${currentProduct.name}</h3>
+<p class="text-green-600 font-bold">₹${currentProduct.price}</p>
+`;
+
+document.getElementById("orderSheet").classList.remove("hidden");
+};
+
+window.closeOrder=function(){
+document.getElementById("orderSheet").classList.add("hidden");
+};
+
 document.getElementById("orderForm").addEventListener("submit",async function(e){
 e.preventDefault();
 
-btnText.classList.add("hidden");
-btnProcessing.classList.remove("hidden");
+const name=document.getElementById("orderCustomerName").value;
+const phone=document.getElementById("orderWhatsApp").value;
+const address=document.getElementById("orderAddress").value;
 
 await sendToTelegram(`
 🛒 <b>NEW ORDER</b>
-👤 ${orderCustomerName.value}
+👤 ${name}
 📦 ${currentProduct.name}
 💰 ₹${currentProduct.price}
-📱 ${orderWhatsApp.value}
-🏠 ${orderAddress.value}
-🕒 ${new Date().toLocaleString()}
+📱 ${phone}
+🏠 ${address}
 `);
 
-btnText.classList.remove("hidden");
-btnProcessing.classList.add("hidden");
-
-orderForm.classList.add("hidden");
-orderSuccess.classList.remove("hidden");
+document.getElementById("orderForm").classList.add("hidden");
+document.getElementById("orderSuccess").classList.remove("hidden");
 });
 
+});
 </script>
+
 </body>
 </html>
