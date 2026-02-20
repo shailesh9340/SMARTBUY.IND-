@@ -1,228 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FlipStore - Mobile-First Reselling App</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<title>Flipstore</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-*{font-family:'Poppins',sans-serif;}
-body{background:linear-gradient(135deg,#f5f7fa 0%,#e4e8ec 100%);min-height:100vh;}
-#loginOverlay{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
-.product-card{transition:.3s;}
-.product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,.15);}
-.sheet-overlay{background:rgba(0,0,0,.5);}
-.nav-item.active{color:#667eea;}
-.btn-gradient{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
-.processing-btn{opacity:.7;pointer-events:none;}
+body{margin:0;font-family:sans-serif;background:#f1f3f6}
+header{background:#2874f0;color:white;padding:15px;text-align:center}
+input,select{padding:8px;width:100%;margin:5px 0;border-radius:6px;border:1px solid #ccc}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:white;padding:10px;border-radius:10px}
+.card img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+button{background:#fb641b;color:white;border:none;padding:8px;border-radius:6px;margin-top:5px;width:100%}
+.nav{position:fixed;bottom:0;width:100%;display:flex;justify-content:space-around;background:white;padding:10px;border-top:1px solid #ddd}
+.section{display:none;padding-bottom:70px}
+.active{display:block}
+#splash{position:fixed;width:100%;height:100vh;background:#2874f0;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;animation:fade 2s forwards;animation-delay:2s}
+@keyframes fade{to{opacity:0;visibility:hidden}}
+.badge{background:green;color:white;padding:2px 6px;border-radius:4px;font-size:12px}
+.small{font-size:12px;color:gray}
 </style>
 </head>
+<body>
 
-<body class="pb-20">
-
-<!-- LOGIN -->
-<div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center">
-<div class="w-full max-w-md px-6">
-<div class="bg-white rounded-3xl shadow-2xl p-8">
-<h1 class="text-4xl font-extrabold text-center mb-6">
-Flip<span style="color:#667eea;">Store</span>
-</h1>
-
-<form id="loginForm" class="space-y-4">
-<input type="text" id="userName" required placeholder="Enter your name"
-class="w-full px-4 py-3 rounded-xl border">
-
-<input type="tel" id="userMobile" required pattern="[0-9]{10}"
-placeholder="Enter 10 digit mobile"
-class="w-full px-4 py-3 rounded-xl border">
-
-<button type="submit"
-class="w-full btn-gradient text-white py-3 rounded-xl">
-Enter Shop
-</button>
-</form>
-
-</div>
-</div>
+<div id="splash">
+<h1>Flipstore</h1>
+<p>by Flipkart</p>
 </div>
 
-<!-- MAIN APP -->
-<div id="mainApp" class="hidden">
-<header class="bg-white shadow px-4 py-3 flex justify-between items-center">
-<h2 class="font-bold text-xl">FlipStore</h2>
-<input type="text" id="searchInput"
-class="px-3 py-2 border rounded-full text-sm w-1/2"
-placeholder="Search...">
+<header>
+<h2>Flipstore</h2>
+<input type="text" id="search" placeholder="Search products..." onkeyup="renderProducts()">
 </header>
 
-<div id="userBanner" class="hidden bg-purple-600 text-white px-4 py-2 text-sm">
-Welcome, <span id="loggedInUser"></span>
+<!-- HOME -->
+<div id="home" class="section active">
+<select id="categoryFilter" onchange="renderProducts()">
+<option value="">All Categories</option>
+<option value="Fashion">Fashion</option>
+<option value="Electronics">Electronics</option>
+<option value="Home">Home</option>
+</select>
+<div id="productList" class="grid"></div>
 </div>
 
-<main class="p-4">
-<h3 class="font-bold mb-3">Hot Deals</h3>
-<div id="productsGrid" class="grid grid-cols-2 gap-4"></div>
-</main>
+<!-- CART -->
+<div id="cart" class="section">
+<h3 style="padding:10px">Your Cart</h3>
+<div id="cartItems"></div>
+<h3 id="cartTotal" style="padding:10px"></h3>
+<button onclick="showCheckout()">Proceed to Checkout</button>
 </div>
 
-<!-- ORDER SHEET -->
-<div id="orderSheet" class="fixed inset-0 hidden z-50">
-<div class="sheet-overlay absolute inset-0" onclick="closeOrder()"></div>
-
-<div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-6">
-<div id="orderProductInfo"></div>
-
-<form id="orderForm" class="space-y-3 mt-4">
-<input type="text" id="orderCustomerName" required placeholder="Customer Name"
-class="w-full px-4 py-3 border rounded-xl">
-
-<input type="tel" id="orderWhatsApp" required pattern="[0-9]{10}"
-placeholder="WhatsApp Number"
-class="w-full px-4 py-3 border rounded-xl">
-
-<textarea id="orderAddress" required rows="3"
-placeholder="Full Address"
-class="w-full px-4 py-3 border rounded-xl"></textarea>
-
-<button type="submit" id="confirmOrderBtn"
-class="w-full btn-gradient text-white py-3 rounded-xl">
-Confirm Order
-</button>
-</form>
-
-<div id="orderSuccess" class="hidden text-center mt-4 text-green-600 font-bold">
-Order Placed Successfully!
+<!-- CHECKOUT -->
+<div id="checkout" class="section">
+<h3 style="padding:10px">Checkout</h3>
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+<button onclick="placeOrder()">Place Order (COD)</button>
 </div>
+
+<!-- ACCOUNT -->
+<div id="account" class="section">
+<h3 style="padding:10px">My Account</h3>
+<p style="padding:10px">Orders stored locally.</p>
+<div id="orders"></div>
+<hr>
+<h4 style="padding:10px">Wishlist</h4>
+<div id="wishlist"></div>
+<hr>
+<a href="#" onclick="showSection('privacy')">Privacy Policy</a><br>
+<a href="#" onclick="showSection('faq')">FAQ</a>
 </div>
+
+<!-- PRIVACY -->
+<div id="privacy" class="section" style="padding:15px">
+<h3>Privacy Policy</h3>
+<p>We collect Name, Phone & Address only for order processing.</p>
+<p>Orders are processed via Telegram backend.</p>
+<p>No payment data stored.</p>
+<button onclick="showSection('account')">Back</button>
+</div>
+
+<!-- FAQ -->
+<div id="faq" class="section" style="padding:15px">
+<h3>FAQ</h3>
+<p><b>Delivery Time?</b> 3-7 Days.</p>
+<p><b>Payment?</b> Cash on Delivery.</p>
+<p><b>Return?</b> Replacement only.</p>
+<button onclick="showSection('account')">Back</button>
+</div>
+
+<div class="nav">
+<div onclick="showSection('home')">Home</div>
+<div onclick="showSection('cart')">Cart</div>
+<div onclick="showSection('account')">Account</div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded",function(){
+const BOT_TOKEN="7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
+const CHAT_ID="8450221415";
 
-// ================= TELEGRAM CONFIG =================//
-const TELEGRAM_BOT_TOKEN="7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
-const TELEGRAM_CHAT_ID="8450221415";
-
-// Safe Telegram Sender
-async function sendToTelegram(message){
-try{
-await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-chat_id:TELEGRAM_CHAT_ID,
-text:message,
-parse_mode:"HTML"
-})
-});
-}catch(error){
-console.log("Telegram Error:",error);
-}
-}
-
-// ================= PRODUCTS =================
 const products=[
-{id:1,name:"Wireless Earbuds",price:299,image:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"},
-{id:2,name:"Smart Watch",price:1499,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
-{id:3,name:"Men Shirt",price:449,image:"https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400"},
-{id:4,name:"Ladies Handbag",price:799,image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400"}
+{id:1,name:"Casual Shirt",price:999,base:750,cat:"Fashion",img:"https://picsum.photos/200?1"},
+{id:2,name:"Smart Watch",price:1499,base:1200,cat:"Electronics",img:"https://picsum.photos/200?2"},
+{id:3,name:"Kitchen Set",price:799,base:600,cat:"Home",img:"https://picsum.photos/200?3"}
 ];
 
-let currentProduct=null;
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+let wishlist=JSON.parse(localStorage.getItem("wishlist"))||[];
+let orders=JSON.parse(localStorage.getItem("orders"))||[];
 
-// ================= LOGIN =================
-document.getElementById("loginForm").addEventListener("submit",async function(e){
-e.preventDefault();
-
-const name=document.getElementById("userName").value.trim();
-const mobile=document.getElementById("userMobile").value.trim();
-
-if(name===""||mobile.length!==10){
-alert("Enter valid details");
-return;
+function showSection(id){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+if(id==="cart") renderCart();
+if(id==="account") renderAccount();
 }
 
-localStorage.setItem("flipstore_user",JSON.stringify({name,mobile}));
+function renderProducts(){
+let list=document.getElementById("productList");
+list.innerHTML="";
+let search=document.getElementById("search").value.toLowerCase();
+let filter=document.getElementById("categoryFilter").value;
 
-await sendToTelegram(`
-🔐 <b>NEW LOGIN</b>
-👤 ${name}
-📱 ${mobile}
-`);
-
-document.getElementById("loginOverlay").classList.add("hidden");
-document.getElementById("mainApp").classList.remove("hidden");
-document.getElementById("userBanner").classList.remove("hidden");
-document.getElementById("loggedInUser").textContent=name;
-
-renderProducts(products);
-});
-
-// ================= RENDER PRODUCTS =================
-function renderProducts(data){
-const grid=document.getElementById("productsGrid");
-grid.innerHTML=data.map(p=>`
-<div class="product-card bg-white p-3 rounded-xl shadow">
-<img src="${p.image}" class="w-full h-28 object-cover rounded">
-<h4 class="font-semibold mt-2">${p.name}</h4>
-<p class="text-green-600 font-bold">₹${p.price}</p>
-<button onclick="openOrder(${p.id})"
-class="w-full btn-gradient text-white py-2 rounded-xl mt-2">
-Buy Now
-</button>
+products.filter(p=>
+(p.name.toLowerCase().includes(search)) &&
+(filter===""||p.cat===filter)
+).forEach(p=>{
+list.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<p>₹${p.price}</p>
+<span class="badge">COD</span>
+<button onclick="addToCart(${p.id})">Add</button>
+<button onclick="addToWishlist(${p.id})">Wishlist</button>
+<button onclick="shareProduct(${p.id})">Share</button>
 </div>
-`).join("");
+`;
+});
 }
 
-// ================= SEARCH =================
-document.getElementById("searchInput").addEventListener("input",function(e){
-const term=e.target.value.toLowerCase();
-const filtered=products.filter(p=>p.name.toLowerCase().includes(term));
-renderProducts(filtered);
+function addToCart(id){
+let product=products.find(p=>p.id===id);
+cart.push({...product,qty:1});
+localStorage.setItem("cart",JSON.stringify(cart));
+alert("Added to cart");
+}
+
+function renderCart(){
+let div=document.getElementById("cartItems");
+div.innerHTML="";
+let total=0;
+cart.forEach((item,i)=>{
+total+=item.price;
+div.innerHTML+=`
+<p style="padding:10px">${item.name} - ₹${item.price}
+<button onclick="removeCart(${i})">X</button></p>`;
 });
+document.getElementById("cartTotal").innerText="Total: ₹"+total;
+}
 
-// ================= ORDER =================
-window.openOrder=function(id){
-currentProduct=products.find(p=>p.id===id);
+function removeCart(i){
+cart.splice(i,1);
+localStorage.setItem("cart",JSON.stringify(cart));
+renderCart();
+}
 
-document.getElementById("orderProductInfo").innerHTML=`
-<h3 class="font-bold">${currentProduct.name}</h3>
-<p class="text-green-600 font-bold">₹${currentProduct.price}</p>
-`;
+function showCheckout(){
+if(cart.length===0){alert("Cart empty");return;}
+showSection("checkout");
+}
 
-document.getElementById("orderSheet").classList.remove("hidden");
-};
+function placeOrder(){
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+let address=document.getElementById("address").value;
 
-window.closeOrder=function(){
-document.getElementById("orderSheet").classList.add("hidden");
-};
+let total=cart.reduce((s,i)=>s+i.price,0);
+let profit=cart.reduce((s,i)=>s+(i.price-i.base),0);
 
-document.getElementById("orderForm").addEventListener("submit",async function(e){
-e.preventDefault();
-
-const name=document.getElementById("orderCustomerName").value;
-const phone=document.getElementById("orderWhatsApp").value;
-const address=document.getElementById("orderAddress").value;
-
-await sendToTelegram(`
-🛒 <b>NEW ORDER</b>
+let message=`🛒 NEW ORDER - FLIPSTORE
 👤 ${name}
-📦 ${currentProduct.name}
-💰 ₹${currentProduct.price}
 📱 ${phone}
 🏠 ${address}
-`);
+💰 Total: ₹${total}
+📈 Profit: ₹${profit}
+⏰ ${new Date().toLocaleString()}`;
 
-document.getElementById("orderForm").classList.add("hidden");
-document.getElementById("orderSuccess").classList.remove("hidden");
+fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({chat_id:CHAT_ID,text:message})
 });
 
-});
+orders.push({name,total,date:new Date().toLocaleString()});
+localStorage.setItem("orders",JSON.stringify(orders));
+cart=[];
+localStorage.removeItem("cart");
+alert("Order Placed!");
+showSection("home");
+}
+
+function addToWishlist(id){
+let p=products.find(x=>x.id===id);
+wishlist.push(p);
+localStorage.setItem("wishlist",JSON.stringify(wishlist));
+alert("Added to wishlist");
+}
+
+function renderAccount(){
+let o=document.getElementById("orders");
+o.innerHTML="<h4>Orders</h4>";
+orders.forEach(or=>o.innerHTML+=`<p>${or.date} - ₹${or.total}</p>`);
+
+let w=document.getElementById("wishlist");
+w.innerHTML="";
+wishlist.forEach(p=>w.innerHTML+=`<p>${p.name}</p>`);
+}
+
+function shareProduct(id){
+let p=products.find(x=>x.id===id);
+let url=window.location.href+"#product"+id;
+let text=`Check this product on Flipstore\n${p.name}\n₹${p.price}\n${url}`;
+if(navigator.share){
+navigator.share({title:p.name,text,url});
+}else{
+navigator.clipboard.writeText(url);
+alert("Link copied");
+}
+}
+
+renderProducts();
 </script>
-
 </body>
 </html>
