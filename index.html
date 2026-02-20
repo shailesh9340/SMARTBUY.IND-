@@ -1,227 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flipstore by Flipkart</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-* { font-family: 'Poppins', sans-serif; }
-body { background: #f5f7fa; min-height:100vh; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flipstore Premium | Official Reselling App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #f59e0b;
+        }
 
-.fade-in { animation: fadeIn 0.6s ease-out; }
-@keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
-.slide-up { animation: slideUp 0.4s ease-out; }
-@keyframes slideUp { from {transform:translateY(100%);} to {transform:translateY(0);} }
-.pulse { animation: pulse 1s infinite; }
-@keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.5;}}
-::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:#667eea;border-radius:2px;}
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-.btn-gradient { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);}
-.btn-gradient:hover { background: linear-gradient(135deg,#5a6fd6 0%,#6a4190 100%);}
-.checkmark { animation: checkmark 0.5s ease-out; }
-@keyframes checkmark {0%{transform:scale(0);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
-</style>
+        body { background: #f8fafc; color: #1e293b; overflow-x: hidden; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slide-up { animation: slideUp 0.4s cubic-bezier(0, 0, 0.2, 1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        /* Custom Styles */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: 0.3s;
+        }
+        .btn-premium:active { transform: scale(0.98); opacity: 0.9; }
+
+        .product-card {
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+        .product-card:active { transform: scale(0.96); }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary) !important;
+            background-color: #fff !important;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+    </style>
 </head>
-<body class="pb-20">
+<body class="pb-24">
 
-<!-- Splash Animation -->
-<div id="splash" class="fixed inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center z-50">
-  <h1 class="text-4xl font-extrabold text-white">Flipstore by Flipkart</h1>
-</div>
-
-<!-- Login Overlay -->
-<div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-  <div class="w-full max-w-md px-6">
-    <div class="bg-white rounded-3xl shadow-2xl p-8 fade-in">
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-extrabold">Flip<span class="text-blue-600">Store</span></h1>
-        <p class="text-gray-500 mt-2 text-sm">Your Trusted Reselling Partner</p>
-      </div>
-      <form id="loginForm" class="space-y-5">
-        <input type="text" id="userName" placeholder="Enter your name" class="w-full px-4 py-3 rounded-xl border border-gray-300" required>
-        <input type="tel" id="userMobile" placeholder="Enter mobile number" pattern="[0-9]{10}" class="w-full px-4 py-3 rounded-xl border border-gray-300" required>
-        <button type="submit" class="w-full btn-gradient text-white py-4 rounded-xl font-semibold">
-          <i class="fas fa-shopping-bag mr-2"></i>Enter Shop
-        </button>
-      </form>
-      <p class="text-center text-xs text-gray-400 mt-6">By continuing, you agree to our Terms & Privacy Policy</p>
+<div id="splash" class="fixed inset-0 z-[100] bg-white flex flex-col justify-center items-center transition-opacity duration-700">
+    <div class="relative">
+        <div class="w-20 h-20 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+        <i class="fas fa-shopping-bag absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue-600 text-2xl"></i>
     </div>
-  </div>
+    <h1 class="mt-6 text-2xl font-extrabold tracking-tight">Flip<span class="text-blue-600">Store</span></h1>
+    <p class="text-gray-400 text-sm mt-2 animate-pulse">Premium Reselling Partner</p>
 </div>
 
-<!-- Main App -->
+<div id="loginOverlay" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-6 hidden">
+    <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl fade-in text-center">
+        <div class="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-user-shield text-blue-600 text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Welcome Back</h2>
+        <p class="text-gray-500 text-sm mb-8">Login to start your reselling business</p>
+        <form id="loginForm" class="space-y-4 text-left">
+            <div>
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Your Full Name</label>
+                <input type="text" id="userName" required class="w-full mt-1 px-5 py-3.5 rounded-2xl bg-gray-50 border border-transparent outline-none transition-all" placeholder="Enter name">
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Mobile Number</label>
+                <input type="tel" id="userMobile" pattern="[0-9]{10}" required class="w-full mt-1 px-5 py-3.5 rounded-2xl bg-gray-50 border border-transparent outline-none transition-all" placeholder="10-digit mobile">
+            </div>
+            <button type="submit" class="w-full btn-premium text-white py-4 rounded-2xl font-bold mt-2">
+                Get Started <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
 <div id="mainApp" class="hidden">
+    <header class="glass-header sticky top-0 z-40 px-5 py-4 flex items-center justify-between">
+        <div>
+            <h1 class="text-xl font-extrabold tracking-tight">Flip<span class="text-blue-600">Store</span></h1>
+            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Verified Merchant</p>
+        </div>
+        <div id="userBadge" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <i class="fas fa-circle-user"></i>
+            <span id="loggedInUserName" class="text-xs font-bold">Reseller</span>
+        </div>
+    </header>
 
-<!-- Header -->
-<header class="sticky top-0 bg-white shadow-md z-40">
-  <div class="px-4 py-3 flex items-center justify-between">
-    <h1 class="text-xl font-extrabold">Flip<span class="text-blue-600">Store</span></h1>
-    <div class="flex-1 mx-4 relative">
-      <input type="text" id="searchInput" placeholder="Search products..." class="w-full px-4 py-2 pl-10 rounded-full border border-gray-200 focus:border-blue-500 focus:outline-none bg-gray-50 text-sm">
-      <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <div class="px-5 mt-4">
+        <div class="relative group">
+            <input type="text" id="searchInput" placeholder="Search brands or products..." 
+                   class="w-full bg-white border border-gray-100 py-4 pl-12 pr-4 rounded-2xl shadow-sm outline-none transition-all">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
     </div>
-    <button class="relative p-2"><i class="fas fa-shopping-cart text-gray-700 text-lg"></i></button>
-  </div>
-</header>
 
-<!-- Banner -->
-<div id="userBanner" class="hidden bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2">
-  <p class="text-white text-sm"><i class="fas fa-user-circle mr-1"></i> Welcome, <span id="loggedInUser" class="font-semibold"></span></p>
+    <div class="px-5 mt-6">
+        <div id="categories" class="flex gap-3 overflow-x-auto pb-2 no-scrollbar"></div>
+    </div>
+
+    <main class="px-5 mt-4">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="font-bold text-gray-800">Best Sellers</h2>
+            <span id="productCount" class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">0 Items</span>
+        </div>
+        <div id="productsGrid" class="grid grid-cols-2 gap-4"></div>
+        <div id="noResults" class="hidden py-20 text-center">
+            <i class="fas fa-box-open text-4xl text-gray-200 mb-2"></i>
+            <p class="text-gray-400 text-sm">No products found</p>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 px-8 py-3 z-50 flex justify-between">
+        <button class="flex flex-col items-center gap-1 text-blue-600 font-bold"><i class="fas fa-home-alt"></i><span class="text-[9px]">Home</span></button>
+        <button class="flex flex-col items-center gap-1 text-gray-400"><i class="fas fa-tags"></i><span class="text-[9px]">Deals</span></button>
+        <button class="flex flex-col items-center gap-1 text-gray-400"><i class="fas fa-briefcase"></i><span class="text-[9px]">Orders</span></button>
+        <button class="flex flex-col items-center gap-1 text-gray-400"><i class="fas fa-gear"></i><span class="text-[9px]">Settings</span></button>
+    </nav>
 </div>
 
-<!-- Categories -->
-<section class="px-4 py-4">
-  <h2 class="text-lg font-bold mb-3">Categories</h2>
-  <div id="categories" class="flex gap-3 overflow-x-auto"></div>
-</section>
+<div id="orderSheet" class="fixed inset-0 z-[60] hidden">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeOrderSheet()"></div>
+    <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[2.5rem] max-h-[95vh] flex flex-col slide-up shadow-2xl">
+        <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto my-4 shrink-0"></div>
+        
+        <div class="overflow-y-auto px-6 pb-10">
+            <h3 class="text-xl font-extrabold text-gray-800 mb-4">Order Summary</h3>
 
-<!-- Products -->
-<main class="px-4 py-2">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-lg font-bold text-gray-800">Hot Deals</h2>
-    <span id="productCount" class="text-sm text-gray-500">0 products</span>
-  </div>
-  <div id="productsGrid" class="grid grid-cols-2 gap-4"></div>
-</main>
+            <div id="orderProductInfo" class="mb-6 p-4 bg-blue-50 rounded-3xl border border-blue-100 flex items-center gap-4"></div>
+            
+            <form id="orderForm" class="space-y-4">
+                <div class="space-y-4">
+                    <input type="text" id="orderCustomerName" required class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="Customer Full Name">
+                    <input type="tel" id="orderWhatsApp" pattern="[0-9]{10}" required class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="WhatsApp Number">
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="orderPincode" required class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="Pincode">
+                        <input type="text" id="orderCity" required class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="City / Town">
+                    </div>
+                    
+                    <textarea id="orderFullAddress" rows="2" required class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="Full Address (House No, Street, Area)"></textarea>
+                    <input type="text" id="orderLandmark" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl outline-none" placeholder="Landmark (Optional)">
+                </div>
 
-<!-- Bottom Navigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-  <div class="flex justify-around items-center py-2">
-    <button class="nav-item active flex flex-col items-center py-2 px-4" data-nav="home">
-      <i class="fas fa-home text-xl mb-1"></i><span class="text-xs">Home</span>
-    </button>
-    <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="categories">
-      <i class="fas fa-th-large text-xl mb-1"></i><span class="text-xs">Categories</span>
-    </button>
-    <button class="nav-item flex flex-col items-center py-2 px-4" data-nav="account">
-      <i class="fas fa-user text-xl mb-1"></i><span class="text-xs">Account</span>
-    </button>
-  </div>
-</nav>
+                <div class="flex items-center justify-between bg-orange-50 p-4 rounded-2xl border border-orange-100">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" id="donateCheck" onchange="updateTotal()" class="w-5 h-5 accent-orange-500">
+                        <div>
+                            <p class="text-xs font-bold text-orange-800">Donate ₹10</p>
+                            <p class="text-[9px] text-orange-600">Support Flipstore Foundation</p>
+                        </div>
+                    </div>
+                    <select id="orderQty" onchange="updateTotal()" class="bg-white border border-orange-200 px-3 py-2 rounded-xl text-xs font-bold outline-none">
+                        <option value="1">Qty: 1</option>
+                        <option value="2">Qty: 2</option>
+                        <option value="5">Qty: 5</option>
+                    </select>
+                </div>
 
-<!-- Order Page -->
-<div id="orderPage" class="hidden fixed inset-0 bg-white z-50 overflow-y-auto p-4">
-  <button onclick="closeOrderPage()" class="text-gray-500 mb-4"><i class="fas fa-arrow-left"></i> Back</button>
-  <h2 class="text-2xl font-bold mb-4">Order Summary</h2>
-  <div id="orderDetails" class="mb-4"></div>
-  <button id="donateBtn" class="btn-gradient w-full py-3 rounded-xl text-white font-semibold">Donate to Flipstore Foundation</button>
-</div>
+                <div class="bg-gray-50 p-4 rounded-2xl space-y-2 text-sm">
+                    <div class="flex justify-between text-gray-500"><span>Price</span><span id="breakdownPrice">₹0</span></div>
+                    <div id="donationRow" class="hidden flex justify-between text-gray-500"><span>Donation</span><span>₹10</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Delivery</span><span class="text-green-600 font-bold">FREE</span></div>
+                    <div class="flex justify-between text-lg font-extrabold text-gray-800 border-t pt-2 mt-2">
+                        <span>Total Payable</span><span id="totalAmount" class="text-blue-600">₹0</span>
+                    </div>
+                </div>
 
+                <button type="submit" id="confirmOrderBtn" class="w-full btn-premium text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2">
+                    <span id="btnText">Confirm & Buy Now</span>
+                    <span id="btnProcessing" class="hidden"><i class="fas fa-circle-notch fa-spin"></i> Processing...</span>
+                </button>
+            </form>
+
+            <div id="orderSuccess" class="hidden text-center py-10 fade-in">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 text-3xl"><i class="fas fa-check"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800">Order Placed!</h3>
+                <p class="text-gray-500 mt-1">We will contact you on WhatsApp soon.</p>
+                <button onclick="closeOrderSheet()" class="mt-8 w-full bg-gray-900 text-white py-4 rounded-2xl font-bold">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-// ============================================
-// Splash
-// ============================================
-setTimeout(()=>{document.getElementById('splash').style.display='none';document.getElementById('loginOverlay').classList.remove('hidden');},2000);
+    // Configuration - UPDATE THESE
+    const TELEGRAM_TOKEN = "7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4";
+    const TELEGRAM_CHAT_ID = "8450221415";
 
-// ============================================
-// Sample Data
-// ============================================
-const categoriesData = [
-  {id:1,name:'Electronics',sub:['Phones','Laptops','Accessories']},
-  {id:2,name:'Fashion',sub:['Men','Women','Kids']},
-  {id:3,name:'Toys',sub:['Soft Toys','Learning','Games']}
-];
+    const products = [
+        { id: 1, name: "AirPods Pro Gen-2 Master", price: 1299, oldPrice: 3999, category: "Electronics", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400" },
+        { id: 2, name: "Smart Watch Ultra Series", price: 1499, oldPrice: 4499, category: "Electronics", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400" },
+        { id: 3, name: "Luxury Slim-Fit Shirt", price: 599, oldPrice: 1499, category: "Fashion", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400" },
+        { id: 4, name: "Designer Summer Dress", price: 899, oldPrice: 2499, category: "Fashion", image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=400" },
+        { id: 5, name: "Soft Giant Panda Toy", price: 449, oldPrice: 999, category: "Toys", image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400" }
+    ];
 
-const products = [
-  {id:1,name:'Bluetooth Earbuds',price:299,oldPrice:599,image:'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400',category:'Electronics'},
-  {id:2,name:'Smart Watch',price:1499,oldPrice:2999,image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400',category:'Electronics'},
-  {id:3,name:'Men Shirt',price:449,oldPrice:899,image:'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400',category:'Fashion'}
-];
+    let activeCategory = 'All';
+    let currentProduct = null;
 
-// ============================================
-// App State
-// ============================================
-let currentUser = null;
-let currentProduct = null;
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                initApp();
+            }, 700);
+        }, 2000);
+    });
 
-// ============================================
-// Login
-// ============================================
-document.getElementById('loginForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  const name=document.getElementById('userName').value;
-  const mobile=document.getElementById('userMobile').value;
-  if(!name||!mobile){alert('Fill fields');return;}
-  currentUser={name,mobile};
-  localStorage.setItem('flipstore_user',JSON.stringify(currentUser));
-  document.getElementById('loginOverlay').classList.add('hidden');
-  document.getElementById('mainApp').classList.remove('hidden');
-  document.getElementById('userBanner').classList.remove('hidden');
-  document.getElementById('loggedInUser').textContent=name;
-  renderCategories();
-  renderProducts(products);
-});
-
-// ============================================
-// Render Categories
-// ============================================
-function renderCategories(){
-  const container=document.getElementById('categories');
-  container.innerHTML=categoriesData.map(cat=>`<div class="bg-white px-4 py-2 rounded-xl shadow cursor-pointer">${cat.name}</div>`).join('');
-}
-
-// ============================================
-// Render Products
-// ============================================
-function renderProducts(list){
-  document.getElementById('productCount').textContent=list.length+' products';
-  const grid=document.getElementById('productsGrid');
-  grid.innerHTML=list.map(p=>`
-    <div class="bg-white rounded-2xl shadow overflow-hidden cursor-pointer" onclick="openOrderPage(${p.id})">
-      <img src="${p.image}" class="w-full h-36 object-cover"/>
-      <div class="p-3">
-        <h3 class="font-semibold">${p.name}</h3>
-        <div class="flex items-baseline gap-2">
-          <span class="text-green-600 font-bold">₹${p.price}</span>
-          <span class="line-through text-gray-400">₹${p.oldPrice}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ============================================
-// Open Order Page
-// ============================================
-function openOrderPage(id){
-  currentProduct=products.find(p=>p.id===id);
-  const orderDetails=document.getElementById('orderDetails');
-  orderDetails.innerHTML=`
-    <p><strong>Deliver To:</strong> ${currentUser.name}, ${currentUser.mobile}</p>
-    <p><strong>Product:</strong> ${currentProduct.name}</p>
-    <p><strong>Price:</strong> ₹${currentProduct.price}</p>
-  `;
-  document.getElementById('orderPage').classList.remove('hidden');
-}
-
-// ============================================
-// Close Order Page
-// ============================================
-function closeOrderPage(){document.getElementById('orderPage').classList.add('hidden');}
-
-// ============================================
-// Donate Button
-// ============================================
-document.getElementById('donateBtn').addEventListener('click',()=>{alert('UPI: 9343988416-4@ybl')});
-
-// ============================================
-// Navigation
-// ============================================
-document.querySelectorAll('.nav-item').forEach(btn=>{
-  btn.addEventListener('click',e=>{
-    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-    btn.classList.add('active');
-    if(btn.dataset.nav==='account'){
-      alert(`Telegram Join: https://t.me/smartbuyind\nWhatsApp Channel: https://whatsapp.com/channel/0029Vb8JdHwKGGGBmkchDJ2Y`);
+    function initApp() {
+        const userData = localStorage.getItem('flipstore_user');
+        if (userData) {
+            const user = JSON.parse(userData);
+            document.getElementById('loggedInUserName').textContent = user.name;
+            document.getElementById('mainApp').classList.remove('hidden');
+            renderCategories();
+            renderProducts(products);
+        } else {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+        }
     }
-  });
-});
-</script>
 
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = { name: document.getElementById('userName').value, mobile: document.getElementById('userMobile').value };
+        localStorage.setItem('flipstore_user', JSON.stringify(user));
+        location.reload();
+    });
+
+    function renderCategories() {
+        const cats = ['All', ...new Set(products.map(p => p.category))];
+        const container = document.getElementById('categories');
+        container.innerHTML = cats.map(cat => `
+            <button onclick="filterCategory('${cat}')" 
+                    class="whitespace-nowrap px-6 py-2.5 rounded-full text-xs font-bold transition-all
+                    ${activeCategory === cat ? 'bg-blue-600 text-white' : 'bg-white text-gray-500 border border-gray-100'}">
+                ${cat}
+            </button>
+        `).join('');
+    }
+
+    function filterCategory(cat) {
+        activeCategory = cat;
+        renderCategories();
+        const filtered = cat === 'All' ? products : products.filter(p => p.category === cat);
+        renderProducts(filtered);
+    }
+
+    function renderProducts(list) {
+        const grid = document.getElementById('productsGrid');
+        const empty = document.getElementById('noResults');
+        document.getElementById('productCount').textContent = `${list.length} Items`;
+        
+        if (list.length === 0) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        
+        grid.innerHTML = list.map(p => `
+            <div class="product-card bg-white rounded-3xl overflow-hidden p-2 fade-in shadow-sm">
+                <img src="${p.image}" class="w-full aspect-square object-cover rounded-2xl mb-2">
+                <div class="px-1">
+                    <h3 class="text-[11px] font-bold text-gray-800 line-clamp-1">${p.name}</h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="text-sm font-black text-blue-600">₹${p.price}</span>
+                        <span class="text-[9px] text-gray-400 line-through">₹${p.oldPrice}</span>
+                    </div>
+                    <button onclick="openOrderSheet(${p.id})" class="w-full mt-2.5 bg-gray-900 text-white py-2 rounded-xl text-[10px] font-bold">Buy Now</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openOrderSheet(id) {
+        currentProduct = products.find(p => p.id === id);
+        document.getElementById('orderProductInfo').innerHTML = `
+            <img src="${currentProduct.image}" class="w-16 h-16 rounded-xl object-cover">
+            <div>
+                <h4 class="font-bold text-gray-800 text-sm">${currentProduct.name}</h4>
+                <p class="text-blue-600 font-extrabold">₹${currentProduct.price}</p>
+            </div>
+        `;
+        document.getElementById('donateCheck').checked = false;
+        document.getElementById('orderQty').value = "1";
+        updateTotal();
+        document.getElementById('orderForm').classList.remove('hidden');
+        document.getElementById('orderSuccess').classList.add('hidden');
+        document.getElementById('orderSheet').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrderSheet() {
+        document.getElementById('orderSheet').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function updateTotal() {
+        const qty = parseInt(document.getElementById('orderQty').value);
+        const basePrice = currentProduct.price * qty;
+        const donation = document.getElementById('donateCheck').checked ? 10 : 0;
+        document.getElementById('breakdownPrice').textContent = `₹${basePrice}`;
+        document.getElementById('totalAmount').textContent = `₹${basePrice + donation}`;
+        document.getElementById('donationRow').classList.toggle('hidden', donation === 0);
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('confirmOrderBtn');
+        const btnText = document.getElementById('btnText');
+        const btnProc = document.getElementById('btnProcessing');
+        const user = JSON.parse(localStorage.getItem('flipstore_user'));
+
+        btnText.classList.add('hidden'); btnProc.classList.remove('hidden');
+        btn.disabled = true;
+
+        const orderDetails = {
+            cust: document.getElementById('orderCustomerName').value,
+            wa: document.getElementById('orderWhatsApp').value,
+            pin: document.getElementById('orderPincode').value,
+            city: document.getElementById('orderCity').value,
+            addr: document.getElementById('orderFullAddress').value,
+            landmark: document.getElementById('orderLandmark').value || 'N/A',
+            qty: document.getElementById('orderQty').value,
+            total: document.getElementById('totalAmount').textContent,
+            donate: document.getElementById('donateCheck').checked ? "Yes (₹10)" : "No"
+        };
+
+        const text = `🚀 *NEW ORDER RECEIVED*\n` +
+                     `────────────────────\n` +
+                     `📦 *Product:* ${currentProduct.name}\n` +
+                     `🔢 *Quantity:* ${orderDetails.qty}\n` +
+                     `💰 *Final Amount:* ${orderDetails.total}\n` +
+                     `🧡 *Donation:* ${orderDetails.donate}\n\n` +
+                     `👤 *Customer:* ${orderDetails.cust}\n` +
+                     `📱 *WhatsApp:* ${orderDetails.wa}\n\n` +
+                     `📍 *Address:* ${orderDetails.addr}\n` +
+                     `🌆 *City:* ${orderDetails.city} - ${orderDetails.pin}\n` +
+                     `🚩 *Landmark:* ${orderDetails.landmark}\n\n` +
+                     `👔 *Reseller:* ${user.name} (${user.mobile})`;
+
+        try {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'Markdown' })
+            });
+        } catch (err) { alert("Error sending order. Check console."); }
+
+        setTimeout(() => {
+            btnText.classList.remove('hidden'); btnProc.classList.add('hidden'); btn.disabled = false;
+            document.getElementById('orderForm').classList.add('hidden');
+            document.getElementById('orderSuccess').classList.remove('hidden');
+        }, 1500);
+    });
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term));
+        renderProducts(filtered);
+    });
+</script>
 </body>
 </html>
+
+
