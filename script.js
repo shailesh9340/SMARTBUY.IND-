@@ -1,140 +1,176 @@
+// ==========================================
+// 1. TELEGRAM BOT CONFIGURATION (Yahan apna data dalein)
+// ==========================================
+const TELEGRAM_TOKEN = "7996956533:AAGRbrHJva3t0Pyfu7Met1ttg2w-974msb4"; // Apna token yahan daalein
+const TELEGRAM_CHAT_ID = "8450221415"; // Apna Chat ID yahan daalein
+
+// ==========================================
+// 2. PRODUCT DATA (Naya 'commission' add kiya gaya hai)
+// ==========================================
 const productsData = [
-    { id: 1, brand: "VELLOSTA", name: "Men Checkered Casual Shirt", size: "M", price: 303, mrp: 1499, discount: "79% off", rating: 4.0, reviews: "7,342", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=200", delivery: "Feb 25, Wed" },
-    { id: 2, brand: "SC PROJECT", name: "Universal Stainless Steel Exhaust", size: "Standard", price: 1449, mrp: 3999, discount: "63% off", rating: 4.2, reviews: "712", image: "https://images.unsplash.com/photo-1552086938-1a5c60205d8f?w=200", delivery: "Feb 25, Wed", tag: "Hot Deal" },
-    { id: 3, brand: "PUMA", name: "Running Shoes for Men", size: "9", price: 1299, mrp: 2999, discount: "56% off", rating: 4.5, reviews: "12,450", image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200", delivery: "Feb 26, Thu" }
+    { id: 1, brand: "VELLOSTA", name: "Men Checkered Casual Shirt", size: "M", price: 303, mrp: 1499, discount: "79% off", commission: 40, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=200" },
+    { id: 2, brand: "SC PROJECT", name: "Universal Exhaust", size: "Standard", price: 1449, mrp: 3999, discount: "63% off", commission: 150, image: "https://images.unsplash.com/photo-1552086938-1a5c60205d8f?w=200" },
+    { id: 3, brand: "PUMA", name: "Running Shoes", size: "9", price: 1299, mrp: 2999, discount: "56% off", commission: 100, image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200" },
+    { id: 4, brand: "FASTRACK", name: "Men Analog Watch", size: "Free", price: 899, mrp: 1999, discount: "50% off", commission: 80, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" }
 ];
 
-let cart = [...productsData]; // Auto-fill cart for demo
+let cart = [];
+let currentUser = null;
 
+// ==========================================
+// 3. APP INITIALIZATION & LOGIN
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    renderAddress();
-    renderCart();
-    
-    // Simulate Network Request with Skeleton Loader
-    renderSkeletons();
-    setTimeout(() => {
-        renderHomeProducts();
-    }, 1500); // 1.5 seconds loading time
+    const savedUser = localStorage.getItem('flipstore_user');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        initApp();
+    } else {
+        document.getElementById('loginOverlay').classList.remove('hidden');
+    }
 });
 
-// --- TOAST NOTIFICATION SYSTEM ---
+function handleLogin(e) {
+    e.preventDefault();
+    currentUser = {
+        name: document.getElementById('userName').value,
+        phone: document.getElementById('userMobile').value
+    };
+    localStorage.setItem('flipstore_user', JSON.stringify(currentUser));
+    document.getElementById('loginOverlay').classList.add('hidden');
+    initApp();
+    showToast("Login Successful!");
+}
+
+function handleLogout() {
+    localStorage.removeItem('flipstore_user');
+    location.reload();
+}
+
+function initApp() {
+    document.getElementById('mainApp').classList.remove('hidden');
+    document.getElementById('profileName').textContent = currentUser.name;
+    document.getElementById('profilePhone').textContent = currentUser.phone;
+    renderAddress();
+    renderHomeProducts();
+    renderCart();
+}
+
+// ==========================================
+// 4. UI HELPERS (Toasts & Tabs)
+// ==========================================
 function showToast(message, type = 'success') {
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
     const bgColor = type === 'error' ? 'bg-red-600' : 'bg-green-600';
-    const icon = type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle';
-    
-    toast.className = `${bgColor} text-white px-4 py-3 rounded shadow-lg flex items-center gap-3 text-sm font-medium toast-enter`;
-    toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
-    
+    toast.className = `${bgColor} text-white px-4 py-3 rounded shadow-lg flex items-center gap-2 text-sm font-medium toast-enter`;
+    toast.innerHTML = `<i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> <span>${message}</span>`;
     container.appendChild(toast);
-    
     setTimeout(() => {
         toast.classList.replace('toast-enter', 'toast-exit');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
-// --- TAB SWITCHING ---
 function switchTab(tabId, element) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
     document.getElementById(tabId).classList.remove('hidden');
-
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('text-blue-600'); btn.classList.add('text-gray-500');
     });
     element.classList.remove('text-gray-500'); element.classList.add('text-blue-600');
-    window.scrollTo(0, 0);
 }
 
-// --- ADDRESS LOGIC ---
+// ==========================================
+// 5. ADDRESS LOGIC
+// ==========================================
 function openAddressForm() { document.getElementById('addressFormView').classList.remove('hidden'); }
 function closeAddressForm() { document.getElementById('addressFormView').classList.add('hidden'); }
 
 function saveAddress(e) {
     e.preventDefault();
-    const phone = document.getElementById('addPhone').value;
-    const pin = document.getElementById('addPin').value;
-
-    // Pro-level validation
-    if(phone.length !== 10 || pin.length !== 6) {
-        document.getElementById('formError').classList.remove('hidden');
-        showToast("Enter a valid 10-digit phone and 6-digit Pincode", "error");
-        return;
-    }
-
     const address = {
         name: document.getElementById('addName').value,
-        phone: phone, pin: pin,
+        phone: document.getElementById('addPhone').value,
+        pin: document.getElementById('addPin').value,
         city: document.getElementById('addCity').value,
         full: document.getElementById('addFullAddress').value
     };
-    
     localStorage.setItem('flipstore_address', JSON.stringify(address));
-    document.getElementById('formError').classList.add('hidden');
     closeAddressForm();
     renderAddress();
-    showToast("Address Saved Successfully!");
+    showToast("Address Saved!");
 }
 
 function renderAddress() {
     const saved = localStorage.getItem('flipstore_address');
     const cartBox = document.getElementById('cartAddressBox');
     const homeTop = document.getElementById('homeTopAddress');
-
+    
     if(saved) {
         const ad = JSON.parse(saved);
-        if(homeTop) homeTop.innerHTML = `<i class="fas fa-map-marker-alt text-blue-600"></i> ${ad.city}, ${ad.pin} <i class="fas fa-chevron-down text-[10px] ml-1"></i>`;
-        
+        if(homeTop) homeTop.innerHTML = `<i class="fas fa-map-marker-alt text-blue-600"></i> Deliver to ${ad.city} - ${ad.pin} <i class="fas fa-chevron-down text-[10px] ml-1"></i>`;
         if(cartBox) cartBox.innerHTML = `
             <div>
                 <span class="font-medium text-gray-500">Deliver to:</span> <span class="font-bold">${ad.name}, ${ad.pin}</span>
                 <p class="text-xs text-gray-400 mt-0.5 line-clamp-1">${ad.full}</p>
             </div>
-            <button onclick="openAddressForm()" class="text-blue-600 font-bold border border-gray-200 px-3 py-1.5 rounded shadow-sm text-xs bg-white">Change</button>
-        `;
+            <button onclick="openAddressForm()" class="text-blue-600 font-bold border px-3 py-1 rounded shadow-sm text-xs bg-white">Change</button>`;
     } else {
         if(homeTop) homeTop.innerHTML = `<i class="fas fa-map-marker-alt text-blue-600"></i> Add Delivery Address <i class="fas fa-chevron-down text-[10px]"></i>`;
         if(cartBox) cartBox.innerHTML = `
-            <div class="flex-1 flex justify-between items-center py-1">
-                <p class="text-sm font-bold text-red-500"><i class="fas fa-exclamation-triangle"></i> No Delivery Address</p>
-                <button onclick="openAddressForm()" class="bg-blue-600 text-white font-bold px-4 py-2 rounded text-xs shadow">Add Address</button>
-            </div>
-        `;
+            <p class="text-sm font-bold text-red-500">No Address Added</p>
+            <button onclick="openAddressForm()" class="bg-blue-600 text-white font-bold px-4 py-1.5 rounded text-xs shadow">Add Address</button>`;
     }
 }
 
-// --- PRODUCT & CART LOGIC ---
-function renderSkeletons() {
-    const container = document.getElementById('homeProductSlider');
-    container.innerHTML = Array(4).fill().map(() => `
-        <div class="min-w-[130px] border rounded-md p-2 bg-white shrink-0">
-            <div class="h-28 w-full shimmer rounded mb-2"></div>
-            <div class="h-3 w-3/4 shimmer rounded mb-1"></div>
-            <div class="h-4 w-1/2 shimmer rounded mt-2"></div>
+// ==========================================
+// 6. PRODUCTS, BUY NOW & SHARE LOGIC
+// ==========================================
+function renderHomeProducts() {
+    const container = document.getElementById('homeProductGrid');
+    container.innerHTML = productsData.map(p => `
+        <div class="border border-gray-100 rounded-md p-2 shadow-sm bg-white relative flex flex-col">
+            <div class="h-32 w-full bg-gray-50 rounded flex items-center justify-center mb-2">
+                <img src="${p.image}" class="h-full object-cover">
+            </div>
+            <h3 class="text-xs text-gray-700 line-clamp-2 min-h-[32px]">${p.brand} ${p.name}</h3>
+            <div class="flex items-center gap-1 mt-1">
+                <span class="font-bold text-sm">₹${p.price}</span>
+                <span class="text-[9px] text-gray-400 line-through">₹${p.mrp}</span>
+                <span class="text-[9px] text-green-600 font-bold ml-auto">Earn ₹${p.commission}</span>
+            </div>
+            
+            <div class="flex gap-2 mt-3">
+                <button onclick="buyNow(${p.id})" class="flex-1 bg-[#ffc200] text-black py-2 rounded text-xs font-bold shadow-sm active:scale-95 transition-transform">Buy Now</button>
+                <button onclick="shareProduct(${p.id})" class="bg-green-500 text-white px-3 py-2 rounded text-xs font-bold shadow-sm active:scale-95 transition-transform"><i class="fab fa-whatsapp text-sm"></i></button>
+            </div>
         </div>
     `).join('');
 }
 
-function renderHomeProducts() {
-    const container = document.getElementById('homeProductSlider');
-    container.innerHTML = productsData.map(p => `
-        <div class="min-w-[130px] max-w-[130px] border border-gray-100 rounded-md p-2 shadow-sm bg-white shrink-0 relative group">
-            <div class="h-28 w-full bg-gray-50 rounded flex items-center justify-center mb-2 overflow-hidden relative">
-                <img src="${p.image}" class="h-full object-cover">
-                <button onclick="addToCart(${p.id})" class="absolute bottom-1 right-1 bg-white shadow rounded-full w-7 h-7 text-blue-600 flex items-center justify-center opacity-90 active:scale-90 transition-transform"><i class="fas fa-plus text-xs"></i></button>
-            </div>
-            <h3 class="text-xs text-gray-700 truncate">${p.name}</h3>
-            <div class="flex items-center gap-1 mt-1"><span class="font-bold text-sm">₹${p.price}</span><span class="text-[9px] text-green-600 font-bold">${p.discount}</span></div>
-        </div>
-    `).join('');
+// NAYA: Direct Buy Now Feature
+function buyNow(id) {
+    const product = productsData.find(p => p.id === id);
+    cart = [product]; // Cart mein sirf yahi product aayega
+    renderCart();
+    openCheckout(); // Direct checkout page pe bhej dega
+}
+
+// NAYA: WhatsApp Share Feature
+function shareProduct(id) {
+    const p = productsData.find(p => p.id === id);
+    const message = `🔥 *MEGA DEAL ALERT* 🔥\n\n*${p.brand} ${p.name}*\n💰 Special Price: *₹${p.price}* (Original: ~₹${p.mrp}~)\n\nMessage me back to place your order with FREE Delivery! 🚀\n\n- _Shared by ${currentUser.name}_`;
+    
+    // Open WhatsApp
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`);
 }
 
 function addToCart(id) {
     const product = productsData.find(p => p.id === id);
     cart.push(product);
     renderCart();
-    showToast("Added to your Cart!");
+    showToast("Added to Cart!");
 }
 
 function removeFromCart(index) {
@@ -147,81 +183,126 @@ function renderCart() {
     const container = document.getElementById('cartItemsContainer');
     const badge = document.getElementById('navCartBadge');
     
-    // Update Badges
-    document.getElementById('cartCount').textContent = cart.length;
-    if(cart.length > 0) { badge.textContent = cart.length; badge.classList.remove('hidden'); } 
-    else { badge.classList.add('hidden'); }
+    badge.textContent = cart.length;
+    cart.length > 0 ? badge.classList.remove('hidden') : badge.classList.add('hidden');
 
-    let totalSellingPrice = 0;
-    let totalMRP = 0;
-
+    let total = 0;
+    
     if (cart.length === 0) {
-        container.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-20 bg-white mt-1">
-                <img src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png" class="w-40 mb-4 opacity-50">
-                <h3 class="font-medium text-gray-800">Your cart is empty!</h3>
-                <p class="text-xs text-gray-500 mt-1">Add items to it now.</p>
-                <button onclick="switchTab('homeView', document.querySelector('.nav-btn'))" class="mt-4 bg-blue-600 text-white px-8 py-2 rounded shadow text-sm font-medium">Shop Now</button>
-            </div>`;
+        container.innerHTML = `<div class="text-center py-20 text-gray-500 text-sm">Your cart is empty</div>`;
         document.getElementById('cartTotalText').textContent = `₹0`;
-        document.getElementById('cartBottomMrp').textContent = ``;
         return;
     }
 
     container.innerHTML = cart.map((p, index) => {
-        totalSellingPrice += p.price;
-        totalMRP += p.mrp;
+        total += p.price;
         return `
-        <div class="bg-white border-b mt-2 animate-fade-in">
-            ${p.tag ? `<div class="bg-green-50 text-green-700 text-[10px] font-bold px-2 py-1 inline-block mt-2 ml-3 rounded">${p.tag}</div>` : ''}
-            <div class="p-3 flex gap-3">
-                <div class="w-20 shrink-0">
-                    <img src="${p.image}" class="w-full object-contain border rounded p-1">
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-sm text-gray-800 line-clamp-2">${p.brand} ${p.name}</h3>
-                    <p class="text-xs text-gray-500 mt-1">Size: ${p.size}</p>
-                    <div class="flex items-end gap-2 mt-2">
-                        <span class="text-green-600 font-bold text-sm">↓${p.discount}</span>
-                        <span class="text-gray-400 line-through text-sm">₹${p.mrp}</span>
-                        <span class="font-bold text-lg">₹${p.price}</span>
-                    </div>
-                </div>
+        <div class="bg-white border-b p-3 flex gap-3 mt-2">
+            <img src="${p.image}" class="w-16 h-16 object-contain border rounded p-1">
+            <div class="flex-1">
+                <h3 class="text-sm text-gray-800 line-clamp-1">${p.brand} ${p.name}</h3>
+                <div class="font-bold text-lg mt-1">₹${p.price}</div>
             </div>
-            <div class="flex border-t divide-x text-center text-sm font-medium text-gray-600">
-                <button onclick="removeFromCart(${index})" class="flex-1 py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors"><i class="far fa-trash-alt mr-1"></i> Remove</button>
-                <button class="flex-1 py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors"><i class="fas fa-bolt text-yellow-500 mr-1"></i> Buy This Now</button>
-            </div>
-        </div>
-    `}).join('');
+            <button onclick="removeFromCart(${index})" class="text-red-500 self-start p-2"><i class="far fa-trash-alt"></i></button>
+        </div>`
+    }).join('');
 
-    // Append Price Details Breakdown
-    const totalDiscount = totalMRP - totalSellingPrice;
-    container.innerHTML += `
-        <div class="bg-white p-4 mt-2 border-y mb-6">
-            <h3 class="font-bold text-gray-500 border-b pb-2 mb-3 text-sm uppercase">Price Details</h3>
-            <div class="flex justify-between text-sm mb-3 text-gray-700"><span>Price (${cart.length} items)</span><span>₹${totalMRP}</span></div>
-            <div class="flex justify-between text-sm mb-3 text-gray-700"><span>Discount</span><span class="text-green-600">- ₹${totalDiscount}</span></div>
-            <div class="flex justify-between text-sm mb-3 text-gray-700"><span>Delivery Charges</span><span class="text-green-600">FREE Delivery</span></div>
-            <div class="flex justify-between text-base font-bold border-t border-dashed pt-3 mt-1"><span>Total Amount</span><span>₹${totalSellingPrice}</span></div>
-            <p class="text-green-600 font-medium text-xs bg-green-50 p-2 rounded mt-4 text-center">You will save ₹${totalDiscount} on this order</p>
-        </div>
-    `;
-
-    document.getElementById('cartTotalText').textContent = `₹${totalSellingPrice}`;
-    document.getElementById('cartBottomMrp').textContent = `₹${totalMRP}`;
+    document.getElementById('cartTotalText').textContent = `₹${total}`;
 }
 
+// ==========================================
+// 7. CHECKOUT & TELEGRAM BOT INTEGRATION
+// ==========================================
 function openCheckout() {
-    if(cart.length === 0) {
-        showToast("Your cart is empty!", "error");
-        return;
-    }
+    if(cart.length === 0) return showToast("Please add a product to order!", "error");
+    
     const saved = localStorage.getItem('flipstore_address');
     if(!saved) {
-        showToast("Please add an address to continue", "error");
-        openAddressForm();
-        return;
+        showToast("Add Customer's Address first!", "error");
+        return openAddressForm();
     }
-    showToast("Redirecting to Payment Gateway...");
+    
+    const ad = JSON.parse(saved);
+    document.getElementById('checkoutAddressBox').innerHTML = `
+        <h3 class="text-gray-500 font-medium text-sm mb-2">Deliver to Customer:</h3>
+        <h2 class="font-bold text-sm">${ad.name}</h2>
+        <p class="text-sm text-gray-600 mt-1">${ad.full}, ${ad.city} - ${ad.pin}</p>
+        <p class="text-sm font-medium mt-1">${ad.phone}</p>
+        <button onclick="openAddressForm()" class="mt-2 text-blue-600 font-bold border px-3 py-1 rounded shadow-sm text-[10px] bg-white">Change Address</button>
+        `;
+
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('checkoutItems').innerHTML = cart.map(p => `
+        <div class="p-3 border-b flex justify-between text-sm">
+            <span class="line-clamp-1 w-2/3">${p.name}</span> <span class="font-bold">₹${p.price}</span>
+        </div>`).join('');
+    
+    document.getElementById('checkoutFinalTotal').textContent = `₹${total}`;
+    document.getElementById('checkoutBottomTotal').textContent = `₹${total}`;
+    
+    document.getElementById('checkoutView').classList.remove('hidden');
+}
+
+function closeCheckout() { document.getElementById('checkoutView').classList.add('hidden'); }
+
+// 🚀 REAL BACKEND CONNECTION (Now with Commission Details)
+async function sendOrderToTelegram() {
+    const btn = document.getElementById('confirmOrderBtn');
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+    btn.disabled = true;
+
+    const ad = JSON.parse(localStorage.getItem('flipstore_address'));
+    let totalAmt = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    // NAYA: Commission Calculation
+    let totalCommission = cart.reduce((sum, item) => sum + item.commission, 0);
+    
+    let itemsList = cart.map((i, index) => `${index + 1}. ${i.brand} ${i.name} - ₹${i.price}`).join('\n');
+
+    const message = `
+🛒 *NEW RESELLER ORDER*
+────────────────────
+*Items Ordered:*
+${itemsList}
+
+💰 *Customer Pays:* ₹${totalAmt}
+🤑 *Reseller Commission Earned:* ₹${totalCommission}
+
+📍 *Customer Details (Deliver To):*
+*Name:* ${ad.name}
+*Phone:* ${ad.phone}
+*Address:* ${ad.full}, ${ad.city} - ${ad.pin}
+
+👔 *Reseller / Affiliate Info:*
+*Name:* ${currentUser.name}
+*Phone:* ${currentUser.phone}
+`;
+
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        if (response.ok) {
+            showToast("Order Placed! Commission added to your profile.");
+            cart = []; // Order successful hone par cart empty ho jayega
+            renderCart();
+            closeCheckout();
+            switchTab('homeView', document.querySelector('.nav-btn'));
+        } else {
+            throw new Error("Telegram API Error");
+        }
+    } catch (error) {
+        showToast("Error! Check Bot Token and Internet.", "error");
+        console.error(error);
+    } finally {
+        btn.innerHTML = `Continue`;
+        btn.disabled = false;
+    }
 }
