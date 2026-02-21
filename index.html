@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Flipstore - Online Shopping</title>
+    <title>Flipstore - Pro Version</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 pb-16 text-gray-800">
+<body class="bg-gray-100 pb-16 text-gray-800 antialiased">
 
-    <div id="homeView" class="tab-content block">
-        <div class="bg-white px-3 pt-3 pb-2 sticky top-0 z-40 shadow-sm">
+    <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-11/12 max-w-sm pointer-events-none"></div>
+
+    <div id="homeView" class="tab-content block animate-fade-in">
+        <div class="bg-white px-3 pt-3 pb-2 sticky top-0 z-40 shadow-sm transition-all">
             <div class="flex justify-between gap-2 mb-3">
                 <button class="flex-1 bg-blue-50 text-blue-600 font-bold text-xs py-2 rounded flex justify-center items-center gap-1 border border-blue-100"><i class="fas fa-shopping-bag"></i> Flipstore</button>
                 <button class="flex-1 bg-gray-50 text-gray-700 font-bold text-xs py-2 rounded flex justify-center items-center gap-1 border border-gray-100"><i class="fas fa-rupee-sign text-blue-500"></i> Finance</button>
@@ -19,178 +21,94 @@
             </div>
             
             <div class="flex justify-between items-center mb-3">
-                <div class="text-xs font-semibold text-gray-700 flex items-center gap-1 truncate max-w-[70%]">
-                    <i class="fas fa-home"></i> HOME Subhashnagar, near by... <i class="fas fa-chevron-down text-[10px]"></i>
+                <div class="text-xs font-semibold text-gray-700 flex items-center gap-1 truncate max-w-[70%] cursor-pointer" onclick="openAddressForm()" id="homeTopAddress">
+                    <i class="fas fa-map-marker-alt text-blue-600"></i> Add Delivery Address <i class="fas fa-chevron-down text-[10px]"></i>
                 </div>
                 <div class="bg-gray-100 px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
                     <i class="fas fa-bolt text-yellow-500"></i> 0
                 </div>
             </div>
 
-            <div class="relative">
+            <div class="relative shadow-sm rounded-md">
                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" placeholder="mobiles" class="w-full bg-gray-100 text-sm py-2.5 pl-9 pr-10 rounded-md outline-none border border-gray-200 focus:border-blue-400">
-                <i class="fas fa-camera absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                <input type="text" placeholder="Search for products, brands and more" class="w-full bg-gray-50 text-sm py-2.5 pl-9 pr-10 rounded-md outline-none border border-gray-200 focus:border-blue-500 focus:bg-white transition-colors">
+                <i class="fas fa-camera absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"></i>
             </div>
-
-            <div class="flex gap-4 mt-4 overflow-x-auto no-scrollbar pb-1 text-center">
-                <div class="flex flex-col items-center min-w-max border-b-2 border-blue-600 pb-1">
-                    <div class="w-10 h-10 bg-blue-50 rounded-full flex justify-center items-center text-blue-600 mb-1"><i class="fas fa-heart"></i></div>
-                    <span class="text-[10px] font-bold text-blue-600">For You</span>
-                </div>
-                <div class="flex flex-col items-center min-w-max">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center mb-1"><i class="fas fa-tshirt"></i></div>
-                    <span class="text-[10px] font-medium">Fashion</span>
-                </div>
-                <div class="flex flex-col items-center min-w-max">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center mb-1"><i class="fas fa-mobile-alt"></i></div>
-                    <span class="text-[10px] font-medium">Mobiles</span>
-                </div>
-                <div class="flex flex-col items-center min-w-max">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center mb-1"><i class="fas fa-laptop"></i></div>
-                    <span class="text-[10px] font-medium">Electronics</span>
-                </div>
-                <div class="flex flex-col items-center min-w-max">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center mb-1"><i class="fas fa-couch"></i></div>
-                    <span class="text-[10px] font-medium">Home</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-2">
-            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80" class="w-full rounded-md object-cover h-36" alt="Sale Banner">
         </div>
 
         <div class="bg-white p-3 mt-1">
-            <h2 class="font-bold text-sm mb-3">Shailesh Kumar, still looking for these?</h2>
-            <div class="flex gap-3 overflow-x-auto no-scrollbar" id="homeProductSlider">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-sm">Recommended for You</h2>
+                <button class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="homeProductSlider">
                 </div>
         </div>
     </div>
 
-    <div id="accountView" class="tab-content hidden">
-        <div class="bg-white pt-4 pb-2 px-4 border-b">
-            <div class="flex justify-between items-start mb-2">
-                <div>
-                    <h2 class="font-bold text-lg">Shailesh Kumar Chauhan</h2>
-                    <p class="text-gray-500 text-xs mt-0.5"><i class="fas fa-star text-gray-400"></i> Plus Silver</p>
-                    <p class="text-xs font-medium mt-1">valid till January 28, 2027 <i class="fas fa-chevron-right text-[10px]"></i></p>
-                </div>
-                <div class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold border border-yellow-200">
-                    <i class="fas fa-bolt"></i> 0
-                </div>
-            </div>
-            <div class="bg-slate-800 text-white rounded-md p-2 mt-3 flex justify-between items-center text-xs font-bold">
-                <span>Upgrade to <span class="text-gray-300 italic">Flipstore BLACK</span></span>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </div>
-
-        <div class="bg-white grid grid-cols-2 gap-2 p-3 border-b">
-            <button class="border rounded p-2 flex items-center gap-2 text-sm font-medium"><i class="fas fa-box text-blue-600"></i> Orders</button>
-            <button class="border rounded p-2 flex items-center gap-2 text-sm font-medium"><i class="far fa-heart text-blue-600"></i> Wishlist</button>
-            <button class="border rounded p-2 flex items-center gap-2 text-sm font-medium"><i class="fas fa-gift text-blue-600"></i> Coupons</button>
-            <button class="border rounded p-2 flex items-center gap-2 text-sm font-medium"><i class="fas fa-headset text-blue-600"></i> Help Center</button>
-        </div>
-
-        <div class="bg-white mt-2 border-y">
-            <h3 class="font-bold px-4 py-3 border-b">Account Settings</h3>
-            <div class="px-4 py-3 border-b flex justify-between items-center"><span class="text-sm"><i class="fas fa-bolt text-blue-600 w-6"></i> Flipstore Plus</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
-            <div class="px-4 py-3 border-b flex justify-between items-center"><span class="text-sm"><i class="far fa-user text-blue-600 w-6"></i> Edit Profile</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
-            <div class="px-4 py-3 border-b flex justify-between items-center"><span class="text-sm"><i class="fas fa-map-marker-alt text-blue-600 w-6"></i> Saved Addresses</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
-            <div class="px-4 py-3 flex justify-between items-center"><span class="text-sm"><i class="fas fa-language text-blue-600 w-6"></i> Select Language</span><i class="fas fa-chevron-right text-gray-400 text-xs"></i></div>
-        </div>
-
-        <button class="w-full bg-white text-blue-600 font-bold py-3 mt-4 border-y">Log Out</button>
-    </div>
-
-    <div id="cartView" class="tab-content hidden h-full flex flex-col relative pb-16">
+    <div id="cartView" class="tab-content hidden h-full flex flex-col relative pb-16 animate-fade-in">
         <div class="bg-white flex shadow-sm sticky top-0 z-10">
-            <button class="flex-1 py-3 text-blue-600 border-b-2 border-blue-600 font-bold text-sm">Flipstore (2)</button>
+            <button class="flex-1 py-3 text-blue-600 border-b-2 border-blue-600 font-bold text-sm">Flipstore (<span id="cartCount">0</span>)</button>
             <button class="flex-1 py-3 text-gray-500 font-medium text-sm">Grocery</button>
         </div>
 
-        <div class="bg-white p-3 flex justify-between items-center border-b text-sm mt-1">
-            <div>
-                <span class="font-medium text-gray-500">Deliver to:</span> <span class="font-bold">Shailesh... , 497001</span>
-                <p class="text-xs text-gray-400 truncate w-48 mt-0.5">Subhashnagar, near by new purnima...</p>
+        <div class="bg-white p-3 border-b text-sm mt-1 flex justify-between items-center" id="cartAddressBox">
             </div>
-            <button class="text-blue-600 font-bold border border-gray-200 px-3 py-1.5 rounded shadow-sm text-xs bg-white">Change</button>
-        </div>
 
         <div id="cartItemsContainer" class="flex-1 overflow-y-auto">
             </div>
 
-        <div class="fixed bottom-[56px] left-0 right-0 bg-white border-t p-2 flex justify-between items-center z-40 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+        <div class="fixed bottom-[56px] left-0 right-0 bg-white border-t p-2 px-4 flex justify-between items-center z-40 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
             <div>
-                <p class="text-xs text-gray-400 line-through">₹94,294</p>
+                <p class="text-xs text-gray-400 line-through" id="cartBottomMrp">₹0</p>
                 <p class="text-lg font-bold" id="cartTotalText">₹0</p>
             </div>
-            <button onclick="openCheckout()" class="bg-[#ffc200] text-black font-bold px-8 py-3 rounded-sm w-40 text-sm shadow-sm">Place Order</button>
+            <button onclick="openCheckout()" class="bg-[#ffc200] active:bg-[#e6af00] text-black font-bold px-8 py-3 rounded-sm w-40 text-sm shadow-sm transition-colors">Place Order</button>
         </div>
     </div>
 
-    <div id="checkoutView" class="fixed inset-0 bg-gray-100 z-50 hidden flex flex-col overflow-y-auto">
-        <div class="bg-blue-600 text-white p-3 flex items-center gap-3 sticky top-0 z-10">
-            <i class="fas fa-arrow-left text-lg" onclick="closeCheckout()"></i>
-            <h1 class="text-lg font-medium">Order Summary</h1>
+    <div id="addressFormView" class="fixed inset-0 bg-gray-50 z-[60] hidden flex flex-col animate-slide-up">
+        <div class="bg-blue-600 text-white p-4 flex items-center gap-4 shadow-md sticky top-0">
+            <i class="fas fa-arrow-left text-lg cursor-pointer" onclick="closeAddressForm()"></i>
+            <h1 class="text-lg font-medium">Add Delivery Address</h1>
         </div>
-        
-        <div class="bg-white flex items-center justify-between px-6 py-3 border-b text-xs font-medium text-gray-500">
-            <div class="flex flex-col items-center"><div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center mb-1"><i class="fas fa-check text-[10px]"></i></div> Address</div>
-            <div class="h-[1px] bg-blue-600 flex-1 mx-2 mt-[-15px]"></div>
-            <div class="flex flex-col items-center"><div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center mb-1">2</div> Order Summary</div>
-            <div class="h-[1px] bg-gray-300 flex-1 mx-2 mt-[-15px]"></div>
-            <div class="flex flex-col items-center"><div class="w-5 h-5 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center mb-1">3</div> Payment</div>
-        </div>
-
-        <div class="bg-white p-4 mt-2 border-y">
-            <div class="flex justify-between items-start">
-                <h3 class="text-gray-500 font-medium text-sm mb-2">Deliver to:</h3>
-                <button class="text-blue-600 font-bold border border-gray-200 px-3 py-1 rounded shadow-sm text-xs">Change</button>
+        <form id="addressForm" class="p-4 flex-1 overflow-y-auto bg-white mt-2" onsubmit="saveAddress(event)">
+            <p id="formError" class="text-red-500 text-xs font-bold hidden mb-3"><i class="fas fa-exclamation-circle"></i> Please fill all required fields correctly.</p>
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Full Name *</label>
+                    <input type="text" id="addName" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
+                </div>
+                <div class="relative">
+                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Phone Number *</label>
+                    <input type="tel" id="addPhone" pattern="[0-9]{10}" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="relative">
+                        <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Pincode *</label>
+                        <input type="number" id="addPin" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
+                    </div>
+                    <div class="relative">
+                        <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">City *</label>
+                        <input type="text" id="addCity" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
+                    </div>
+                </div>
+                <div class="relative">
+                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Full Address *</label>
+                    <textarea id="addFullAddress" rows="3" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors"></textarea>
+                </div>
             </div>
-            <h2 class="font-bold text-sm">Shailesh Kumar Chauhan <span class="bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5 rounded ml-1">HOME</span></h2>
-            <p class="text-sm text-gray-600 mt-1 leading-tight">Subhashnagar, near by new purnima furnitures, Subhash Nagar, Banaras Road, Ambikapur, Surguja 497001</p>
-            <p class="text-sm font-medium mt-1">9399008602</p>
-        </div>
-
-        <div id="checkoutItems" class="mt-2 bg-white border-y border-b-0 pb-4">
-             </div>
-
-        <div class="bg-white p-4 mt-2 border-y mb-20">
-            <h3 class="font-bold text-gray-500 border-b pb-2 mb-3 text-sm">Price Details</h3>
-            <div class="flex justify-between text-sm mb-2"><span>MRP</span><span>₹94,294</span></div>
-            <div class="flex justify-between text-sm mb-2"><span>Discounts</span><span class="text-green-600">- ₹46,760</span></div>
-            <div class="flex justify-between text-sm mb-2"><span>Delivery</span><span class="text-green-600">FREE</span></div>
-            <div class="flex justify-between text-base font-bold border-t pt-3 mt-1"><span>Total Amount</span><span id="checkoutFinalTotal">₹0</span></div>
-            <p class="text-green-600 font-medium text-xs bg-green-50 p-2 rounded mt-3 text-center"><i class="fas fa-tag"></i> You'll save ₹46,724 on this order!</p>
-        </div>
-
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 px-4 flex justify-between items-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
-            <div>
-                <p class="text-lg font-bold" id="checkoutBottomTotal">₹0</p>
-                <p class="text-blue-600 text-[10px] font-bold">View price details</p>
-            </div>
-            <button onclick="alert('Order Placed Successfully! Telegram API connected here.')" class="bg-[#ffc200] text-black font-bold px-10 py-3 w-40 rounded-sm text-sm">Continue</button>
-        </div>
+            <button type="submit" class="w-full bg-[#fb641b] active:bg-[#df5615] text-white font-bold py-4 rounded-sm shadow-md mt-8 transition-colors">Save Address</button>
+        </form>
     </div>
 
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-between items-center pb-1 z-30 shadow-[0_-2px_5px_rgba(0,0,0,0.05)]">
-        <button onclick="switchTab('homeView', this)" class="nav-btn text-blue-600 flex-1 flex flex-col items-center pt-2 pb-1 transition">
+        <button onclick="switchTab('homeView', this)" class="nav-btn text-blue-600 flex-1 flex flex-col items-center pt-2 pb-1">
             <i class="fas fa-home text-lg mb-0.5"></i><span class="text-[10px] font-medium">Home</span>
         </button>
-        <button class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 transition">
-            <i class="far fa-play-circle text-lg mb-0.5"></i><span class="text-[10px] font-medium">Play</span>
-        </button>
-        <button class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 transition">
-            <i class="fas fa-th-large text-lg mb-0.5"></i><span class="text-[10px] font-medium">Categories</span>
-        </button>
-        <button onclick="switchTab('accountView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 transition">
-            <i class="far fa-user text-lg mb-0.5"></i><span class="text-[10px] font-medium">Account</span>
-        </button>
-        <button onclick="switchTab('cartView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 relative transition">
+        <button onclick="switchTab('cartView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 relative">
             <i class="fas fa-shopping-cart text-lg mb-0.5"></i><span class="text-[10px] font-medium">Cart</span>
-            <span class="absolute top-1 right-3 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full border border-white">2</span>
+            <span id="navCartBadge" class="absolute top-1 right-10 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full border border-white hidden">0</span>
         </button>
     </div>
 
