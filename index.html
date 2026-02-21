@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Flipstore - Pro Version</title>
+    <title>Flipstore | Shop & Earn</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -12,104 +12,130 @@
 
     <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-11/12 max-w-sm pointer-events-none"></div>
 
-    <div id="homeView" class="tab-content block animate-fade-in">
-        <div class="bg-white px-3 pt-3 pb-2 sticky top-0 z-40 shadow-sm transition-all">
-            <div class="flex justify-between gap-2 mb-3">
-                <button class="flex-1 bg-blue-50 text-blue-600 font-bold text-xs py-2 rounded flex justify-center items-center gap-1 border border-blue-100"><i class="fas fa-shopping-bag"></i> Flipstore</button>
-                <button class="flex-1 bg-gray-50 text-gray-700 font-bold text-xs py-2 rounded flex justify-center items-center gap-1 border border-gray-100"><i class="fas fa-rupee-sign text-blue-500"></i> Finance</button>
-                <button class="flex-1 bg-gray-50 text-gray-700 font-bold text-xs py-2 rounded flex justify-center items-center gap-1 border border-gray-100"><i class="fas fa-plane text-blue-500"></i> Travel</button>
+    <div id="loginOverlay" class="fixed inset-0 z-[80] bg-blue-600 flex flex-col items-center justify-center p-6 hidden">
+        <div class="bg-white w-full max-w-sm rounded-lg p-6 shadow-2xl">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-blue-600 italic">Flipstore</h1>
+                <p class="text-gray-500 text-sm mt-1">Login to access your account</p>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <input type="text" id="userName" required class="w-full border-b-2 border-gray-300 py-2 outline-none focus:border-blue-600" placeholder="Your Full Name">
+                <input type="tel" id="userMobile" pattern="[0-9]{10}" required class="w-full border-b-2 border-gray-300 py-2 outline-none focus:border-blue-600" placeholder="10-digit Mobile Number">
+                <button type="submit" class="w-full bg-[#fb641b] text-white font-bold py-3 rounded shadow mt-4">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainApp" class="hidden">
+        
+        <div id="homeView" class="tab-content block animate-fade-in">
+            <div class="bg-white px-3 pt-3 pb-2 sticky top-0 z-40 shadow-sm">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="text-xs font-semibold text-gray-700 flex items-center gap-1 truncate cursor-pointer" onclick="openAddressForm()" id="homeTopAddress">
+                        <i class="fas fa-map-marker-alt text-blue-600"></i> Add Delivery Address <i class="fas fa-chevron-down text-[10px]"></i>
+                    </div>
+                </div>
+                <div class="relative shadow-sm rounded-md">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Search for products..." class="w-full bg-gray-50 text-sm py-2.5 pl-9 pr-4 rounded-md outline-none border border-gray-200">
+                </div>
+            </div>
+            <div class="bg-white p-3 mt-1">
+                <h2 class="font-bold text-sm mb-3">Top Deals For You</h2>
+                <div class="grid grid-cols-2 gap-3" id="homeProductGrid">
+                    </div>
+            </div>
+        </div>
+
+        <div id="accountView" class="tab-content hidden animate-fade-in">
+            <div class="bg-white p-4 border-b">
+                <h2 class="font-bold text-lg" id="profileName">User Name</h2>
+                <p class="text-gray-500 text-sm mt-0.5 mb-2" id="profilePhone">Phone Number</p>
+                <div class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-md text-xs font-bold inline-block border border-blue-100">
+                    <i class="fas fa-star text-yellow-500"></i> My Code: <span id="profileRefCode" class="text-blue-800">XXXX</span>
+                </div>
             </div>
             
-            <div class="flex justify-between items-center mb-3">
-                <div class="text-xs font-semibold text-gray-700 flex items-center gap-1 truncate max-w-[70%] cursor-pointer" onclick="openAddressForm()" id="homeTopAddress">
-                    <i class="fas fa-map-marker-alt text-blue-600"></i> Add Delivery Address <i class="fas fa-chevron-down text-[10px]"></i>
+            <div class="bg-white mt-2 p-4 border-y flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-500 text-xs font-bold uppercase">My Earnings Wallet</h3>
+                    <p class="text-2xl font-black text-green-600 mt-1">₹0</p>
+                    <p class="text-[10px] text-gray-400 mt-1">Earn ₹50 per successful referral order</p>
                 </div>
-                <div class="bg-gray-100 px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
-                    <i class="fas fa-bolt text-yellow-500"></i> 0
-                </div>
+                <div class="bg-green-50 p-3 rounded-full text-green-500 text-2xl"><i class="fas fa-wallet"></i></div>
             </div>
 
-            <div class="relative shadow-sm rounded-md">
-                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" placeholder="Search for products, brands and more" class="w-full bg-gray-50 text-sm py-2.5 pl-9 pr-10 rounded-md outline-none border border-gray-200 focus:border-blue-500 focus:bg-white transition-colors">
-                <i class="fas fa-camera absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"></i>
+            <div class="bg-white mt-2 border-y">
+                <div class="px-4 py-3 border-b flex items-center gap-3"><i class="fas fa-box text-blue-600 w-5"></i> <span class="text-sm font-medium">My Orders</span></div>
+                <div class="px-4 py-3 border-b flex items-center gap-3" onclick="openAddressForm()"><i class="fas fa-map-marker-alt text-blue-600 w-5"></i> <span class="text-sm font-medium">Saved Addresses</span></div>
+                <div class="px-4 py-3 flex items-center gap-3" onclick="handleLogout()"><i class="fas fa-power-off text-red-500 w-5"></i> <span class="text-sm font-medium text-red-500">Logout</span></div>
             </div>
         </div>
 
-        <div class="bg-white p-3 mt-1">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="font-bold text-sm">Recommended for You</h2>
-                <button class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-md"><i class="fas fa-chevron-right"></i></button>
+        <div id="cartView" class="tab-content hidden h-full flex flex-col relative pb-16 animate-fade-in">
+            <div class="bg-white p-3 border-b text-sm flex justify-between items-center" id="cartAddressBox"></div>
+            <div id="cartItemsContainer" class="flex-1 overflow-y-auto"></div>
+            <div class="fixed bottom-[56px] left-0 right-0 bg-white border-t p-2 px-4 flex justify-between items-center z-40 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                <div id="cartTotalText" class="text-lg font-bold">₹0</div>
+                <button onclick="openCheckout()" class="bg-[#ffc200] text-black font-bold px-8 py-3 rounded-sm w-40 text-sm shadow-sm">Place Order</button>
             </div>
-            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="homeProductSlider">
-                </div>
+        </div>
+
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-between items-center pb-1 z-30 shadow-[0_-2px_5px_rgba(0,0,0,0.05)]">
+            <button onclick="switchTab('homeView', this)" class="nav-btn text-blue-600 flex-1 flex flex-col items-center pt-2 pb-1">
+                <i class="fas fa-home text-lg mb-0.5"></i><span class="text-[10px] font-medium">Home</span>
+            </button>
+            <button onclick="switchTab('accountView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1">
+                <i class="far fa-user text-lg mb-0.5"></i><span class="text-[10px] font-medium">Account</span>
+            </button>
+            <button onclick="switchTab('cartView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 relative">
+                <i class="fas fa-shopping-cart text-lg mb-0.5"></i><span class="text-[10px] font-medium">Cart</span>
+                <span id="navCartBadge" class="absolute top-1 right-8 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+            </button>
         </div>
     </div>
 
-    <div id="cartView" class="tab-content hidden h-full flex flex-col relative pb-16 animate-fade-in">
-        <div class="bg-white flex shadow-sm sticky top-0 z-10">
-            <button class="flex-1 py-3 text-blue-600 border-b-2 border-blue-600 font-bold text-sm">Flipstore (<span id="cartCount">0</span>)</button>
-            <button class="flex-1 py-3 text-gray-500 font-medium text-sm">Grocery</button>
+    <div id="checkoutView" class="fixed inset-0 bg-gray-100 z-50 hidden flex flex-col overflow-y-auto">
+        <div class="bg-blue-600 text-white p-3 flex items-center gap-3 sticky top-0 z-10">
+            <i class="fas fa-arrow-left text-lg cursor-pointer" onclick="closeCheckout()"></i>
+            <h1 class="text-lg font-medium">Order Summary</h1>
+        </div>
+        <div class="bg-white p-4 mt-2 border-y" id="checkoutAddressBox"></div>
+        <div id="checkoutItems" class="mt-2 bg-white border-y border-b-0 pb-4"></div>
+        
+        <div class="bg-white p-4 mt-2 border-y">
+            <h3 class="text-sm font-bold text-gray-700 mb-2"><i class="fas fa-gift text-blue-500"></i> Have a Referral Code?</h3>
+            <input type="text" id="checkoutReferralCode" class="w-full border border-gray-300 py-2 px-3 rounded text-sm outline-none focus:border-blue-500 uppercase" placeholder="Enter Friend's Code Here">
+            <p class="text-[10px] text-gray-400 mt-1">If your friend shared this app, enter their code.</p>
         </div>
 
-        <div class="bg-white p-3 border-b text-sm mt-1 flex justify-between items-center" id="cartAddressBox">
-            </div>
-
-        <div id="cartItemsContainer" class="flex-1 overflow-y-auto">
-            </div>
-
-        <div class="fixed bottom-[56px] left-0 right-0 bg-white border-t p-2 px-4 flex justify-between items-center z-40 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-            <div>
-                <p class="text-xs text-gray-400 line-through" id="cartBottomMrp">₹0</p>
-                <p class="text-lg font-bold" id="cartTotalText">₹0</p>
-            </div>
-            <button onclick="openCheckout()" class="bg-[#ffc200] active:bg-[#e6af00] text-black font-bold px-8 py-3 rounded-sm w-40 text-sm shadow-sm transition-colors">Place Order</button>
+        <div class="bg-white p-4 mt-2 border-y mb-20">
+            <h3 class="font-bold text-gray-500 border-b pb-2 mb-3 text-sm">Price Details</h3>
+            <div class="flex justify-between text-base font-bold pt-1"><span>Total Payable</span><span id="checkoutFinalTotal">₹0</span></div>
+        </div>
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-2 px-4 flex justify-between items-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
+            <div class="text-lg font-bold" id="checkoutBottomTotal">₹0</div>
+            <button id="confirmOrderBtn" onclick="sendOrderToTelegram()" class="bg-[#ffc200] text-black font-bold px-8 py-3 w-40 rounded-sm text-sm flex justify-center items-center gap-2">
+                Continue
+            </button>
         </div>
     </div>
 
-    <div id="addressFormView" class="fixed inset-0 bg-gray-50 z-[60] hidden flex flex-col animate-slide-up">
-        <div class="bg-blue-600 text-white p-4 flex items-center gap-4 shadow-md sticky top-0">
+    <div id="addressFormView" class="fixed inset-0 bg-gray-50 z-[60] hidden flex flex-col">
+        <div class="bg-blue-600 text-white p-4 flex items-center gap-4 sticky top-0">
             <i class="fas fa-arrow-left text-lg cursor-pointer" onclick="closeAddressForm()"></i>
             <h1 class="text-lg font-medium">Add Delivery Address</h1>
         </div>
-        <form id="addressForm" class="p-4 flex-1 overflow-y-auto bg-white mt-2" onsubmit="saveAddress(event)">
-            <p id="formError" class="text-red-500 text-xs font-bold hidden mb-3"><i class="fas fa-exclamation-circle"></i> Please fill all required fields correctly.</p>
-            <div class="space-y-4">
-                <div class="relative">
-                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Full Name *</label>
-                    <input type="text" id="addName" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
-                </div>
-                <div class="relative">
-                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Phone Number *</label>
-                    <input type="tel" id="addPhone" pattern="[0-9]{10}" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="relative">
-                        <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Pincode *</label>
-                        <input type="number" id="addPin" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
-                    </div>
-                    <div class="relative">
-                        <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">City *</label>
-                        <input type="text" id="addCity" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors">
-                    </div>
-                </div>
-                <div class="relative">
-                    <label class="text-[10px] text-gray-500 font-bold uppercase absolute -top-2 left-2 bg-white px-1">Full Address *</label>
-                    <textarea id="addFullAddress" rows="3" required class="w-full border border-gray-300 rounded-md p-3 outline-none focus:border-blue-600 transition-colors"></textarea>
-                </div>
+        <form id="addressForm" class="p-4 flex-1 overflow-y-auto bg-white" onsubmit="saveAddress(event)">
+            <input type="text" id="addName" required class="w-full border-b border-gray-300 py-3 outline-none mb-2" placeholder="Full Name *">
+            <input type="tel" id="addPhone" pattern="[0-9]{10}" required class="w-full border-b border-gray-300 py-3 outline-none mb-2" placeholder="Phone Number *">
+            <div class="grid grid-cols-2 gap-4 mb-2">
+                <input type="number" id="addPin" required class="w-full border-b border-gray-300 py-3 outline-none" placeholder="Pincode *">
+                <input type="text" id="addCity" required class="w-full border-b border-gray-300 py-3 outline-none" placeholder="City *">
             </div>
-            <button type="submit" class="w-full bg-[#fb641b] active:bg-[#df5615] text-white font-bold py-4 rounded-sm shadow-md mt-8 transition-colors">Save Address</button>
+            <textarea id="addFullAddress" rows="2" required class="w-full border-b border-gray-300 py-3 outline-none" placeholder="Full Address (House, Area) *"></textarea>
+            <button type="submit" class="w-full bg-[#fb641b] text-white font-bold py-4 rounded-sm shadow-md mt-6">Save Address</button>
         </form>
-    </div>
-
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-between items-center pb-1 z-30 shadow-[0_-2px_5px_rgba(0,0,0,0.05)]">
-        <button onclick="switchTab('homeView', this)" class="nav-btn text-blue-600 flex-1 flex flex-col items-center pt-2 pb-1">
-            <i class="fas fa-home text-lg mb-0.5"></i><span class="text-[10px] font-medium">Home</span>
-        </button>
-        <button onclick="switchTab('cartView', this)" class="nav-btn text-gray-500 flex-1 flex flex-col items-center pt-2 pb-1 relative">
-            <i class="fas fa-shopping-cart text-lg mb-0.5"></i><span class="text-[10px] font-medium">Cart</span>
-            <span id="navCartBadge" class="absolute top-1 right-10 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full border border-white hidden">0</span>
-        </button>
     </div>
 
     <script src="script.js"></script>
