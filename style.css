@@ -1,56 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-:root {
-    --primary: #2563eb;
-    --primary-dark: #1e40af;
-    --accent: #f59e0b;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 * {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
-body { background: #f8fafc; color: #1e293b; overflow-x: hidden; }
-
-.fade-in { animation: fadeIn 0.4s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.slide-up { animation: slideUp 0.4s cubic-bezier(0, 0, 0.2, 1); }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-.glass-header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-.btn-premium {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    transition: 0.3s;
-}
-.btn-premium:active { transform: scale(0.98); opacity: 0.9; }
+body { overscroll-behavior-y: none; } /* Prevents pull-to-refresh space */
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Toast Notification */
-#toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 12px;
-    padding: 12px;
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    bottom: 80px;
-    transform: translateX(-50%);
-    font-size: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+.pb-24 { padding-bottom: 6rem; }
+
+/* Custom Animations */
+.animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.animate-slide-up { animation: slideUp 0.3s cubic-bezier(0,0,0.2,1); }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.nav-btn { transition: color 0.2s ease; }
+.nav-btn.text-blue-600 i { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Shimmer Loading Effect */
+.shimmer {
+    background: #f6f7f8;
+    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-repeat: no-repeat;
+    background-size: 800px 100%; 
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards; 
+    animation-iteration-count: infinite;
+    animation-name: placeholderShimmer;
+    animation-timing-function: linear;
 }
-#toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-@keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 80px; opacity: 1;} }
-@keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+@keyframes placeholderShimmer {
+    0% { background-position: -468px 0; }
+    100% { background-position: 468px 0; }
+}
+
+/* Toast Animation */
+.toast-enter { animation: slideDown 0.3s ease forwards; }
+.toast-exit { animation: fadeOutUp 0.3s ease forwards; }
+@keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeOutUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-20px); opacity: 0; } }
